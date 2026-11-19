@@ -1,0 +1,45 @@
+name: Bootstrap npm packages (one-time token)
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type BOOTSTRAP to publish missing @accelerate packages with NPM_TOKEN'
+        required: true
+        type: string
+jobs:
+  bootstrap:
+    if: ${{ inputs.confirm == 'BOOTSTRAP' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - run: npm install --global npm@^11.5.1
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm build
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: Publish only missing package versions
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -eu
+          test -n "$NODE_AUTH_TOKEN" || { echo "NPM_TOKEN missing"; exit 1; }
+          for pkg in authorization-core authorization-angular authorization-react authorization-postgres; do
+            cd "$GITHUB_WORKSPACE/packages/$pkg"
+            name=$(node -p "require('./package.json').name")
+            version=$(node -p "require('./package.json').version")
+            if npm view "$name@$version" version --registry=https://registry.npmjs.org >/dev/null 2>&1; then
+              echo "Already published: $name@$version"
+            else
+              npm publish --access public
+            fi
+          done
