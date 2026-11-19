@@ -1,14 +1,14 @@
-# DevKit Authorization
+# Accelerate Authorization
 
-Framework-agnostic, TypeScript-first hybrid RBAC packages under the `@devkit/` npm scope.
+Framework-agnostic, TypeScript-first hybrid RBAC packages under the `@accelerate/` npm scope.
 
 Permissions are defined in code; roles, grants, and user-role assignments are managed dynamically.
 
 ## Packages
 
-- `@devkit/authorization-core`: permission registry, RBAC engine, and storage contracts
-- `@devkit/authorization-angular`: Angular signals, DI, and authorization directives
-- `@devkit/authorization-react`: React provider, hooks, and permission components
+- `@accelerate/authorization-core`: permission registry, RBAC engine, and storage contracts
+- `@accelerate/authorization-angular`: Angular signals, DI, and authorization directives
+- `@accelerate/authorization-react`: React provider, hooks, and permission components
 
 ## Development
 
