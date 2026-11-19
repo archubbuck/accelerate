@@ -32,9 +32,20 @@ jobs:
           for pkg in packages/*; do
             (cd "$pkg" && npm pack --dry-run)
           done
-      - name: Publish with npm trusted publishing (OIDC)
+      - name: Publish unpublished package versions with npm OIDC
         run: |
-          set -e
+          set -euo pipefail
+
           for pkg in authorization-core authorization-angular authorization-react authorization-postgres; do
-            (cd "packages/$pkg" && npm publish --access public)
+            cd "$GITHUB_WORKSPACE/packages/$pkg"
+
+            name=$(node -p "require('./package.json').name")
+            version=$(node -p "require('./package.json').version")
+
+            if npm view "$name@$version" version --registry=https://registry.npmjs.org >/dev/null 2>&1; then
+              echo "Already published: $name@$version"
+            else
+              echo "Publishing: $name@$version"
+              npm publish --access public
+            fi
           done
