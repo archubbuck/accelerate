@@ -9,11 +9,16 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./admin": {
+      "types": "./dist/admin.d.ts",
+      "default": "./dist/admin.js"
     }
   },
   "files": [
     "dist",
-    "schema.sql"
+    "schema.sql",
+    "admin.sql"
   ],
   "peerDependencies": {
     "@accelerate/authorization-core": "^0.1.0",
