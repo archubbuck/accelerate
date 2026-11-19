@@ -7,7 +7,7 @@ export interface AuthorizationConfig {
   endpoint?: string;
   loader?: () => Promise<AuthorizationSnapshot>;
 }
-export const AUTHORIZATION_CONFIG = new InjectionToken<AuthorizationConfig>("DEVKIT_AUTHORIZATION_CONFIG");
+export const AUTHORIZATION_CONFIG = new InjectionToken<AuthorizationConfig>("ACCELERATE_AUTHORIZATION_CONFIG");
 @Injectable()
 export class AuthorizationService {
   private readonly config = inject(AUTHORIZATION_CONFIG);
