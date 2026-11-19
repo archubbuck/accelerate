@@ -8,7 +8,7 @@ Permissions are defined in code; roles, grants, and user-role assignments are ma
 
 - `@accelerate/authorization-core`: permission registry, RBAC engine, and storage contracts
 - `@accelerate/authorization-angular`: Angular signals, DI, and authorization directives
-- `@accelerate/authorization-react`: React provider, hooks, and permission components
+- `@accelerate/authorization-react`: React provider, hooks, and permission components\n- `@accelerate/authorization-postgres`: PostgreSQL-backed roles, grants, and assignments
 
 ## Development
 
