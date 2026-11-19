@@ -1,5 +1,5 @@
 {
-  "name": "@devkit/authorization-core",
+  "name": "@accelerate/authorization-core",
   "version": "0.1.0",
   "type": "module",
   "sideEffects": false,
