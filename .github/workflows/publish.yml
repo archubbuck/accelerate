@@ -1,0 +1,34 @@
+name: Publish npm packages
+on:
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test
+      - name: Verify publish contents
+        run: |
+          for pkg in packages/*; do
+            (cd "$pkg" && npm pack --dry-run)
+          done
+      - name: Publish packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          for pkg in authorization-core authorization-angular authorization-react; do
+            (cd "packages/$pkg" && npm publish --access public --provenance)
+          done
