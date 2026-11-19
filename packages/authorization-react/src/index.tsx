@@ -1,40 +1,47 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-export interface AuthorizationSnapshot { userId: string; roles: string[]; permissions: string[]; }
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+export interface AuthorizationSnapshot { userId: string; roles: readonly string[]; permissions: readonly string[]; }
 export interface AuthorizationClient { load(): Promise<AuthorizationSnapshot>; }
-type AuthorizationState = { status: "idle" | "loading" | "ready" | "error"; permissions: readonly string[]; roles: readonly string[] };
+type AuthorizationState = { status: "idle" | "loading" | "ready" | "error"; userId: string | null; permissions: readonly string[]; roles: readonly string[] };
 type AuthorizationContextValue = AuthorizationState & {
   can(permission: string): boolean;
   canAny(permissions: readonly string[]): boolean;
   canAll(permissions: readonly string[]): boolean;
   refresh(): Promise<void>;
+  reset(): void;
 };
+const empty: AuthorizationState = { status: "idle", userId: null, permissions: [], roles: [] };
 const Context = createContext<AuthorizationContextValue | null>(null);
 export function AuthorizationProvider({ client, children }: { client: AuthorizationClient; children: ReactNode }) {
-  const [state, setState] = useState<AuthorizationState>({ status: "idle", permissions: [], roles: [] });
+  const [state, setState] = useState<AuthorizationState>(empty);
+  const generation = useRef(0);
   const refresh = useCallback(async () => {
-    setState({ status: "loading", permissions: [], roles: [] });
+    const request = ++generation.current;
+    setState({ ...empty, status: "loading" });
     try {
       const snapshot = await client.load();
-      setState({ status: "ready", permissions: snapshot.permissions, roles: snapshot.roles });
+      if (request !== generation.current) return;
+      if (!snapshot || typeof snapshot.userId !== "string" || !Array.isArray(snapshot.roles) || !Array.isArray(snapshot.permissions)) {
+        throw new Error("Invalid authorization snapshot");
+      }
+      setState({ status: "ready", userId: snapshot.userId, permissions: [...snapshot.permissions], roles: [...snapshot.roles] });
     } catch (error) {
-      setState({ status: "error", permissions: [], roles: [] });
+      if (request !== generation.current) return;
+      setState({ ...empty, status: "error" });
       throw error;
     }
   }, [client]);
+  const reset = useCallback(() => {
+    ++generation.current;
+    setState(empty);
+  }, []);
   useEffect(() => {
-    let active = true;
-    setState({ status: "loading", permissions: [], roles: [] });
-    client.load().then(snapshot => {
-      if (active) setState({ status: "ready", permissions: snapshot.permissions, roles: snapshot.roles });
-    }).catch(() => {
-      if (active) setState({ status: "error", permissions: [], roles: [] });
-    });
-    return () => { active = false; };
-  }, [client]);
+    void refresh().catch(() => undefined);
+    return () => { ++generation.current; };
+  }, [refresh]);
   const value = useMemo<AuthorizationContextValue>(() => {
     const can = (permission: string) => state.status === "ready" && state.permissions.includes(permission);
-    return { ...state, can, canAny: ps => ps.some(can), canAll: ps => ps.every(can), refresh };
-  }, [state, refresh]);
+    return { ...state, can, canAny: ps => ps.some(can), canAll: ps => ps.every(can), refresh, reset };
+  }, [state, refresh, reset]);
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 export function useAuthorization() {
