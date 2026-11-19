@@ -1,5 +1,5 @@
 {
-  "name": "@devkit/authorization-react",
+  "name": "@accelerate/authorization-react",
   "version": "0.1.0",
   "type": "module",
   "sideEffects": false,
@@ -18,7 +18,8 @@
     "react": ">=18"
   },
   "devDependencies": {
-    "@types/react": "^18.3.18"
+    "@types/react": "^18.3.18",
+    "react": "^18.3.1"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
