@@ -1,10 +1,10 @@
 # npm publishing
 
-The npm scope `@devkit` must be owned by the publishing npm account or organization. GitHub repository ownership alone does not grant npm publishing rights.
+The npm scope `@accelerate` must be owned by the publishing npm account or organization. GitHub repository ownership alone does not grant npm publishing rights.
 
 ## First release
 
-1. Confirm ownership of the `@devkit` scope at npmjs.com.
+1. Confirm ownership of the `@accelerate` scope at npmjs.com.
 2. Configure an npm automation/granular access token with publish access to the scope, then save it as the GitHub Actions repository secret `NPM_TOKEN`. Do not commit tokens.
 3. Ensure package versions do not already exist on npm.
 4. Run GitHub Actions > **Publish npm packages** > **Run workflow**.
