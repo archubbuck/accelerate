@@ -19,3 +19,32 @@ describe("hybrid authorization", () => {
     expect(() => auth.admin.grant("role", "unknown" as "users.read")).toThrow("Unregistered");
   });
 });
+
+describe("authorization safety", () => {
+  const permissions = definePermissions({ documents: { read: "Read documents", edit: "Edit documents" } });
+  it("denies unknown permissions even when storage contains a grant", async () => {
+    const store = new MemoryAuthorizationStore();
+    await store.createRole({ id: "r", key: "reader", name: "Reader", active: true });
+    await store.assign("user", "r");
+    await store.grant("r", "unknown.permission");
+    const auth = createAuthorization({ permissions, store });
+    expect((await auth.evaluate("user", "unknown.permission" as "documents.read")).reason).toBe("PERMISSION_UNKNOWN");
+  });
+  it("ignores inactive roles", async () => {
+    const store = new MemoryAuthorizationStore();
+    await store.createRole({ id: "r", key: "disabled", name: "Disabled", active: false });
+    await store.grant("r", "documents.read");
+    await store.assign("user", "r");
+    expect(await createAuthorization({ permissions, store }).can("user", "documents.read")).toBe(false);
+  });
+  it("evaluates all and any grants", async () => {
+    const store = new MemoryAuthorizationStore();
+    const auth = createAuthorization({ permissions, store });
+    await auth.admin.createRole({ id: "r", key: "reader", name: "Reader", active: true });
+    await auth.admin.grant("r", "documents.read");
+    await auth.admin.assignRole("user", "r");
+    expect(await auth.canAny("user", ["documents.read", "documents.edit"])).toBe(true);
+    expect(await auth.canAll("user", ["documents.read", "documents.edit"])).toBe(false);
+    expect(await auth.canAll("user", ["documents.read"])).toBe(true);
+  });
+});
