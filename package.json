@@ -1,5 +1,5 @@
 {
-  "name": "devkit",
+  "name": "accelerate-devkit",
   "private": true,
   "packageManager": "pnpm@9.15.4",
   "scripts": {
