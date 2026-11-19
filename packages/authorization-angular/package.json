@@ -27,5 +27,14 @@
     "@angular/core": "^19.2.0",
     "@angular/common": "^19.2.0",
     "rxjs": "^7.8.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/devkit.git",
+    "directory": "packages/authorization-angular"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
