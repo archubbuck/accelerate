@@ -14,20 +14,27 @@ jobs:
           version: 9.15.4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '24'
           registry-url: https://registry.npmjs.org
-      - run: pnpm install --no-frozen-lockfile
-      - run: pnpm build
-      - run: pnpm test
+          package-manager-cache: false
+      - name: Install supported npm CLI
+        run: npm install --global npm@^11.5.1
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Build
+        run: pnpm build
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Test
+        run: pnpm test
       - name: Verify publish contents
         run: |
           for pkg in packages/*; do
             (cd "$pkg" && npm pack --dry-run)
           done
-      - name: Publish packages
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish with npm trusted publishing (OIDC)
         run: |
+          set -e
           for pkg in authorization-core authorization-angular authorization-react authorization-postgres; do
-            (cd "packages/$pkg" && pnpm publish --access public --provenance --no-git-checks)
+            (cd "packages/$pkg" && npm publish --access public)
           done
