@@ -4,7 +4,7 @@ import type { PermissionRegistry, Role } from "@accelerate/authorization-core";
 export type AdminAction =
   | "role.create" | "role.activate" | "role.deactivate"
   | "permission.grant" | "permission.revoke"
-  | "role.assign" | "role.unassign";
+  | "role.assign" | "role.unassign" | "audit.read";
 export interface AdminContext {
   /** Identity resolved by trusted server-side authentication, never from request input. */
   actorId: string;
@@ -113,8 +113,9 @@ export class PostgresAuthorizationAdmin {
   }
 
   async listAuditEvents(context: AdminContext, limit = 100): Promise<readonly AuditEvent[]> {
-    if (!context.actorId?.trim() || !await this.policy.authorize(context, "role.create"))
+    if (!context.actorId?.trim() || !await this.policy.authorize(context, "audit.read"))
       throw new Error("Forbidden");
+    if (!Number.isFinite(limit)) throw new Error("Invalid audit limit");
     const size = Math.max(1, Math.min(500, Math.trunc(limit) || 100));
     const client = await this.pool.connect();
     try {
