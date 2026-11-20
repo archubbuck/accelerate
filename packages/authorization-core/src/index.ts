@@ -10,9 +10,9 @@ export function definePermissions<const T extends PermissionCatalog>(catalog: T)
   const descriptions: Record<string, string> = Object.create(null);
   for (const [resource, actions] of Object.entries(catalog)) {
     if (!actions || typeof actions !== "object" || Array.isArray(actions)) throw new Error("Invalid permission actions");
-    if (!resource.trim() || resource.includes(".")) throw new Error("Invalid permission resource");
+    if (typeof resource !== "string" || !resource.trim() || resource.includes(".")) throw new Error("Invalid permission resource");
     for (const [action, description] of Object.entries(actions)) {
-      if (!action.trim() || action.includes(".")) throw new Error("Invalid permission action");
+      if (typeof action !== "string" || !action.trim() || action.includes(".")) throw new Error("Invalid permission action");
       if (typeof description !== "string" || !description.trim()) throw new Error("Permission description required");
       descriptions[`${resource}.${action}`] = description;
     }
