@@ -37,7 +37,7 @@ export class AuthorizationService {
         ? await this.config.loader()
         : await this.loadFromEndpoint();
       if (version !== this.requestVersion) return;
-      if (!snapshot || typeof snapshot.userId !== "string" || !Array.isArray(snapshot.roles) || !Array.isArray(snapshot.permissions)) {
+      if (!snapshot || typeof snapshot.userId !== "string" || !snapshot.userId.trim() ||\n        !Array.isArray(snapshot.roles) || !snapshot.roles.every((role: unknown) => typeof role === "string") ||\n        !Array.isArray(snapshot.permissions) || !snapshot.permissions.every((permission: unknown) => typeof permission === "string")) {
         throw new Error("Invalid authorization snapshot");
       }
       this.state.set({ status: "ready", userId: snapshot.userId, permissions: [...snapshot.permissions], roles: [...snapshot.roles] });
