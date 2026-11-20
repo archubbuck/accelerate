@@ -18,21 +18,21 @@ try {
   run("npm", ["install", "--no-audit", "--no-fund"], app);
   const source = join(app, "src/app/app.component.ts");
   writeFileSync(source, `import { Component, inject } from '@angular/core';
-import { AuthCanDirective, AuthorizationService, provideAuthorization } from '@accelerate/authorization-angular';
+import { AuthCanDirective, AuthorizationService } from '@accelerate/authorization-angular';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [AuthCanDirective],
-  providers: [provideAuthorization({ loader: async () => ({
-    userId: 'demo', roles: ['reader'], permissions: ['documents.read']
-  }) })],
   template: \`<span *authCan="'documents.read'">Authorized</span>\`
 })
 export class AppComponent {
   readonly auth = inject(AuthorizationService);
 }
 `);
+  const configFile = join(app, "src/app/app.config.ts");
+  const originalConfig = readFileSync(configFile, "utf8");
+  writeFileSync(configFile, `import { provideAuthorization } from '@accelerate/authorization-angular';\n${originalConfig.replace("providers: [", "providers: [provideAuthorization({ loader: async () => ({ userId: 'demo', roles: ['reader'], permissions: ['documents.read'] }) }), ")}`);
   run("npm", ["run", "build", "--", "--configuration", "production"], app);
   assert.ok(true);
   console.log("Angular consumer production build succeeded");
