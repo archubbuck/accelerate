@@ -12,7 +12,7 @@
     "rxjs": "^7.4.0"
   },
   "scripts": {
-    "build": "ng-packagr -p ng-package.json",
+    "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
