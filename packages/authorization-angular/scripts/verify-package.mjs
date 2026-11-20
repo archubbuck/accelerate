@@ -32,6 +32,6 @@ const packed = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json"], {
 }))[0];
 const packedPaths = new Set((packed.files ?? []).map(item => item.path));
 for (const entry of [manifest.exports["."].default, manifest.exports["."].types]) {
-  assert.ok(packedPaths.has(entry.replace(/^\\.\\//, "")), `Angular npm archive excludes entrypoint: ${entry}`);
+  assert.ok(packedPaths.has(entry.startsWith("./") ? entry.slice(2) : entry), `Angular npm archive excludes entrypoint: ${entry}`);
 }
 console.log("Angular APF package, npm archive contents, and partial Ivy declarations verified");
