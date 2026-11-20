@@ -59,7 +59,7 @@ export class AuthorizationService {
   }
 }
 export function provideAuthorization(config: AuthorizationConfig): EnvironmentProviders {
-  if (!config.loader && !config.endpoint) throw new Error("Authorization requires endpoint or loader");
+  if (typeof config.loader !== "function" && (typeof config.endpoint !== "string" || !config.endpoint.trim())) throw new Error("Authorization requires endpoint or loader");
   return makeEnvironmentProviders([
     { provide: AUTHORIZATION_CONFIG, useValue: config },
     AuthorizationService
