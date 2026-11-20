@@ -11,7 +11,7 @@ export function definePermissions<const T extends PermissionCatalog>(catalog: T)
     if (!resource.trim() || resource.includes(".")) throw new Error("Invalid permission resource");
     for (const [action, description] of Object.entries(actions)) {
       if (!action.trim() || action.includes(".")) throw new Error("Invalid permission action");
-      if (!description.trim()) throw new Error("Permission description required");
+      if (typeof description !== "string" || !description.trim()) throw new Error("Permission description required");
       descriptions[`${resource}.${action}`] = description;
     }
   }
