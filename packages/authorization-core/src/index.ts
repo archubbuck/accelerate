@@ -39,10 +39,9 @@ export function createAuthorization<K extends string>(options: { permissions: Pe
   async function evaluate(userId: string, permission: K): Promise<Evaluation<K>> {
     if (!known.has(permission)) return { allowed: false, permission, matchedRoles: [], reason: "PERMISSION_UNKNOWN" };
     const roles = (await options.store.getRolesForUser(userId)).filter(r => r.active);
-    const matches: string[] = [];
-    for (const role of roles) {
-      if ((await options.store.getPermissionKeysForRole(role.id)).includes(permission)) matches.push(role.key);
-    }
+    // Fetch grants concurrently while retaining the role ordering in evaluations.
+    const grants = await Promise.all(roles.map(role => options.store.getPermissionKeysForRole(role.id)));
+    const matches = roles.filter((_, index) => grants[index].includes(permission)).map(role => role.key);
     return { allowed: matches.length > 0, permission, matchedRoles: matches, reason: matches.length ? "GRANTED" : "PERMISSION_NOT_GRANTED" };
   }
   return {
