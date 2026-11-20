@@ -6,8 +6,10 @@ export interface PermissionRegistry<K extends string = string> {
   readonly descriptions: Readonly<Record<K, string>>;
 }
 export function definePermissions<const T extends PermissionCatalog>(catalog: T): PermissionRegistry<CatalogKeys<T>> {
+  if (!catalog || typeof catalog !== "object" || Array.isArray(catalog)) throw new Error("Invalid permission catalog");
   const descriptions: Record<string, string> = Object.create(null);
   for (const [resource, actions] of Object.entries(catalog)) {
+    if (!actions || typeof actions !== "object" || Array.isArray(actions)) throw new Error("Invalid permission actions");
     if (!resource.trim() || resource.includes(".")) throw new Error("Invalid permission resource");
     for (const [action, description] of Object.entries(actions)) {
       if (!action.trim() || action.includes(".")) throw new Error("Invalid permission action");
