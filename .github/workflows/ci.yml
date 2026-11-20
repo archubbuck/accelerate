@@ -18,6 +18,12 @@ jobs:
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Verify all npm package archives
+        run: |
+          set -euo pipefail
+          for pkg in authorization-core authorization-react authorization-postgres; do
+            (cd "packages/$pkg" && npm pack --dry-run --json > /dev/null)
+          done
       - name: Verify Angular package contents
         run: |
           test -f packages/authorization-angular/dist/package.json
