@@ -31,6 +31,7 @@ const packed = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json"], {
   encoding: "utf8"
 }))[0];
 const packedPaths = new Set((packed.files ?? []).map(item => item.path));
+assert.ok(packedPaths.has("README.md"), "Angular npm archive excludes README.md");
 for (const entry of [manifest.exports["."].default, manifest.exports["."].types]) {
   assert.ok(packedPaths.has(entry.startsWith("./") ? entry.slice(2) : entry), `Angular npm archive excludes entrypoint: ${entry}`);
 }
