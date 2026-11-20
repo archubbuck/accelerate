@@ -27,6 +27,8 @@ jobs:
         run: pnpm typecheck
       - name: Test
         run: pnpm test
+      - name: Angular consumer production build
+        run: pnpm --filter @accelerate/authorization-angular test:consumer
       - name: Verify publish contents
         run: |
           for pkg in packages/*; do
