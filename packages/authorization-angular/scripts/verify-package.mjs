@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const dist = new URL("../dist/", import.meta.url);
 const file = (name) => new URL(name, dist);
@@ -13,7 +14,7 @@ const fesm = file("fesm2022/");
 assert.ok(existsSync(fesm), "Missing FESM2022 directory");
 const bundles = readdirSync(fesm).filter((name) => name.endsWith(".mjs"));
 assert.ok(bundles.length > 0, "Missing FESM2022 module");
-const js = bundles.map((name) => readFileSync(join(fesm.pathname, name), "utf8")).join("\n");
+const js = bundles.map((name) => readFileSync(join(fileURLToPath(fesm), name), "utf8")).join("\n");
 for (const declaration of ["ɵɵngDeclareDirective", "ɵɵngDeclareInjectable", "ɵɵngDeclareFactory"]) {
   assert.ok(js.includes(declaration), `Missing Angular partial compilation marker: ${declaration}`);
 }
