@@ -9,6 +9,11 @@ assert.ok(existsSync(file("package.json")), "Missing generated Angular package m
 const manifest = JSON.parse(readFileSync(file("package.json"), "utf8"));
 assert.equal(manifest.name, "@accelerate/authorization-angular");
 assert.ok(manifest.exports?.["."], "Missing APF entrypoint exports");
+const entry = manifest.exports["."];
+assert.ok(typeof entry.default === "string" && entry.default.startsWith("./fesm2022/"), "Invalid Angular JS entrypoint");
+assert.ok(existsSync(file(entry.default)), `Angular JS export points to missing file: ${entry.default}`);
+assert.equal(manifest.module, entry.default, "Angular module and exports entrypoints disagree");
+assert.ok(typeof entry.types === "string" && existsSync(file(entry.types)), "Angular declaration export points to missing file");
 assert.ok(manifest.peerDependencies?.["@angular/core"], "Missing Angular peer dependency");
 const fesm = file("fesm2022/");
 assert.ok(existsSync(fesm), "Missing FESM2022 directory");
