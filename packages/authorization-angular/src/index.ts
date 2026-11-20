@@ -28,7 +28,7 @@ export class AuthorizationService {
   readonly roles = computed(() => this.state().roles);
   can(permission: string) { return computed(() => this.status() === "ready" && this.permissions().includes(permission)); }
   canAny(permissions: readonly string[]) { return computed(() => this.status() === "ready" && permissions.some(p => this.permissions().includes(p))); }
-  canAll(permissions: readonly string[]) { return computed(() => this.status() === "ready" && permissions.every(p => this.permissions().includes(p))); }
+  canAll(permissions: readonly string[]) { return computed(() => this.status() === "ready" && permissions.length > 0 && permissions.every(p => this.permissions().includes(p))); }
   async refresh(): Promise<void> {
     const version = ++this.requestVersion;
     this.state.set({ status: "loading", userId: null, permissions: [], roles: [] });
