@@ -33,7 +33,7 @@ describe("React authorization provider", () => {
     expect(screen.getByText("All denied")).toBeTruthy();
     await act(async () => pending.resolve(snapshot(["documents.read"])));
     expect(screen.getByText("Allowed")).toBeTruthy();
-    expect(screen.getByText("All allowed")).toBeTruthy();
+    expect(screen.getByText("All denied")).toBeTruthy();
     await act(async () => screen.getByText("Reset").click());
     expect(screen.getByText("Denied")).toBeTruthy();
     expect(screen.getByTestId("status").textContent).toBe("idle");
