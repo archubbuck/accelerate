@@ -40,7 +40,7 @@ export function AuthorizationProvider({ client, children }: { client: Authorizat
   }, [refresh]);
   const value = useMemo<AuthorizationContextValue>(() => {
     const can = (permission: string) => state.status === "ready" && state.permissions.includes(permission);
-    return { ...state, can, canAny: ps => state.status === "ready" && ps.some(can), canAll: ps => state.status === "ready" && ps.every(can), refresh, reset };
+    return { ...state, can, canAny: ps => state.status === "ready" && ps.some(can), canAll: ps => state.status === "ready" && ps.length > 0 && ps.every(can), refresh, reset };
   }, [state, refresh, reset]);
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
