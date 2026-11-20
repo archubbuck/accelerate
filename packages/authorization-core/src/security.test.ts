@@ -11,7 +11,7 @@ describe("authorization security invariants", () => {
     const permissions = definePermissions({ documents: { read: "Read" } });
     const store = new MemoryAuthorizationStore();
     const authorization = createAuthorization({ permissions, store });
-    await expect(authorization.admin.revoke("role", "documents.write" as "documents.read")).rejects.toThrow("Unregistered permission");
+    expect(() => authorization.admin.revoke("role", "documents.write" as "documents.read")).toThrow("Unregistered permission");
   });
 
   it("fails closed for inactive roles and unknown permissions", async () => {
