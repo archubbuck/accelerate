@@ -37,6 +37,17 @@ describe("PostgresAuthorizationAdmin", () => {
     expect(query.mock.calls.map(([sql]) => sql)).not.toContain("COMMIT");
     expect(release).toHaveBeenCalledOnce();
   });
+  it("requires independent audit.read authorization", async () => {
+    const { admin, authorize, connect } = setup(false);
+    await expect(admin.listAuditEvents({ actorId: "actor" })).rejects.toThrow("Forbidden");
+    expect(authorize).toHaveBeenCalledWith({ actorId: "actor" }, "audit.read");
+    expect(connect).not.toHaveBeenCalled();
+  });
+  it("rejects non-finite audit limits", async () => {
+    const { admin, connect } = setup(true);
+    await expect(admin.listAuditEvents({ actorId: "actor" }, Infinity)).rejects.toThrow("Invalid audit limit");
+    expect(connect).not.toHaveBeenCalled();
+  });
   it("rejects unregistered permissions before a connection", async () => {
     const { admin, connect } = setup(true);
     await expect(admin.grant({ actorId: "actor" }, "r", "documents.write")).rejects.toThrow("Unregistered permission");
