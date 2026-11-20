@@ -28,7 +28,8 @@ export class PostgresAuthorizationStore implements AuthorizationStore {
       `SELECT r.id, r.role_key AS key, r.name, r.active
        FROM authorization_roles r
        JOIN authorization_user_roles ur ON ur.role_id = r.id
-       WHERE ur.user_id = $1`, [userId]
+       WHERE ur.user_id = $1
+       ORDER BY r.role_key, r.id`, [userId]
     );
     return result.rows as Role[];
   }
