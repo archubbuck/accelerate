@@ -12,7 +12,11 @@ try {
   run(cli, ["new", "consumer", "--defaults", "--skip-git", "--skip-install", "--style=css", "--routing=false", "--standalone=true", "--package-manager=npm"]);
   const app = join(temporary, "consumer");
   const pkg = JSON.parse(readFileSync(join(app, "package.json"), "utf8"));
-  pkg.dependencies["@accelerate/authorization-angular"] = `file:${resolve(cwd, "dist")}`;
+  // Install the actual npm tarball rather than a symlink to workspace output.
+  const packed = execFileSync("npm", ["pack", "--json", "--pack-destination", temporary], { cwd: resolve(cwd, "dist"), encoding: "utf8" });
+  const tarball = JSON.parse(packed)[0]?.filename;
+  if (!tarball) throw new Error("npm pack did not return an Angular package tarball");
+  pkg.dependencies["@accelerate/authorization-angular"] = `file:${join(temporary, tarball)}`;
   writeFileSync(join(app, "package.json"), JSON.stringify(pkg, null, 2));
   run("npm", ["install", "--no-audit", "--no-fund"], app);
   const source = join(app, "src/app/app.component.ts");
