@@ -14,6 +14,14 @@ function setup(allowed: boolean, failAudit = false) {
   return { admin: new PostgresAuthorizationAdmin({ connect } as never, permissions, { authorize }), query, release, connect, authorize };
 }
 describe("PostgresAuthorizationAdmin", () => {
+  it("rejects malformed actor identities without invoking policy or database", async () => {
+    const { admin, authorize, connect } = setup(true);
+    const context = { actorId: 42 } as unknown as { actorId: string };
+    await expect(admin.assign(context, "user", "role")).rejects.toThrow("Authenticated actor is required");
+    await expect(admin.listAuditEvents(context)).rejects.toThrow("Forbidden");
+    expect(authorize).not.toHaveBeenCalled();
+    expect(connect).not.toHaveBeenCalled();
+  });
   it("denies mutations before opening a connection", async () => {
     const { admin, connect } = setup(false);
     await expect(admin.grant({ actorId: "actor" }, "r", "documents.read")).rejects.toThrow("Forbidden");
