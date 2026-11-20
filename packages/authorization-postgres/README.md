@@ -9,7 +9,7 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const store = new PostgresAuthorizationStore(pool);
 ```
 
-Apply `schema.sql` before using the adapter. The caller owns the pool lifecycle. The adapter uses parameterized queries and idempotent grants and assignments. Do not expose mutation methods directly to untrusted clients. This is a single-tenant baseline: tenant isolation, audit logging, migration versioning, and transactional administrative operations remain future work.
+Apply `schema.sql` before using the adapter. The caller owns the pool lifecycle. The adapter uses parameterized queries and idempotent grants and assignments. Do not expose mutation methods directly to untrusted clients. This remains a single-tenant baseline. Tenant isolation, migration versioning, and tamper-resistant external audit storage remain future work.
 
 ## Audited administrative operations
 
@@ -26,4 +26,14 @@ const admin = new PostgresAuthorizationAdmin(pool, permissions, {
 await admin.grant({ actorId: authenticatedActorId }, roleId, "documents.read");
 ```
 
-Administrative mutations and audit inserts share one PostgreSQL transaction. The lower-level `PostgresAuthorizationStore` still exposes unaudited mutation methods for compatibility; production administrative routes should use the audited service instead. This does not yet implement multi-tenant isolation, a separately scoped audit-read permission, or tamper-resistant external audit storage.
+Administrative mutations and audit inserts share one PostgreSQL transaction. The lower-level `PostgresAuthorizationStore` still exposes unaudited mutation methods for compatibility; production administrative routes should use the audited service instead. Audit history requires the independent `audit.read` policy action; granting `role.create` does not authorize audit reads. This does not yet implement multi-tenant isolation or tamper-resistant external audit storage.
+
+## Integration tests
+
+The `src/integration.test.ts` suite uses a real PostgreSQL database and creates a temporary schema for each run. It is skipped when `AUTHORIZATION_TEST_DATABASE_URL` is unset. The configured database user must have permission to create and drop schemas. Never point this test at a production database.
+
+```sh
+AUTHORIZATION_TEST_DATABASE_URL=postgresql://user:password@localhost:5432/testdb pnpm --filter @accelerate/authorization-postgres test
+```
+
+GitHub Actions runs the suite against an ephemeral PostgreSQL 16 service.
