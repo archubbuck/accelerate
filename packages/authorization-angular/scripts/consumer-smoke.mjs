@@ -14,8 +14,17 @@ try {
   const pkg = JSON.parse(readFileSync(join(app, "package.json"), "utf8"));
   // Install the actual npm tarball rather than a symlink to workspace output.
   const packed = execFileSync("npm", ["pack", "--json", "--pack-destination", temporary], { cwd: resolve(cwd, "dist"), encoding: "utf8" });
-  const tarball = JSON.parse(packed)[0]?.filename;
+  const archive = JSON.parse(packed)[0];
+  const tarball = archive?.filename;
   if (!tarball) throw new Error("npm pack did not return an Angular package tarball");
+  const manifest = JSON.parse(readFileSync(join(cwd, "dist/package.json"), "utf8"));
+  const exportedFiles = [manifest.exports?.["."]?.default, manifest.exports?.["."]?.types];
+  const packedFiles = new Set((archive.files ?? []).map(file => file.path));
+  for (const entry of exportedFiles) {
+    if (typeof entry !== "string" || !packedFiles.has(entry.replace(/^\\.\\//, ""))) {
+      throw new Error(`Angular package export missing from npm tarball: ${entry}`);
+    }
+  }
   pkg.dependencies["@accelerate/authorization-angular"] = `file:${join(temporary, tarball)}`;
   writeFileSync(join(app, "package.json"), JSON.stringify(pkg, null, 2));
   run("npm", ["install", "--no-audit", "--no-fund"], app);
