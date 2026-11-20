@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const dist = new URL("../dist/", import.meta.url);
 const file = (name) => new URL(name, dist);
@@ -25,4 +26,12 @@ for (const declaration of ["ɵɵngDeclareDirective", "ɵɵngDeclareInjectable", 
 }
 assert.ok(js.includes("AuthCanDirective"), "Missing AuthCanDirective export");
 assert.ok(js.includes("provideAuthorization"), "Missing provideAuthorization export");
-console.log("Angular APF package and partial Ivy declarations verified");
+const packed = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json"], {
+  cwd: fileURLToPath(dist),
+  encoding: "utf8"
+}))[0];
+const packedPaths = new Set((packed.files ?? []).map(item => item.path));
+for (const entry of [manifest.exports["."].default, manifest.exports["."].types]) {
+  assert.ok(packedPaths.has(entry.replace(/^\\.\\//, "")), `Angular npm archive excludes entrypoint: ${entry}`);
+}
+console.log("Angular APF package, npm archive contents, and partial Ivy declarations verified");
