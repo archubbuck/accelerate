@@ -20,7 +20,7 @@ export function AuthorizationProvider({ client, children }: { client: Authorizat
     try {
       const snapshot = await client.load();
       if (request !== generation.current) return;
-      if (!snapshot || typeof snapshot.userId !== "string" || !Array.isArray(snapshot.roles) || !Array.isArray(snapshot.permissions)) {
+      if (!snapshot || typeof snapshot.userId !== "string" || !snapshot.userId.trim() || !Array.isArray(snapshot.roles) || !snapshot.roles.every((r: unknown) => typeof r === "string") || !Array.isArray(snapshot.permissions) || !snapshot.permissions.every((p: unknown) => typeof p === "string")) {
         throw new Error("Invalid authorization snapshot");
       }
       setState({ status: "ready", userId: snapshot.userId, permissions: [...snapshot.permissions], roles: [...snapshot.roles] });
