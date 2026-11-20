@@ -30,14 +30,22 @@ jobs:
       - name: Verify publish contents
         run: |
           for pkg in packages/*; do
-            (cd "$pkg" && npm pack --dry-run)
+            if [ "$pkg" = "packages/authorization-angular" ]; then
+              (cd "$pkg/dist" && npm pack --dry-run)
+            else
+              (cd "$pkg" && npm pack --dry-run)
+            fi
           done
       - name: Publish unpublished package versions with npm OIDC
         run: |
           set -euo pipefail
 
           for pkg in authorization-core authorization-angular authorization-react authorization-postgres; do
-            cd "$GITHUB_WORKSPACE/packages/$pkg"
+            if [ "$pkg" = "authorization-angular" ]; then
+              cd "$GITHUB_WORKSPACE/packages/$pkg/dist"
+            else
+              cd "$GITHUB_WORKSPACE/packages/$pkg"
+            fi
 
             name=$(node -p "require('./package.json').name")
             version=$(node -p "require('./package.json').version")
