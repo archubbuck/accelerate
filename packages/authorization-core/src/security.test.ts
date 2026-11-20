@@ -5,6 +5,7 @@ describe("authorization security invariants", () => {
   it("rejects whitespace-only catalog names", () => {
     expect(() => definePermissions({ " ": { read: "Read" } })).toThrow("Invalid permission resource");
     expect(() => definePermissions({ documents: { " ": "Read" } })).toThrow("Invalid permission action");
+    expect(() => definePermissions({ documents: { read: null as unknown as string } })).toThrow("Permission description required");
   });
 
   it("rejects unregistered revocations before invoking the store", async () => {
