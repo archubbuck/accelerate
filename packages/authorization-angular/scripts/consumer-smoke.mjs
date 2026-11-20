@@ -21,7 +21,7 @@ try {
   const exportedFiles = [manifest.exports?.["."]?.default, manifest.exports?.["."]?.types];
   const packedFiles = new Set((archive.files ?? []).map(file => file.path));
   for (const entry of exportedFiles) {
-    if (typeof entry !== "string" || !packedFiles.has(entry.replace(/^\\.\\//, ""))) {
+    if (typeof entry !== "string" || !packedFiles.has(entry.startsWith("./") ? entry.slice(2) : entry)) {
       throw new Error(`Angular package export missing from npm tarball: ${entry}`);
     }
   }
