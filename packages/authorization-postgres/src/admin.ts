@@ -43,7 +43,7 @@ export class PostgresAuthorizationAdmin {
     details: Record<string, string | boolean>,
     apply: (client: PoolClient) => Promise<void>
   ): Promise<void> {
-    if (!context.actorId?.trim()) throw new Error("Authenticated actor is required");
+    if (!context || typeof context.actorId !== "string" || !context.actorId.trim()) throw new Error("Authenticated actor is required");
     if (!await this.policy.authorize(context, action)) throw new Error("Forbidden");
     const client = await this.pool.connect();
     try {
@@ -113,7 +113,7 @@ export class PostgresAuthorizationAdmin {
   }
 
   async listAuditEvents(context: AdminContext, limit = 100): Promise<readonly AuditEvent[]> {
-    if (!context.actorId?.trim() || !await this.policy.authorize(context, "audit.read"))
+    if (!context || typeof context.actorId !== "string" || !context.actorId.trim() || !await this.policy.authorize(context, "audit.read"))
       throw new Error("Forbidden");
     if (!Number.isFinite(limit)) throw new Error("Invalid audit limit");
     const size = Math.max(1, Math.min(500, Math.trunc(limit) || 100));
