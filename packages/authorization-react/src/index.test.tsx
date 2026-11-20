@@ -44,6 +44,11 @@ describe("React authorization provider", () => {
     await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("error"));
     expect(screen.getByText("Denied")).toBeTruthy();
   });
+  it("rejects whitespace-only role and permission identifiers", async () => {
+    mount({ load: async () => ({ userId: "user", roles: [" "], permissions: ["documents.read"] }) });
+    await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("error"));
+    expect(screen.getByText("Denied")).toBeTruthy();
+  });
   it("ignores stale results after reset", async () => {
     const pending = deferred<AuthorizationSnapshot>();
     mount({ load: () => pending.promise });
