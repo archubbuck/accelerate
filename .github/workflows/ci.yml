@@ -13,7 +13,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
+          package-manager-cache: false
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm build
+      - run: pnpm typecheck
       - run: pnpm test
+      - name: Verify Angular package contents
+        run: |
+          test -f packages/authorization-angular/dist/package.json
+          test -d packages/authorization-angular/dist/fesm2022
+          (cd packages/authorization-angular/dist && npm pack --dry-run)
