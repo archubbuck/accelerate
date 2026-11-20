@@ -39,6 +39,21 @@ suite("PostgreSQL end-to-end authorization", () => {
     await auth.admin.revoke("reader", "documents.read");
     expect(await auth.can("user", "documents.read")).toBe(false);
   });
+  it("rolls back administrative changes when audit insertion fails", async () => {
+    const admin = new PostgresAuthorizationAdmin(pool, permissions, { authorize: async () => true });
+    await pool.query(`CREATE OR REPLACE FUNCTION "${schema}".reject_audit() RETURNS trigger LANGUAGE plpgsql AS $ BEGIN RAISE EXCEPTION 'Audit write rejected'; END; $`);
+    await pool.query("CREATE TRIGGER reject_audit BEFORE INSERT ON authorization_audit_events FOR EACH ROW EXECUTE FUNCTION reject_audit()");
+    try {
+      await expect(admin.createRole({ actorId: "operator" }, {
+        id: "rolled-back", key: "rolled-back", name: "Rolled back", active: true
+      })).rejects.toThrow("Audit write rejected");
+      const result = await pool.query("SELECT id FROM authorization_roles WHERE id = $1", ["rolled-back"]);
+      expect(result.rows).toHaveLength(0);
+    } finally {
+      await pool.query("DROP TRIGGER reject_audit ON authorization_audit_events");
+      await pool.query(`DROP FUNCTION "${schema}".reject_audit()`);
+    }
+  });
   it("records audited mutations and enforces separate audit.read policy", async () => {
     const store = new PostgresAuthorizationStore(pool);
     await store.createRole({ id: "editor", key: "editor", name: "Editor", active: true });
