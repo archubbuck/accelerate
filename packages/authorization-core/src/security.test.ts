@@ -2,6 +2,13 @@ import { describe, expect, it, vi } from "vitest";
 import { createAuthorization, definePermissions, MemoryAuthorizationStore } from "./index.js";
 
 describe("authorization security invariants", () => {
+  it("rejects invalid catalog and action structures", () => {
+    expect(() => definePermissions(null as never)).toThrow("Invalid permission catalog");
+    expect(() => definePermissions([] as never)).toThrow("Invalid permission catalog");
+    expect(() => definePermissions({ documents: null } as never)).toThrow("Invalid permission actions");
+    expect(() => definePermissions({ documents: [] } as never)).toThrow("Invalid permission actions");
+  });
+
   it("rejects whitespace-only catalog names", () => {
     expect(() => definePermissions({ " ": { read: "Read" } })).toThrow("Invalid permission resource");
     expect(() => definePermissions({ documents: { " ": "Read" } })).toThrow("Invalid permission action");
