@@ -41,7 +41,7 @@ suite("PostgreSQL end-to-end authorization", () => {
   });
   it("rolls back administrative changes when audit insertion fails", async () => {
     const admin = new PostgresAuthorizationAdmin(pool, permissions, { authorize: async () => true });
-    await pool.query(`CREATE OR REPLACE FUNCTION "${schema}".reject_audit() RETURNS trigger LANGUAGE plpgsql AS $ BEGIN RAISE EXCEPTION 'Audit write rejected'; END; $`);
+    await pool.query(`CREATE OR REPLACE FUNCTION "${schema}".reject_audit() RETURNS trigger LANGUAGE plpgsql AS $audit$ BEGIN RAISE EXCEPTION 'Audit write rejected'; END; $audit$`);
     await pool.query("CREATE TRIGGER reject_audit BEFORE INSERT ON authorization_audit_events FOR EACH ROW EXECUTE FUNCTION reject_audit()");
     try {
       await expect(admin.createRole({ actorId: "operator" }, {
