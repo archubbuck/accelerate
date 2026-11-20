@@ -48,7 +48,7 @@ export function createAuthorization<K extends string>(options: { permissions: Pe
   return {
     evaluate,
     can: async (userId: string, permission: K) => (await evaluate(userId, permission)).allowed,
-    canAll: async (userId: string, permissions: readonly K[]) => (await Promise.all(permissions.map(p => evaluate(userId, p)))).every(r => r.allowed),
+    canAll: async (userId: string, permissions: readonly K[]) => permissions.length > 0 && (await Promise.all(permissions.map(p => evaluate(userId, p)))).every(r => r.allowed),
     canAny: async (userId: string, permissions: readonly K[]) => (await Promise.all(permissions.map(p => evaluate(userId, p)))).some(r => r.allowed),
     admin: {
       createRole: (role: Role) => options.store.createRole(role),
