@@ -39,6 +39,22 @@ suite("PostgreSQL end-to-end authorization", () => {
     await auth.admin.revoke("reader", "documents.read");
     expect(await auth.can("user", "documents.read")).toBe(false);
   });
+  it("revokes access when an assigned role is deactivated", async () => {
+    const store = new PostgresAuthorizationStore(pool);
+    const auth = createAuthorization({ permissions, store });
+    const admin = new PostgresAuthorizationAdmin(pool, permissions, { authorize: async () => true });
+    await admin.createRole({ actorId: "operator" }, { id: "temporary", key: "temporary", name: "Temporary", active: true });
+    await admin.grant({ actorId: "operator" }, "temporary", "documents.read");
+    await admin.assign({ actorId: "operator" }, "temporary-user", "temporary");
+    expect(await auth.can("temporary-user", "documents.read")).toBe(true);
+    await admin.setRoleActive({ actorId: "operator" }, "temporary", false);
+    expect(await auth.can("temporary-user", "documents.read")).toBe(false);
+    await admin.setRoleActive({ actorId: "operator" }, "temporary", true);
+    expect(await auth.can("temporary-user", "documents.read")).toBe(true);
+    await admin.unassign({ actorId: "operator" }, "temporary-user", "temporary");
+    expect(await auth.can("temporary-user", "documents.read")).toBe(false);
+  });
+
   it("rolls back administrative changes when audit insertion fails", async () => {
     const admin = new PostgresAuthorizationAdmin(pool, permissions, { authorize: async () => true });
     await pool.query(`CREATE OR REPLACE FUNCTION "${schema}".reject_audit() RETURNS trigger LANGUAGE plpgsql AS $audit$ BEGIN RAISE EXCEPTION 'Audit write rejected'; END; $audit$`);
