@@ -8,9 +8,9 @@ export interface PermissionRegistry<K extends string = string> {
 export function definePermissions<const T extends PermissionCatalog>(catalog: T): PermissionRegistry<CatalogKeys<T>> {
   const descriptions: Record<string, string> = Object.create(null);
   for (const [resource, actions] of Object.entries(catalog)) {
-    if (!resource || resource.includes(".")) throw new Error("Invalid permission resource");
+    if (!resource.trim() || resource.includes(".")) throw new Error("Invalid permission resource");
     for (const [action, description] of Object.entries(actions)) {
-      if (!action || action.includes(".")) throw new Error("Invalid permission action");
+      if (!action.trim() || action.includes(".")) throw new Error("Invalid permission action");
       if (!description.trim()) throw new Error("Permission description required");
       descriptions[`${resource}.${action}`] = description;
     }
@@ -56,7 +56,10 @@ export function createAuthorization<K extends string>(options: { permissions: Pe
         if (!known.has(permission)) throw new Error("Unregistered permission");
         return options.store.grant(roleId, permission);
       },
-      revoke: (roleId: string, permission: K) => options.store.revoke(roleId, permission),
+      revoke: (roleId: string, permission: K) => {
+        if (!known.has(permission)) throw new Error("Unregistered permission");
+        return options.store.revoke(roleId, permission);
+      },
       assignRole: (userId: string, roleId: string) => options.store.assign(userId, roleId),
       removeRole: (userId: string, roleId: string) => options.store.unassign(userId, roleId)
     }
