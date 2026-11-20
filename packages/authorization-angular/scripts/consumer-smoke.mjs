@@ -31,6 +31,7 @@ export class AppComponent {
 `);
   const configFile = join(app, "src/app/app.config.ts");
   const originalConfig = readFileSync(configFile, "utf8");
+  if (!originalConfig.includes("providers: [")) throw new Error("Angular application config shape changed");
   writeFileSync(configFile, `import { provideAuthorization } from '@accelerate/authorization-angular';\n${originalConfig.replace("providers: [", "providers: [provideAuthorization({ loader: async () => ({ userId: 'demo', roles: ['reader'], permissions: ['documents.read'] }) }), ")}`);
   run("npm", ["run", "build", "--", "--configuration", "production"], app);
   console.log("Angular consumer production build succeeded");
