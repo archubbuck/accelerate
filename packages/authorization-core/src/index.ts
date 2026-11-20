@@ -69,6 +69,10 @@ export class MemoryAuthorizationStore implements AuthorizationStore {
   private grants = new Map<string, Set<string>>();
   private assignments = new Map<string, Set<string>>();
   async createRole(role: Role) {
+    if (!role || typeof role.id !== "string" || !role.id.trim() ||
+        typeof role.key !== "string" || !role.key.trim() ||
+        typeof role.name !== "string" || !role.name.trim() ||
+        typeof role.active !== "boolean") throw new Error("Invalid role");
     if (this.roles.has(role.id) || [...this.roles.values()].some(r => r.key === role.key)) throw new Error("Duplicate role");
     this.roles.set(role.id, { ...role });
   }
