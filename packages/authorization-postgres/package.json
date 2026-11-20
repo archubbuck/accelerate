@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/authorization-postgres",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
@@ -21,7 +21,7 @@
     "admin.sql"
   ],
   "peerDependencies": {
-    "@accelerate/authorization-core": "^0.1.1",
+    "@accelerate/authorization-core": "^0.1.2",
     "pg": "^8.11.0"
   },
   "devDependencies": {
