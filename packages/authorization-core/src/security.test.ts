@@ -8,6 +8,13 @@ describe("authorization security invariants", () => {
     expect(() => definePermissions({ documents: { read: null as unknown as string } })).toThrow("Permission description required");
   });
 
+  it("rejects malformed roles without persisting them", async () => {
+    const store = new MemoryAuthorizationStore();
+    await expect(store.createRole({ id: " ", key: "reader", name: "Reader", active: true })).rejects.toThrow("Invalid role");
+    await expect(store.createRole({ id: "r", key: "reader", name: "Reader", active: "yes" as unknown as boolean })).rejects.toThrow("Invalid role");
+    expect(await store.getRole("r")).toBeUndefined();
+  });
+
   it("rejects unregistered revocations before invoking the store", async () => {
     const permissions = definePermissions({ documents: { read: "Read" } });
     const store = new MemoryAuthorizationStore();
