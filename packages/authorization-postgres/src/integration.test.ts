@@ -39,6 +39,15 @@ suite("PostgreSQL end-to-end authorization", () => {
     await auth.admin.revoke("reader", "documents.read");
     expect(await auth.can("user", "documents.read")).toBe(false);
   });
+  it("returns assigned roles in deterministic key order", async () => {
+    const store = new PostgresAuthorizationStore(pool);
+    await store.createRole({ id: "z-role", key: "zulu", name: "Zulu", active: true });
+    await store.createRole({ id: "a-role", key: "alpha", name: "Alpha", active: true });
+    await store.assign("ordered-user", "z-role");
+    await store.assign("ordered-user", "a-role");
+    expect((await store.getRolesForUser("ordered-user")).map(role => role.key)).toEqual(["alpha", "zulu"]);
+  });
+
   it("revokes access when an assigned role is deactivated", async () => {
     const store = new PostgresAuthorizationStore(pool);
     const auth = createAuthorization({ permissions, store });
