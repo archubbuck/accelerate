@@ -23,3 +23,5 @@ jobs:
           test -f packages/authorization-angular/dist/package.json
           test -d packages/authorization-angular/dist/fesm2022
           (cd packages/authorization-angular/dist && npm pack --dry-run)
+      - name: Angular consumer production build
+        run: pnpm --filter @accelerate/authorization-angular test:consumer
