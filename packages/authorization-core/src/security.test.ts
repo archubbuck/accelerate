@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { createAuthorization, definePermissions, MemoryAuthorizationStore } from "./index.js";
 
 describe("authorization security invariants", () => {
@@ -13,6 +13,27 @@ describe("authorization security invariants", () => {
     const store = new MemoryAuthorizationStore();
     const authorization = createAuthorization({ permissions, store });
     expect(() => authorization.admin.revoke("role", "documents.write" as "documents.read")).toThrow("Unregistered permission");
+  });
+
+  it("evaluates active role grants concurrently while preserving matched role order", async () => {
+    const permissions = definePermissions({ documents: { read: "Read" } });
+    const store = new MemoryAuthorizationStore();
+    await store.createRole({ id: "a", key: "first", name: "First", active: true });
+    await store.createRole({ id: "b", key: "second", name: "Second", active: true });
+    await store.grant("a", "documents.read");
+    await store.grant("b", "documents.read");
+    await store.assign("user", "a");
+    await store.assign("user", "b");
+    const pending = new Map<string, (keys: string[]) => void>();
+    const original = store.getPermissionKeysForRole.bind(store);
+    const spy = vi.spyOn(store, "getPermissionKeysForRole").mockImplementation(id =>
+      new Promise(resolve => pending.set(id, resolve))
+    );
+    const evaluation = createAuthorization({ permissions, store }).evaluate("user", "documents.read");
+    await vi.waitFor(() => expect(spy).toHaveBeenCalledTimes(2));
+    pending.get("b")!(await original("b"));
+    pending.get("a")!(await original("a"));
+    expect((await evaluation).matchedRoles).toEqual(["first", "second"]);
   });
 
   it("fails closed for inactive roles and unknown permissions", async () => {
