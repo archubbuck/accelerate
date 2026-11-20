@@ -18,7 +18,8 @@ function Controls() {
     createElement("span", { "data-testid": "status" }, auth.status),
     createElement("button", { onClick: () => auth.reset() }, "Reset"),
     createElement("button", { onClick: () => { void auth.refresh().catch(() => undefined); } }, "Refresh"),
-    createElement(Can, { permission: "documents.read", fallback: createElement("span", null, "Denied") }, "Allowed")
+    createElement(Can, { permission: "documents.read", fallback: createElement("span", null, "Denied") }, "Allowed"),
+    createElement(Can, { allOf: [], fallback: createElement("span", null, "All denied") }, "All allowed")
   );
 }
 function mount(client: AuthorizationClient) {
@@ -29,11 +30,14 @@ describe("React authorization provider", () => {
     const pending = deferred<AuthorizationSnapshot>();
     mount({ load: () => pending.promise });
     expect(screen.getByText("Denied")).toBeTruthy();
+    expect(screen.getByText("All denied")).toBeTruthy();
     await act(async () => pending.resolve(snapshot(["documents.read"])));
     expect(screen.getByText("Allowed")).toBeTruthy();
+    expect(screen.getByText("All allowed")).toBeTruthy();
     await act(async () => screen.getByText("Reset").click());
     expect(screen.getByText("Denied")).toBeTruthy();
     expect(screen.getByTestId("status").textContent).toBe("idle");
+    expect(screen.getByText("All denied")).toBeTruthy();
   });
   it("fails closed on malformed snapshots", async () => {
     mount({ load: vi.fn(async () => ({ userId: "user", roles: ["reader"], permissions: [null] } as unknown as AuthorizationSnapshot)) });
