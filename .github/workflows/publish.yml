@@ -7,6 +7,22 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: authorization
+          POSTGRES_PASSWORD: authorization_test
+          POSTGRES_DB: authorization_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U authorization -d authorization_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      AUTHORIZATION_TEST_DATABASE_URL: postgresql://authorization:authorization_test@localhost:5432/authorization_test
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
