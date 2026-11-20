@@ -23,6 +23,7 @@ describe("authorization security invariants", () => {
     await store.assign("user", "r");
     const authorization = createAuthorization({ permissions, store });
     expect(await authorization.can("user", "documents.read")).toBe(false);
+    expect(await authorization.canAll("user", [])).toBe(false);
     expect((await authorization.evaluate("user", "documents.unknown" as "documents.read")).reason).toBe("PERMISSION_UNKNOWN");
   });
 });
