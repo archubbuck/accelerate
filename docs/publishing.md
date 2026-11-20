@@ -45,3 +45,11 @@ If packages already exist on npm, skip the bootstrap job and configure trusted p
 - All four packages currently publish in a fixed order. A package version already on npm will cause the regular release job to fail; increment versions before releasing.
 - The publishing workflow does not use an npm token. Keep token-based bootstrap strictly one-time.
 - Do not run the publish workflow until CI builds and tests have been verified. Production deployment also requires stronger security review, tenant isolation where relevant, and integration testing.
+
+## v0.1.1 OIDC validation release (November 2026)
+
+All four packages have been bootstrapped at `0.1.0`; the repository now prepares `0.1.1` for each. PostgreSQL's peer dependency on authorization-core is updated to `^0.1.1`.
+
+**Before dispatch:** Confirm that every package has a trusted publisher configured for `archubbuck/devkit` and `publish.yml` with the **direct `npm publish` action enabled**. npm's default `npm stage publish` permission alone does **not** authorize this workflow's `npm publish --access public` command. The screenshot of authorization-core previously showed only `npm stage publish`; edit/recreate that trusted-publisher configuration to enable direct publishing, and check the other three.
+
+Run the `Publish npm packages` workflow from the main branch. It will skip already-existing versions and publish missing `0.1.1` versions using OIDC. Confirm the GitHub Actions result and npm trusted publisher validation for each package. Do not revoke the bootstrap token or remove the bootstrap workflow until the OIDC release has been verified. Then revoke the npm token, delete the `NPM_TOKEN` GitHub secret, and remove the bootstrap workflow.
