@@ -43,4 +43,4 @@ const decision = await auth.evaluate("user-123", "documents.edit");
 
 **Security:** enforce permissions on the server for protected operations. Client-side visibility is not an authorization boundary. The core `admin` methods are low-level store operations; authenticate and authorize administrative callers before exposing them.
 
-[Source and issues](https://github.com/archubbuck/devkit)
+[Source and issues](https://github.com/archubbuck/accelerate)
