@@ -1,0 +1,29 @@
+name: Published npm logging demos
+on:
+  workflow_dispatch:
+jobs:
+  consumers:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [logging-demo-node, logging-demo-api, logging-demo-react, logging-demo-angular, logging-demo-otel]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install published npm dependencies
+        working-directory: apps/${{ matrix.app }}
+        run: npm install --no-audit --no-fund --registry=https://registry.npmjs.org
+      - name: Verify npm isolation
+        working-directory: apps/${{ matrix.app }}
+        run: npm run verify:npm
+      - name: Build or execute consumer
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          case "${{ matrix.app }}" in
+            logging-demo-angular|logging-demo-react) npm run build ;;
+            logging-demo-node|logging-demo-otel) npm start ;;
+            logging-demo-api) node --check index.mjs ;;
+          esac
