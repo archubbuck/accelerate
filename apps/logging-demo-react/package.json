@@ -1,0 +1,22 @@
+{
+  "name": "logging-demo-react",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "verify:npm": "node verify.mjs"
+  },
+  "dependencies": {
+    "@accelerate/logging-core": "0.1.0",
+    "@accelerate/logging-react": "0.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "typescript": "~5.8.3",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5"
+  }
+}
