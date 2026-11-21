@@ -65,4 +65,4 @@ Checks deny access until a valid snapshot is ready; `canAll([])` returns false. 
 
 **Security:** this package controls UI presentation only. Your backend must authorize every protected request.
 
-[Source and issues](https://github.com/archubbuck/devkit)
+[Source and issues](https://github.com/archubbuck/accelerate)
