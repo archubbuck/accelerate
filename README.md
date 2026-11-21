@@ -20,3 +20,9 @@ pnpm test
 ```
 
 The memory adapter is intended for development and tests. Backend enforcement is required for protected operations; client-side checks only control presentation.
+
+## AccessLab demo applications
+
+The [AccessLab demo suite](apps/README.md) contains a Fastify API, React app, and Angular app. Each application installs the **published npm packages** independently rather than linking to monorepo source. The API demonstrates PostgreSQL-backed authorization, protected document operations, audited role administration, and demo identity switching.
+
+Run the applications from `apps/demo-api`, `apps/demo-react`, and `apps/demo-angular` following the [setup instructions](apps/README.md). Published-package compatibility is checked in `.github/workflows/demo-ci.yml`.
