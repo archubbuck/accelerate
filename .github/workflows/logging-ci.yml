@@ -3,12 +3,14 @@ on:
   push:
     paths:
       - 'packages/logging-*/**'
+      - '.npmrc'
       - 'docs/logging.md'
       - '.github/workflows/logging-ci.yml'
   pull_request:
     paths:
       - 'packages/logging-*/**'
       - '.github/workflows/logging-ci.yml'
+      - '.npmrc'
   workflow_dispatch:
 jobs:
   packages:
