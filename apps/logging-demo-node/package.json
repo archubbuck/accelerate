@@ -1,0 +1,13 @@
+{
+  "name": "logging-demo-node",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs",
+    "verify:npm": "node verify.mjs"
+  },
+  "dependencies": {
+    "@accelerate/logging-core": "0.1.0",
+    "@accelerate/logging-node": "0.1.0"
+  }
+}
