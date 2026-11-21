@@ -1,12 +1,12 @@
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 import { Pool } from "pg";
 import { grants, people } from "./permissions.js";
 export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 export async function initialize() {
   // Resolve migrations from the installed npm distribution, never repository source.
-  const entry = fileURLToPath(import.meta.resolve("@accelerate/authorization-postgres"));
+  const entry = createRequire(import.meta.url).resolve("@accelerate/authorization-postgres");
   const packageRoot = resolve(dirname(entry), "..");
   for (const name of ["schema.sql", "admin.sql"]) {
     await pool.query(await readFile(resolve(packageRoot, name), "utf8"));
