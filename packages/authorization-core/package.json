@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/archubbuck/devkit.git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
     "directory": "packages/authorization-core"
   },
   "publishConfig": {
