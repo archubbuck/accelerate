@@ -58,8 +58,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          for pkg in authorization-core authorization-angular authorization-react authorization-postgres; do
-            if [ "$pkg" = "authorization-angular" ]; then
+          for pkg in authorization-core authorization-angular authorization-react authorization-postgres logging-core logging-node logging-react logging-otel logging-angular; do
+            if [ "$pkg" = "authorization-angular" ] || [ "$pkg" = "logging-angular" ]; then
               cd "$GITHUB_WORKSPACE/packages/$pkg/dist"
             else
               cd "$GITHUB_WORKSPACE/packages/$pkg"
