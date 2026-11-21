@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://accelerate-demo-api-accelerate-dabb0854.vercel.app/api/:path*"
+    }
+  ]
+}
