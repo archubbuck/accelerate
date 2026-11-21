@@ -11,5 +11,5 @@ export function createNodeLogger(options: LoggerOptions) {
   return createLogger({ ...options, getContext: () => ({ ...currentLogContext(), ...options.getContext?.() }) });
 }
 export function createStreamTransport(stream: Pick<Writable, "write">): LogTransport {
-  return { write: entry => { stream.write(JSON.stringify(entry) + "\\n"); } };
+  return { write: entry => { stream.write(JSON.stringify(entry) + "\n"); } };
 }
