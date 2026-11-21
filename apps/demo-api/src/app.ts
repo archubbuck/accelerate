@@ -52,7 +52,7 @@ export async function buildApp() {
   app.get("/api/authorization/me", async req => {
     const userId = user(req);
     const roles = await new PostgresAuthorizationStore(pool).getRolesForUser(userId);
-    const permissions = (await Promise.all(registry.keys.map(async key => (await auth.can(userId, key)) ? key : null))).filter((key): key is string => key !== null);
+    const permissions = (await Promise.all(registry.keys.map(async key => (await auth.can(userId, key)) ? key : null))).filter((key): key is NonNullable<typeof key> => key !== null);
     return { userId, roles: roles.filter(role => role.active).map(role => role.key), permissions };
   });
   app.get("/api/authorization/permissions", async () => registry.descriptions);
@@ -129,8 +129,8 @@ export async function buildApp() {
   });
   app.get("/api/admin/audit", async req => admin.listAuditEvents({ actorId: user(req) }));
   app.setErrorHandler((error, _req, reply) => {
-    if (error.message === "Forbidden") return reply.code(403).send({ error: "Forbidden" });
-    if (error.message === "Unregistered permission") return reply.code(400).send({ error: error.message });
+    if (error instanceof Error && error.message === "Forbidden") return reply.code(403).send({ error: "Forbidden" });
+    if (error instanceof Error && error.message === "Unregistered permission") return reply.code(400).send({ error: error instanceof Error ? error.message : "Invalid request" });
     app.log.error(error);
     return reply.code(500).send({ error: "Internal server error" });
   });
