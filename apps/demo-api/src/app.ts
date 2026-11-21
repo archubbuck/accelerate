@@ -9,7 +9,8 @@ import { pool } from "./db.js";
 import { people, registry } from "./permissions.js";
 
 const auth = createAuthorization({ permissions: registry, store: new PostgresAuthorizationStore(pool) });
-const allowedActions: Record<AdminAction, string> = {
+type Permission = (typeof registry.keys)[number];
+const allowedActions: Record<AdminAction, Permission> = {
   "role.create": "administration.manage", "role.activate": "administration.manage",
   "role.deactivate": "administration.manage", "permission.grant": "administration.manage",
   "permission.revoke": "administration.manage", "role.assign": "administration.manage",
@@ -44,7 +45,7 @@ export async function buildApp() {
     if (!identity(req)) return reply.code(401).send({ error: "Choose a demo identity first" });
   });
   const user = (req: Parameters<typeof identity>[0]) => identity(req)!;
-  async function requirePermission(req: Parameters<typeof identity>[0], reply: { code: (status: number) => { send: (body: object) => unknown } }, permission: string) {
+  async function requirePermission(req: Parameters<typeof identity>[0], reply: { code: (status: number) => { send: (body: object) => unknown } }, permission: Permission) {
     if (!await auth.can(user(req), permission)) { reply.code(403).send({ error: "Forbidden", permission }); return false; }
     return true;
   }
@@ -57,7 +58,7 @@ export async function buildApp() {
   app.get("/api/authorization/permissions", async () => registry.descriptions);
   app.post<{ Body: { permission?: string } }>("/api/authorization/evaluate", async (req, reply) => {
     if (typeof req.body?.permission !== "string") return reply.code(400).send({ error: "permission required" });
-    return auth.evaluate(user(req), req.body.permission);
+    return auth.evaluate(user(req), req.body.permission as Permission);
   });
   app.get("/api/documents", async (req, reply) => {
     if (!await requirePermission(req, reply, "documents.read")) return;
