@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "verify:npm": "node scripts/verify-npm.mjs"
   },
   "dependencies": {
     "@accelerate/authorization-react": "0.1.3",
