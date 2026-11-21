@@ -26,6 +26,7 @@ export function App() {
   useEffect(() => { if (auth.status !== "ready") { setDocuments([]); setAdmin(null); return; } void reload(); }, [auth.status, auth.userId, auth.permissions.join(",")]);
   async function reload() {
     try {
+      setCatalog(await api("/authorization/permissions"));
       if (auth.can("documents.read")) setDocuments(await api("/documents"));
       if (auth.can("administration.manage")) setAdmin(await api("/admin/roles"));
       if (auth.can("administration.audit")) setAudit(await api("/admin/audit"));
