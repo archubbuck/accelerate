@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { firstValueFrom } from "rxjs";
 import { AuthCanDirective, AuthorizationService } from "@accelerate/authorization-angular";
 type Person = { id: string; name: string; role: string };
@@ -34,14 +34,22 @@ export class AppComponent implements OnInit {
   can(permission: string) { return this.auth.status() === "ready" && this.auth.permissions().includes(permission); }
   private request<T>(path: string, method = "GET", body?: unknown) { return firstValueFrom(this.http.request<T>(method, "/api"+path, { body, withCredentials: true })); }
   async ngOnInit() {
-    try { this.users.set(await this.request<Person[]>("/demo/users")); } catch(e) { this.message.set(String(e)); }
-    // Permission descriptions require a selected identity.
-    try { await this.auth.refresh(); await this.reload(); } catch { /* no session yet */ }
+    // Anonymous visitors should not trigger an expected 401 or show an error state.
+    this.auth.reset();
+    try { this.users.set(await this.request<Person[]>("/demo/users")); }
+    catch (e) { this.message.set(this.errorMessage(e)); }
+  }
+  private errorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const detail = error.error && typeof error.error === "object" && typeof error.error.error === "string" ? error.error.error : error.message;
+      return `Request failed (${error.status}): ${detail}`;
+    }
+    return error instanceof Error ? error.message : String(error);
   }
   async switchUser(userId: string) {
     if (!userId) return;
     try { await this.request("/demo/session","POST",{userId}); await this.auth.refresh(); await this.reload(); this.message.set(""); }
-    catch(e) { this.message.set(String(e)); }
+    catch(e) { this.message.set(this.errorMessage(e)); }
   }
   async reload() {
     try {
@@ -49,11 +57,11 @@ export class AppComponent implements OnInit {
       this.documents.set(this.can("documents.read") ? await this.request<Document[]>("/documents") : []);
       this.admin.set(this.can("administration.manage") ? await this.request<Admin>("/admin/roles") : null);
       this.audit.set(this.can("administration.audit") ? await this.request<unknown[]>("/admin/audit") : []);
-    } catch(e) { this.message.set(String(e)); }
+    } catch(e) { this.message.set(this.errorMessage(e)); }
   }
   async perform(path: string, method: string, body?: unknown) {
     try { await this.request(path,method,body); await this.auth.refresh(); await this.reload(); this.message.set("Operation completed"); }
-    catch(e) { this.message.set(String(e)); }
+    catch(e) { this.message.set(this.errorMessage(e)); }
   }
   create() { const title=prompt("Document title"); if(title)void this.perform("/documents","POST",{title}); }
   edit(doc: Document) { const title=prompt("Rename document",doc.title); if(title)void this.perform("/documents/"+doc.id,"PATCH",{title,body:doc.body}); }
@@ -62,5 +70,5 @@ export class AppComponent implements OnInit {
   revoke(id: string) { const permission=prompt("Permission to revoke"); if(permission)void this.perform("/admin/roles/"+id+"/permissions/"+encodeURIComponent(permission),"DELETE"); }
   assign(id: string) { const roleId=prompt("Role ID to assign"); if(roleId)void this.perform("/admin/users/"+id+"/roles","POST",{roleId}); }
   unassign(id: string) { const roleId=prompt("Role ID to remove"); if(roleId)void this.perform("/admin/users/"+id+"/roles/"+encodeURIComponent(roleId),"DELETE"); }
-  async evaluate(permission: string) { try { this.decision.set(await this.request("/authorization/evaluate","POST",{permission})); } catch(e) { this.message.set(String(e)); } }
+  async evaluate(permission: string) { try { this.decision.set(await this.request("/authorization/evaluate","POST",{permission})); } catch(e) { this.message.set(this.errorMessage(e)); } }
 }
