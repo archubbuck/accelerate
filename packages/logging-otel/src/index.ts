@@ -11,7 +11,7 @@ export function createOtelTransport(options: { instrumentationName?: string; log
   return { write(entry: LogEntry) {
     logger.emit({ severityNumber: severity[entry.level], severityText: entry.level.toUpperCase(), body: entry.message,
       attributes: { service: entry.service, ...(entry.environment ? { environment: entry.environment } : {}), ...flatten(entry.context) },
-      timestamp: new Date(entry.timestamp) });
+      timestamp: Date.parse(entry.timestamp) });
   } };
 }
 function flatten(fields: Record<string, unknown>): Record<string, string | number | boolean> {
