@@ -1,0 +1,58 @@
+name: Published npm demos
+on:
+  push:
+    paths:
+      - 'apps/**'
+      - '.github/workflows/demo-ci.yml'
+  pull_request:
+    paths:
+      - 'apps/**'
+      - '.github/workflows/demo-ci.yml'
+  workflow_dispatch:
+jobs:
+  consumers:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [demo-api, demo-react, demo-angular]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install from published npm registry
+        working-directory: apps/${{ matrix.app }}
+        run: npm install --no-package-lock --no-audit --no-fund --registry=https://registry.npmjs.org
+      - name: Verify published package resolution
+        working-directory: apps/${{ matrix.app }}
+        run: npm run verify:npm
+      - name: Typecheck or production build
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          if [ "${{ matrix.app }}" = "demo-api" ]; then npm run typecheck; else npm run build; fi
+  api-integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: authorization
+          POSTGRES_PASSWORD: authorization_test
+          POSTGRES_DB: authorization_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U authorization -d authorization_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://authorization:authorization_test@localhost:5432/authorization_test
+      DEMO_SESSION_SECRET: ci-only-session-secret-at-least-32-characters
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - working-directory: apps/demo-api
+        run: npm install --no-package-lock --no-audit --no-fund --registry=https://registry.npmjs.org
+      - working-directory: apps/demo-api
+        run: npm run test
