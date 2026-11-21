@@ -4,7 +4,8 @@
   "scripts": {
     "start": "ng serve --host 127.0.0.1 --port 4200 --proxy-config proxy.conf.json",
     "build": "ng build --configuration production",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "verify:npm": "node scripts/verify-npm.mjs"
   },
   "dependencies": {
     "@accelerate/authorization-angular": "0.1.3",
