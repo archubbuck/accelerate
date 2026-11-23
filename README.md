@@ -6,6 +6,16 @@ Packages are designed to be consumed independently. The repository also contains
 
 ## Packages
 
+### Application foundations
+
+The following packages are implemented in source and awaiting independent publication verification:
+
+| Package | Purpose | Documentation |
+| --- | --- | --- |
+| `@accelerate/errors-core` | Typed errors and safe API error responses | [README](packages/errors-core/README.md) |
+| `@accelerate/validation-core` | Framework-neutral validation schemas and typed results | [README](packages/validation-core/README.md) |
+| `@accelerate/config-core` | Typed configuration parsing, defaults, and fail-fast errors | [README](packages/config-core/README.md) |
+
 ### Authorization
 
 Define permissions in code and manage roles, grants, and user assignments dynamically. Enforce authorization on the server; frontend integrations are for presentation.
