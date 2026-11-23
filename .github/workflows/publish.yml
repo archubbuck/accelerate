@@ -37,6 +37,12 @@ jobs:
         run: npm install --global npm@^11.5.1
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+      - name: Validate package registry
+        run: |
+          node tools/registry/cli.mjs sync --check
+          node tools/registry/cli.mjs validate
+          node tools/registry/cli.mjs docs --check
+          node --test tools/registry/*.test.mjs
       - name: Build
         run: pnpm build
       - name: Typecheck
@@ -47,13 +53,21 @@ jobs:
         run: pnpm --filter @accelerate/authorization-angular test:consumer
       - name: Verify publish contents
         run: |
-          for pkg in packages/*; do
-            if [ "$pkg" = "packages/authorization-angular" ]; then
-              (cd "$pkg/dist" && npm pack --dry-run)
-            else
-              (cd "$pkg" && npm pack --dry-run)
-            fi
-          done
+          set -euo pipefail
+          node tools/registry/cli.mjs publish-order > /tmp/accelerate-packages.txt
+          while IFS= read -r pkg; do
+            case "$pkg" in
+              authorization-angular|logging-angular)
+                test -f "packages/$pkg/dist/package.json"
+                (cd "packages/$pkg/dist" && npm pack --dry-run)
+                ;;
+              *)
+                test -f "packages/$pkg/dist/index.js"
+                test -f "packages/$pkg/dist/index.d.ts"
+                (cd "packages/$pkg" && npm pack --dry-run)
+                ;;
+            esac
+          done < /tmp/accelerate-packages.txt
       - name: Publish unpublished package versions with npm OIDC
         run: |
           set -euo pipefail
