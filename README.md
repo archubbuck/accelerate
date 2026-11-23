@@ -31,6 +31,22 @@ Emit structured logs through a framework-neutral logger and optional platform ad
 
 See the [logging architecture and examples](docs/logging.md) for cross-package usage. Check npm for the availability of a package version before installing it; source code and documentation may precede publication.
 
+## Package registry
+
+The [package registry](registry/README.md) tracks implemented and proposed packages, lifecycle status, priorities, and roadmap waves. Browse the [generated package catalog](docs/package-registry.md).
+
+```sh
+pnpm registry:validate
+pnpm registry:list
+pnpm registry:show -- errors-core
+pnpm registry:roadmap
+pnpm registry:report
+pnpm registry:graph
+pnpm registry:docs
+```
+
+Every new workspace package must have a registry entry. The dedicated registry GitHub Actions workflow validates workspace coverage and generated documentation.
+
 ## Quick start
 
 Install only the libraries your application needs:
