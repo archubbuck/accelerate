@@ -58,7 +58,9 @@ jobs:
         run: |
           set -euo pipefail
 
-          for pkg in authorization-core authorization-angular authorization-react authorization-postgres logging-core logging-node logging-react logging-otel logging-angular; do
+          for pkg_dir in "$GITHUB_WORKSPACE"/packages/*; do
+            test -f "$pkg_dir/package.json" || continue
+            pkg="${pkg_dir##*/}"
             if [ "$pkg" = "authorization-angular" ] || [ "$pkg" = "logging-angular" ]; then
               cd "$GITHUB_WORKSPACE/packages/$pkg/dist"
             else
