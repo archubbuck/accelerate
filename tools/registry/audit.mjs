@@ -17,6 +17,15 @@ export function auditWorkspace(root, workspace = readWorkspace(root)) {
     if (!existsSync(manifestPath)) { errors.push(id + ': missing publish manifest at ' + manifestPath); continue; }
     const published = JSON.parse(readFileSync(manifestPath, 'utf8'));
     if (published.name !== pkg.name || published.version !== pkg.version) errors.push(id + ': publish manifest differs from workspace identity');
+    // Configuration-only packages expose source JS or JSON subpaths rather than compiled declarations.
+    const configOnly = id === 'eslint-config' || id === 'typescript-config';
+    if (configOnly) {
+      const exports = published.exports || {};
+      const targets = Object.values(exports).map(value => typeof value === 'string' ? value : value?.default).filter(Boolean);
+      if (!targets.length) errors.push(id + ': no configuration exports');
+      for (const target of targets) if (!existsSync(resolve(packageDir, target))) errors.push(id + ': missing configuration export ' + target);
+      continue;
+    }
     const exported = published.exports?.['.'];
     const main = exported?.default || published.main;
     const types = exported?.types || published.types;
