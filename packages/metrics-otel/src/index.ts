@@ -1,0 +1,3 @@
+import { metrics } from "@opentelemetry/api";
+import type { Meter } from "@accelerate/metrics-core";
+export function createOtelMeter(name: string, version?: string): Meter { const meter=metrics.getMeter(name,version); return { counter: key => { const instrument=meter.createCounter(key); return { add: (value=1,attributes) => instrument.add(value,attributes) }; }, histogram: key => { const instrument=meter.createHistogram(key); return { record: (value,attributes) => instrument.record(value,attributes) }; }, gauge: key => { const instrument=meter.createUpDownCounter(key); let previous=0; return { set(value,attributes) { const delta=value-previous; previous=value; instrument.add(delta,attributes); } }; } }; }
