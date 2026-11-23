@@ -30,5 +30,8 @@
   },
   "dependencies": {
     "@accelerate/http-core": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
   }
 }
