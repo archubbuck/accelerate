@@ -385,28 +385,42 @@
       "id": "cache-core",
       "name": "@accelerate/cache-core",
       "category": "data",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 2,
-      "path": null,
+      "path": "packages/cache-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "cache-memory",
       "name": "@accelerate/cache-memory",
       "category": "data",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 2,
-      "path": null,
+      "path": "packages/cache-memory",
       "dependencies": [
         "cache-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/cache-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -441,23 +455,29 @@
       "id": "http-core",
       "name": "@accelerate/http-core",
       "category": "api",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 2,
-      "path": null,
+      "path": "packages/http-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "http-node",
       "name": "@accelerate/http-node",
       "category": "api",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 2,
-      "path": null,
+      "path": "packages/http-node",
       "dependencies": [
         "http-core",
         "errors-core",
@@ -465,52 +485,86 @@
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/http-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "http-client",
       "name": "@accelerate/http-client",
       "category": "api",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 2,
-      "path": null,
+      "path": "packages/http-client",
       "dependencies": [
         "http-core",
         "errors-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/http-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "http-react",
       "name": "@accelerate/http-react",
       "category": "api",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 2,
-      "path": null,
+      "path": "packages/http-react",
       "dependencies": [
         "http-client"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/http-core",
+          "@accelerate/http-client"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "http-angular",
       "name": "@accelerate/http-angular",
       "category": "api",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 2,
-      "path": null,
+      "path": "packages/http-angular",
       "dependencies": [
         "http-client"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/http-core",
+          "@accelerate/http-client"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -559,13 +613,19 @@
       "id": "resilience-core",
       "name": "@accelerate/resilience-core",
       "category": "api",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 2,
-      "path": null,
+      "path": "packages/resilience-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
