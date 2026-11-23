@@ -15,3 +15,18 @@ Run `pnpm registry:sync` to update versions, internal runtime/peer/optional depe
 Run `pnpm registry:sync -- --npm` to additionally query the public npm registry for each implemented package. npm synchronization is intentionally opt-in because it requires network access. A 404 is unpublished, a successful latest dist-tag is published, and failures remain unknown. No package is automatically promoted to a published lifecycle state based on npm alone.
 
 Run `pnpm registry:test` for isolated synchronization tests. The registry never writes back to package.json files.
+
+## Dependency-aware planning and agent discovery
+
+```sh
+pnpm registry:next
+pnpm registry:next -- 20
+pnpm registry:search -- authentication
+pnpm registry:readiness
+pnpm registry:readiness -- logging-core
+pnpm registry:agent-context -- http
+```
+
+`registry:next` lists proposed packages with no unfinished prerequisites, ordered by wave, priority and number of direct dependents. `registry:roadmap` shows blockers for all planned packages. `registry:agent-context` outputs structured JSON for agents to inspect before implementing a capability. These commands are read-only.
+
+Readiness is intentionally conservative: the presence of source code does not prove test or documentation completion. Add explicit `testsComplete` and `documentationComplete` flags only after verification. Proposed dependency edges are roadmap prerequisites; synchronization only overwrites dependencies for existing workspace packages.
