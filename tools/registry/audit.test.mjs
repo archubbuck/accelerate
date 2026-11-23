@@ -73,3 +73,21 @@ test('audit accepts source-only configuration packages and detects missing expor
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('audit accepts workspace protocols and tsc-built Angular adapters', () => {
+  const root = mkdtempSync(join(tmpdir(), 'accelerate-workspace-audit-'));
+  try {
+    const workspace = ['core', 'sample-angular'].map(id => {
+      const dir = join(root, 'packages', id);
+      mkdirSync(join(dir, 'dist'), { recursive: true });
+      const pkg = { name: '@accelerate/' + id, version: '1.0.0', publishConfig: { access: 'public' },
+        main: './dist/index.js', types: './dist/index.d.ts',
+        ...(id === 'sample-angular' ? { dependencies: { '@accelerate/core': 'workspace:*' } } : {}) };
+      writeFileSync(join(dir, 'package.json'), JSON.stringify(pkg));
+      writeFileSync(join(dir, 'dist/index.js'), 'export {};');
+      writeFileSync(join(dir, 'dist/index.d.ts'), 'export {};');
+      return { id, path: 'packages/' + id, pkg };
+    });
+    assert.deepEqual(auditWorkspace(root, workspace), []);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
