@@ -51,6 +51,8 @@ jobs:
         run: pnpm test
       - name: Angular consumer production build
         run: pnpm --filter @accelerate/authorization-angular test:consumer
+      - name: Audit package artifacts
+        run: pnpm registry:audit
       - name: Verify publish contents
         run: |
           set -euo pipefail
