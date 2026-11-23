@@ -4,8 +4,7 @@
   "type": "module",
   "sideEffects": false,
   "files": [
-    "*.json",
-    "index.js"
+    "*.json"
   ],
   "scripts": {
     "build": "node -e \"console.log('Configuration package: no compilation required')\"",
@@ -20,5 +19,9 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "exports": {
+    "./base.json": "./base.json",
+    "./library.json": "./library.json"
   }
 }
