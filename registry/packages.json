@@ -243,31 +243,51 @@
       "id": "authentication-react",
       "name": "@accelerate/authentication-react",
       "category": "identity-security",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 3,
-      "path": null,
+      "path": "packages/authentication-react",
       "dependencies": [
         "authentication-core"
       ],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [
+          "@accelerate/authentication-core"
+        ],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "authentication-angular",
       "name": "@accelerate/authentication-angular",
       "category": "identity-security",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 3,
-      "path": null,
+      "path": "packages/authentication-angular",
       "dependencies": [
         "authentication-core"
       ],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [
+          "@accelerate/authentication-core"
+        ],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "authentication-postgres",
@@ -328,29 +348,49 @@
       "id": "audit-core",
       "name": "@accelerate/audit-core",
       "category": "identity-security",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 3,
-      "path": null,
+      "path": "packages/audit-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "audit-postgres",
       "name": "@accelerate/audit-postgres",
       "category": "identity-security",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 3,
-      "path": null,
+      "path": "packages/audit-postgres",
       "dependencies": [
-        "audit-core"
+        "audit-core",
+        "data-core"
       ],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/audit-core",
+          "@accelerate/data-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "data-core",
