@@ -197,30 +197,47 @@
       "id": "authentication-core",
       "name": "@accelerate/authentication-core",
       "category": "identity-security",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 3,
-      "path": null,
+      "path": "packages/authentication-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "authentication-node",
       "name": "@accelerate/authentication-node",
       "category": "identity-security",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 3,
-      "path": null,
+      "path": "packages/authentication-node",
       "dependencies": [
-        "authentication-core",
-        "authorization-core"
+        "authentication-core"
       ],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/authentication-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "authentication-react",
@@ -256,16 +273,28 @@
       "id": "authentication-postgres",
       "name": "@accelerate/authentication-postgres",
       "category": "identity-security",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 3,
-      "path": null,
+      "path": "packages/authentication-postgres",
       "dependencies": [
-        "authentication-core"
+        "authentication-core",
+        "data-core"
       ],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/authentication-core",
+          "@accelerate/data-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "security-core",
