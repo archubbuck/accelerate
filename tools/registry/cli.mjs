@@ -3,6 +3,7 @@ import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { readWorkspace, synchronize, synchronizeNpm, writeCatalog } from './sync.mjs';
 import { analyze, findPackages, readiness } from './planning.mjs';
+import { auditWorkspace } from './audit.mjs';
 const root = resolve(import.meta.dirname, '../..');
 const catalog = JSON.parse(readFileSync(join(root, 'registry/packages.json'), 'utf8'));
 const packages = catalog.packages;
@@ -86,6 +87,7 @@ async function sync() {
 }
 switch (cmd) {
   case 'validate': validate(); break;
+  case 'audit': { const errors = auditWorkspace(root); if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; } else console.log('Package audit passed'); break; }
   case 'sync': await sync(); break;
   case 'list': for (const p of packages) console.log(p.id.padEnd(30), p.lifecycle.padEnd(14), p.priority); break;
   case 'show': { const p = packages.find(x=>x.id===args[1]); if (!p) { console.error('Unknown package'); process.exitCode=1; } else console.log(JSON.stringify(p,null,2)); break; }
