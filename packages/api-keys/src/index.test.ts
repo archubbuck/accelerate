@@ -1,0 +1,2 @@
+import { expect, it } from "vitest"; import { issueApiKey, MemoryApiKeyStore, verifyApiKey } from "./index.js";
+it("issues, verifies and revokes keys", async () => { const store = new MemoryApiKeyStore(); const { token, record } = issueApiKey("user"); await store.put(record); expect((await verifyApiKey(token, store))?.subjectId).toBe("user"); expect(await verifyApiKey(token + "x", store)).toBeUndefined(); await store.revoke(record.id, new Date()); expect(await verifyApiKey(token, store)).toBeUndefined(); });
