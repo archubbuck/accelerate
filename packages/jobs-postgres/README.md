@@ -16,6 +16,7 @@ const worker = createPostgresJobWorker(database, {
   workerId: "worker-1",
   pollIntervalMs: 1000,
   leaseMs: 30000,
+  heartbeatMs: 10000,
   maxAttempts: 5,
   onError: (error, job) => console.error(job.id, error)
 });
@@ -34,7 +35,8 @@ await worker.stop();
 - Failed attempts are retried after a delay until `maxAttempts`; exhausted jobs are marked `failed`.
 - Workers can reclaim expired leases after a crash.
 - Delivery is **at least once**, not exactly once. Make handlers idempotent.
-- **Lease renewal is not yet implemented**. Handlers must complete before `leaseMs`, or another worker may reclaim the same job.
+- A heartbeat extends active leases while a handler runs. Set `heartbeatMs` below `leaseMs`; network partitions, blocked event loops, or database failures can still cause lease loss and duplicate execution.
+- A lost lease prevents the worker from intentionally acknowledging completion, but it cannot undo external side effects. Handlers must remain idempotent.
 - `stop()` aborts the worker signal but cannot forcibly terminate a handler that ignores it.
 - Run schema migrations before deploying this package; the schema is not automatically applied.
 
