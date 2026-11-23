@@ -2,7 +2,7 @@ export type HttpHeaders = Readonly<Record<string,string>>;
 export interface HttpRequest<T = unknown> { method: string; url: string; headers?: HttpHeaders; body?: T; signal?: AbortSignal; }
 export interface HttpResponse<T = unknown> { status: number; headers: HttpHeaders; body: T; }
 export interface HttpTransport { send<T = unknown>(request: HttpRequest): Promise<HttpResponse<T>>; }
-export type HttpMiddleware = (request: HttpRequest, next: HttpTransport["send"]) => Promise<HttpResponse>;
+export type HttpMiddleware = (request: HttpRequest, next: (request: HttpRequest) => Promise<HttpResponse>) => Promise<HttpResponse>;
 export function composeMiddleware(transport: HttpTransport, middleware: readonly HttpMiddleware[]): HttpTransport {
   return { send: <T>(request: HttpRequest): Promise<HttpResponse<T>> => {
     const dispatch = (index: number, current: HttpRequest): Promise<HttpResponse> =>
