@@ -327,29 +327,47 @@
       "id": "data-core",
       "name": "@accelerate/data-core",
       "category": "data",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 3,
-      "path": null,
+      "path": "packages/data-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": true,
+      "documentationComplete": true
     },
     {
       "id": "data-postgres",
       "name": "@accelerate/data-postgres",
       "category": "data",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 3,
-      "path": null,
+      "path": "packages/data-postgres",
       "dependencies": [
         "data-core"
       ],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "data-sqlserver",
