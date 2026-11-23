@@ -770,15 +770,25 @@
       "id": "events-memory",
       "name": "@accelerate/events-memory",
       "category": "events",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 4,
-      "path": null,
+      "path": "packages/events-memory",
       "dependencies": [
         "events-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "testsComplete": false,
+      "documentationComplete": false,
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/events-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -800,16 +810,28 @@
       "id": "events-postgres",
       "name": "@accelerate/events-postgres",
       "category": "events",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 4,
-      "path": null,
+      "path": "packages/events-postgres",
       "dependencies": [
         "events-core",
         "data-postgres"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "testsComplete": false,
+      "documentationComplete": false,
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/events-core",
+          "@accelerate/data-postgres",
+          "@accelerate/data-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -837,16 +859,28 @@
       "id": "jobs-postgres",
       "name": "@accelerate/jobs-postgres",
       "category": "events",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 4,
-      "path": null,
+      "path": "packages/jobs-postgres",
       "dependencies": [
         "jobs-core",
         "data-postgres"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "testsComplete": false,
+      "documentationComplete": false,
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/jobs-core",
+          "@accelerate/data-postgres",
+          "@accelerate/data-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -1037,15 +1071,25 @@
       "id": "metrics-otel",
       "name": "@accelerate/metrics-otel",
       "category": "observability",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 4,
-      "path": null,
+      "path": "packages/metrics-otel",
       "dependencies": [
         "metrics-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "testsComplete": false,
+      "documentationComplete": false,
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/metrics-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -1073,15 +1117,25 @@
       "id": "tracing-otel",
       "name": "@accelerate/tracing-otel",
       "category": "observability",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 4,
-      "path": null,
+      "path": "packages/tracing-otel",
       "dependencies": [
         "tracing-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "testsComplete": false,
+      "documentationComplete": false,
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/tracing-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
