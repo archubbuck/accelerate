@@ -1093,27 +1093,43 @@
       "id": "testing-core",
       "name": "@accelerate/testing-core",
       "category": "testing-dx",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 1,
-      "path": null,
+      "path": "packages/testing-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": false
     },
     {
       "id": "testing-fixtures",
       "name": "@accelerate/testing-fixtures",
       "category": "testing-dx",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 1,
-      "path": null,
+      "path": "packages/testing-fixtures",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": false
     },
     {
       "id": "testing-http",
