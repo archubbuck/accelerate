@@ -33,6 +33,8 @@ jobs:
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Audit package artifacts
+        run: pnpm registry:audit
       - name: Verify package archives
         run: |
           set -euo pipefail
