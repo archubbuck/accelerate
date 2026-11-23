@@ -10,5 +10,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: node --test tools/registry/*.test.mjs
+      - run: node tools/registry/cli.mjs sync --check
       - run: node tools/registry/cli.mjs validate
       - run: node tools/registry/cli.mjs docs --check
