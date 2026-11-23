@@ -21,14 +21,19 @@ jobs:
       - name: Verify all npm package archives
         run: |
           set -euo pipefail
-          for pkg in authorization-core authorization-react authorization-postgres; do
-            (cd "packages/$pkg" && npm pack --dry-run --json > /dev/null)
-          done
-      - name: Verify Angular package contents
-        run: |
-          test -f packages/authorization-angular/dist/package.json
-          test -d packages/authorization-angular/dist/fesm2022
-          (cd packages/authorization-angular/dist && npm pack --dry-run)
+          node tools/registry/cli.mjs publish-order > /tmp/accelerate-packages.txt
+          while IFS= read -r pkg; do
+            case "$pkg" in
+              authorization-angular|logging-angular)
+                test -f "packages/$pkg/dist/package.json"
+                (cd "packages/$pkg/dist" && npm pack --dry-run)
+                ;;
+              *)
+                test -f "packages/$pkg/dist/index.js"
+                (cd "packages/$pkg" && npm pack --dry-run)
+                ;;
+            esac
+          done < /tmp/accelerate-packages.txt
       - name: Angular consumer production build
         run: pnpm --filter @accelerate/authorization-angular test:consumer
 
