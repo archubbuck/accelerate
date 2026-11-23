@@ -31,11 +31,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          set -eu
+          set -euo pipefail
           test -n "$NODE_AUTH_TOKEN" || { echo "NPM_TOKEN missing"; exit 1; }
-          for pkg_dir in "$GITHUB_WORKSPACE"/packages/*; do
-            test -f "$pkg_dir/package.json" || continue
-            pkg="${pkg_dir##*/}"
+          while IFS= read -r pkg; do
             if [ "$pkg" = "authorization-angular" ] || [ "$pkg" = "logging-angular" ]; then
               cd "$GITHUB_WORKSPACE/packages/$pkg/dist"
             else
@@ -49,4 +47,4 @@ jobs:
               echo "Publishing: $name@$version"
               npm publish --access public
             fi
-          done
+          done < <(node "$GITHUB_WORKSPACE/tools/registry/cli.mjs" publish-order)
