@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { readWorkspace, synchronize, synchronizeNpm, writeCatalog } from './sync.mjs';
 const root = resolve(import.meta.dirname, '../..');
 const catalog = JSON.parse(readFileSync(join(root, 'registry/packages.json'), 'utf8'));
 const packages = catalog.packages;
@@ -31,6 +32,13 @@ function validate() {
     if (!p.path && !['proposed','planned'].includes(p.lifecycle)) fail('Missing implementation path: ' + p.id);
   }
   const ws = workspace();
+  const synced = synchronize(catalog, readWorkspace(root));
+  for (const name of synced.missing) fail('Unregistered workspace package: ' + name);
+  for (const item of synced.catalog.packages) {
+    const stored = packages.find(p => p.name === item.name);
+    if (stored && stored.path && JSON.stringify(stored.workspaceDependencies || null) !== JSON.stringify(item.workspaceDependencies || null)) fail('Workspace dependencies out of sync: ' + item.id);
+    if (stored && stored.path && stored.version !== item.version) fail('Workspace version out of sync: ' + item.id);
+  }
   for (const w of ws) {
     const record = packages.find(p => p.name === w.name);
     if (!record) fail('Workspace package not registered: ' + w.name);
@@ -62,8 +70,21 @@ function docs() {
     if (!existsSync(out) || readFileSync(out, 'utf8') !== content) { console.error('Generated docs out of date; run pnpm registry:docs'); process.exitCode = 1; }
   } else { writeFileSync(out, content); console.log('Wrote docs/package-registry.md'); }
 }
+async function sync() {
+  const check = args.includes('--check');
+  const npm = args.includes('--npm');
+  const snapshot = synchronize(catalog, readWorkspace(root));
+  if (snapshot.missing.length) { console.error('Unregistered packages: ' + snapshot.missing.join(', ')); process.exitCode = 1; return; }
+  const updated = npm ? await synchronizeNpm(snapshot.catalog) : snapshot.catalog;
+  const next = JSON.stringify(updated, null, 2) + '\n';
+  if (check) {
+    if (readFileSync(join(root, 'registry/packages.json'), 'utf8') !== next) { console.error('Registry is out of sync; run pnpm registry:sync'); process.exitCode = 1; }
+    else console.log('Registry synchronized');
+  } else { writeCatalog(join(root, 'registry/packages.json'), updated); console.log('Synchronized ' + readWorkspace(root).length + ' workspace packages' + (npm ? ' and npm metadata' : '')); }
+}
 switch (cmd) {
   case 'validate': validate(); break;
+  case 'sync': await sync(); break;
   case 'list': for (const p of packages) console.log(p.id.padEnd(30), p.lifecycle.padEnd(14), p.priority); break;
   case 'show': { const p = packages.find(x=>x.id===args[1]); if (!p) { console.error('Unknown package'); process.exitCode=1; } else console.log(JSON.stringify(p,null,2)); break; }
   case 'roadmap': for (const p of packages.filter(p=>p.wave>0).sort((a,b)=>a.wave-b.wave||a.id.localeCompare(b.id))) console.log('Wave '+p.wave, p.priority, p.id); break;
