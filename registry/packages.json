@@ -320,29 +320,47 @@
       "id": "security-core",
       "name": "@accelerate/security-core",
       "category": "identity-security",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/security-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "api-keys",
       "name": "@accelerate/api-keys",
       "category": "identity-security",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 3,
-      "path": null,
+      "path": "packages/api-keys",
       "dependencies": [
         "security-core"
       ],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/security-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": true
     },
     {
       "id": "audit-core",
