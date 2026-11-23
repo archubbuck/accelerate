@@ -7,7 +7,7 @@
     "verify:npm": "node verify.mjs"
   },
   "dependencies": {
-    "@accelerate/logging-core": "0.1.0",
-    "@accelerate/logging-node": "0.1.0"
+    "@accelerate/logging-core": "0.1.1",
+    "@accelerate/logging-node": "0.1.1"
   }
 }
