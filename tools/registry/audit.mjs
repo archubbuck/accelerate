@@ -11,7 +11,7 @@ export function auditWorkspace(root, workspace = readWorkspace(root)) {
     if (!pkg.name?.startsWith('@accelerate/')) errors.push(id + ': invalid package name');
     if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(pkg.version || '')) errors.push(id + ': invalid version');
     if (pkg.publishConfig?.access !== 'public') errors.push(id + ': public npm access not configured');
-    const angular = id.endsWith('-angular');
+    // Only ng-packagr packages publish a generated manifest from dist.\n    // Other Angular adapters use tsc and publish their workspace manifest.\n    const angular = id === 'authorization-angular' || id === 'logging-angular';
     const packageDir = join(root, path, ...(angular ? ['dist'] : []));
     const manifestPath = join(packageDir, 'package.json');
     if (!existsSync(manifestPath)) { errors.push(id + ': missing publish manifest at ' + manifestPath); continue; }
@@ -38,7 +38,7 @@ export function auditWorkspace(root, workspace = readWorkspace(root)) {
       if (!name.startsWith('@accelerate/')) continue;
       const dependency = byName.get(name);
       if (!dependency) errors.push(id + ': internal dependency missing from workspace: ' + name);
-      else if (typeof range !== 'string' || !range.includes(dependency.version)) errors.push(id + ': internal dependency range does not match workspace: ' + name + '@' + range);
+      else if (typeof range !== 'string' || !(range === 'workspace:*' || range === 'workspace:^' || range === 'workspace:~' || range === 'workspace:' + dependency.version || range === dependency.version || range === '^' + dependency.version || range === '~' + dependency.version)) errors.push(id + ': internal dependency range does not match workspace: ' + name + '@' + range);
     }
   }
   return errors;
