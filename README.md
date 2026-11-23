@@ -43,6 +43,10 @@ pnpm registry:roadmap
 pnpm registry:report
 pnpm registry:graph
 pnpm registry:docs
+pnpm registry:next
+pnpm registry:search -- authentication
+pnpm registry:readiness
+pnpm registry:agent-context -- http
 ```
 
 Every new workspace package must have a registry entry. The dedicated registry GitHub Actions workflow validates workspace coverage and generated documentation.
