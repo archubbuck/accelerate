@@ -214,7 +214,10 @@
       "priority": "P0",
       "wave": 3,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "authentication-core",
+        "authorization-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -227,7 +230,9 @@
       "priority": "P1",
       "wave": 3,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "authentication-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -240,7 +245,9 @@
       "priority": "P1",
       "wave": 3,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "authentication-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -253,7 +260,9 @@
       "priority": "P1",
       "wave": 3,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "authentication-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -279,7 +288,9 @@
       "priority": "P1",
       "wave": 3,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "security-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -305,7 +316,9 @@
       "priority": "P1",
       "wave": 3,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "audit-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -331,7 +344,9 @@
       "priority": "P0",
       "wave": 3,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "data-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -344,7 +359,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "data-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -357,7 +374,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "data-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -383,7 +402,9 @@
       "priority": "P0",
       "wave": 2,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "cache-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -396,7 +417,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "cache-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -435,7 +458,11 @@
       "priority": "P0",
       "wave": 2,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "http-core",
+        "errors-core",
+        "validation-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -448,7 +475,10 @@
       "priority": "P0",
       "wave": 2,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "http-core",
+        "errors-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -461,7 +491,9 @@
       "priority": "P1",
       "wave": 2,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "http-client"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -474,7 +506,9 @@
       "priority": "P1",
       "wave": 2,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "http-client"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -552,7 +586,9 @@
       "priority": "P1",
       "wave": 4,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "events-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -565,7 +601,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "events-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -578,7 +616,10 @@
       "priority": "P1",
       "wave": 4,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "events-core",
+        "data-postgres"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -604,7 +645,10 @@
       "priority": "P1",
       "wave": 4,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "jobs-core",
+        "data-postgres"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -617,7 +661,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "jobs-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -630,7 +676,10 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "jobs-core",
+        "events-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -656,7 +705,9 @@
       "priority": "P0",
       "wave": 1,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "config-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -669,7 +720,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "config-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -682,7 +735,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "config-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -708,7 +763,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "feature-flags-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -721,7 +778,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "feature-flags-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -760,7 +819,9 @@
       "priority": "P1",
       "wave": 4,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "metrics-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -786,7 +847,9 @@
       "priority": "P1",
       "wave": 4,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "tracing-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -812,7 +875,9 @@
       "priority": "P0",
       "wave": 1,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "health-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -851,7 +916,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "state-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -864,7 +931,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "state-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -890,7 +959,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "forms-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -903,7 +974,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "forms-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -942,7 +1015,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "tables-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -955,7 +1030,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "tables-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -994,7 +1071,10 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "testing-core",
+        "http-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -1007,7 +1087,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "testing-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -1020,7 +1102,9 @@
       "priority": "P1",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "testing-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -1098,7 +1182,9 @@
       "priority": "P2",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "ai-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -1111,7 +1197,9 @@
       "priority": "P2",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "ai-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -1124,7 +1212,10 @@
       "priority": "P2",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "ai-core",
+        "validation-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -1137,7 +1228,9 @@
       "priority": "P2",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "ai-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -1150,7 +1243,9 @@
       "priority": "P2",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "ai-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -1163,7 +1258,10 @@
       "priority": "P2",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "ai-core",
+        "testing-core"
+      ],
       "publication": {
         "status": "unpublished"
       }
@@ -1176,7 +1274,10 @@
       "priority": "P2",
       "wave": 5,
       "path": null,
-      "dependencies": [],
+      "dependencies": [
+        "ai-core",
+        "ai-tools"
+      ],
       "publication": {
         "status": "unpublished"
       }
