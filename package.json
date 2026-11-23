@@ -5,7 +5,14 @@
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "registry:list": "node tools/registry/cli.mjs list",
+    "registry:show": "node tools/registry/cli.mjs show",
+    "registry:roadmap": "node tools/registry/cli.mjs roadmap",
+    "registry:report": "node tools/registry/cli.mjs report",
+    "registry:graph": "node tools/registry/cli.mjs graph",
+    "registry:validate": "node tools/registry/cli.mjs validate",
+    "registry:docs": "node tools/registry/cli.mjs docs"
   },
   "devDependencies": {
     "typescript": "~5.8.3",
