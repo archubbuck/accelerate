@@ -41,3 +41,23 @@ await worker.stop();
 - Run schema migrations before deploying this package; the schema is not automatically applied.
 
 Source presence does not imply publication to npm.
+
+## Database-free validation
+
+No PostgreSQL server, Docker container, or connection string is required for behavioral tests:
+
+```ts
+import { createMemoryJobsDatabase } from "@accelerate/jobs-postgres/testing";
+import { createPostgresJobQueue, createPostgresJobWorker } from "@accelerate/jobs-postgres";
+
+const database = createMemoryJobsDatabase(Date.now());
+await createPostgresJobQueue(database).enqueue("example", { value: 1 }, { id: "job-1" });
+const worker = createPostgresJobWorker(database, { workerId: "test-worker" });
+worker.register("example", async job => { console.log(job.payload); });
+await worker.start();
+await worker.stop();
+```
+
+Run `pnpm --filter @accelerate/jobs-postgres test` to execute the package's tests. The in-memory adapter simulates **only the SQL statements used by this package**, with controlled time advancement and fail-fast handling of unsupported statements. It is intended for unit and behavioral testing, **not production persistence**.
+
+This simulation verifies scheduling, worker behavior, claim exclusivity, and lease expiration, but **does not verify PostgreSQL SQL syntax, real transaction isolation, lock contention, or driver behavior**. A separate embedded PostgreSQL or real PostgreSQL compatibility suite is needed to establish those guarantees.
