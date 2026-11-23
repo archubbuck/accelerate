@@ -11,7 +11,9 @@ export function auditWorkspace(root, workspace = readWorkspace(root)) {
     if (!pkg.name?.startsWith('@accelerate/')) errors.push(id + ': invalid package name');
     if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(pkg.version || '')) errors.push(id + ': invalid version');
     if (pkg.publishConfig?.access !== 'public') errors.push(id + ': public npm access not configured');
-    // Only ng-packagr packages publish a generated manifest from dist.\n    // Other Angular adapters use tsc and publish their workspace manifest.\n    const angular = id === 'authorization-angular' || id === 'logging-angular';
+    // Only ng-packagr packages publish a generated manifest from dist.
+    // Other Angular adapters use tsc and publish their workspace manifest.
+    const angular = id === 'authorization-angular' || id === 'logging-angular';
     const packageDir = join(root, path, ...(angular ? ['dist'] : []));
     const manifestPath = join(packageDir, 'package.json');
     if (!existsSync(manifestPath)) { errors.push(id + ': missing publish manifest at ' + manifestPath); continue; }
