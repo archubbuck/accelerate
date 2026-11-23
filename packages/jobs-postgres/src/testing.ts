@@ -41,7 +41,7 @@ export function createMemoryJobsDatabase(initialTime = 0): MemoryJobsDatabase {
         const candidate = [...jobs.values()].filter(j => (j.status === "pending" && j.available_at <= now) || (j.status === "running" && j.locked_until !== null && j.locked_until < now)).sort((a,b) => a.available_at - b.available_at || a.created_at.getTime() - b.created_at.getTime())[0];
         if (!candidate) return result<Row>([]);
         candidate.status = "running"; candidate.attempts++; candidate.locked_by = owner; candidate.locked_until = now + leaseMs;
-        return result([{ id: candidate.id, name: candidate.name, payload: candidate.payload, attempts: candidate.attempts, created_at: candidate.created_at }] as Row[]);
+        return result([{ id: candidate.id, name: candidate.name, payload: candidate.payload, attempts: candidate.attempts, created_at: candidate.created_at }] as unknown as Row[]);
       }
       if (sql.includes("SET locked_until=")) {
         const [id, owner, leaseMs] = parameters as [string, string, number];
