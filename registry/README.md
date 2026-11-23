@@ -30,3 +30,7 @@ pnpm registry:agent-context -- http
 `registry:next` lists proposed packages with no unfinished prerequisites, ordered by wave, priority and number of direct dependents. `registry:roadmap` shows blockers for all planned packages. `registry:agent-context` outputs structured JSON for agents to inspect before implementing a capability. These commands are read-only.
 
 Readiness is intentionally conservative: the presence of source code does not prove test or documentation completion. Add explicit `testsComplete` and `documentationComplete` flags only after verification. Proposed dependency edges are roadmap prerequisites; synchronization only overwrites dependencies for existing workspace packages.
+
+## Prepublication artifact audit
+
+After building the workspace, run `pnpm registry:audit`. This checks publish manifests, compiled JavaScript and declaration entrypoints, npm access settings, and internal dependency version alignment. Run `pnpm registry:test` to execute the audit's automated tests along with the other registry tests. The audit does not publish packages and does not replace `npm pack --dry-run` or a consumer smoke test.
