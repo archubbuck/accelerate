@@ -54,3 +54,22 @@ test('audit detects incompatible internal dependency versions', () => {
     assert.ok(auditWorkspace(root, workspace).some(x => x.includes('internal dependency range')));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('audit accepts source-only configuration packages and detects missing exports', () => {
+  const root = mkdtempSync(join(tmpdir(), 'accelerate-config-audit-'));
+  try {
+    for (const id of ['eslint-config', 'typescript-config']) {
+      const dir = join(root, 'packages', id);
+      mkdirSync(dir, { recursive: true });
+      const exports = id === 'eslint-config' ? { '.': './index.js' } : { './base.json': './base.json' };
+      const pkg = { name: '@accelerate/' + id, version: '0.1.0', publishConfig: { access: 'public' }, exports };
+      writeFileSync(join(dir, 'package.json'), JSON.stringify(pkg));
+      const asset = id === 'eslint-config' ? 'index.js' : 'base.json';
+      writeFileSync(join(dir, asset), id === 'eslint-config' ? 'export default [];' : '{}');
+      const workspace = [{ id, path: 'packages/' + id, pkg }];
+      assert.deepEqual(auditWorkspace(root, workspace), []);
+      rmSync(join(dir, asset));
+      assert.ok(auditWorkspace(root, workspace).some(x => x.includes('missing configuration export')));
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
