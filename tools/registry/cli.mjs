@@ -2,6 +2,7 @@
 import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { readWorkspace, synchronize, synchronizeNpm, writeCatalog } from './sync.mjs';
+import { analyze, findPackages, readiness } from './planning.mjs';
 const root = resolve(import.meta.dirname, '../..');
 const catalog = JSON.parse(readFileSync(join(root, 'registry/packages.json'), 'utf8'));
 const packages = catalog.packages;
@@ -54,6 +55,7 @@ function validate() {
     visiting.delete(id); visited.add(id);
   }
   for (const id of ids) visit(id);
+  for (const error of analyze(catalog).errors) fail(error);
   if (failures.length) { console.error(failures.join('\n')); process.exitCode = 1; }
   else console.log('Registry valid: ' + packages.length + ' entries; ' + ws.length + ' workspace packages');
 }
@@ -87,7 +89,11 @@ switch (cmd) {
   case 'sync': await sync(); break;
   case 'list': for (const p of packages) console.log(p.id.padEnd(30), p.lifecycle.padEnd(14), p.priority); break;
   case 'show': { const p = packages.find(x=>x.id===args[1]); if (!p) { console.error('Unknown package'); process.exitCode=1; } else console.log(JSON.stringify(p,null,2)); break; }
-  case 'roadmap': for (const p of packages.filter(p=>p.wave>0).sort((a,b)=>a.wave-b.wave||a.id.localeCompare(b.id))) console.log('Wave '+p.wave, p.priority, p.id); break;
+  case 'roadmap': for (const p of analyze(catalog).items.filter(p=>p.wave>0)) console.log('Wave '+p.wave, p.priority, p.id, p.ready ? '[ready]' : '[blocked: '+p.blockers.join(', ')+']'); break;
+  case 'next': for (const p of analyze(catalog).items.filter(p=>p.ready).slice(0,Number(args[1])||10)) console.log('Wave '+p.wave, p.priority, p.id); break;
+  case 'search': { const matches = findPackages(catalog, args.slice(1).join(' ')); for (const p of matches) console.log(p.id.padEnd(30), p.lifecycle.padEnd(14), p.category); if (!matches.length) process.exitCode = 1; break; }
+  case 'readiness': { const items = args[1] ? packages.filter(p=>p.id===args[1]) : packages.filter(p=>p.path); if (!items.length) { console.error('Unknown package'); process.exitCode=1; } for (const p of items) console.log(p.id, JSON.stringify(readiness(p))); break; }
+  case 'agent-context': { const matches = args.length>1 ? findPackages(catalog,args.slice(1).join(' ')) : analyze(catalog).items.filter(p=>p.ready); console.log(JSON.stringify({ instruction:'Inspect matching packages and their dependencies before implementing a new package. Proposed packages are not implemented.', matches:matches.slice(0,20).map(p=>({id:p.id,name:p.name,category:p.category,lifecycle:p.lifecycle,path:p.path,dependencies:p.dependencies,blockers:p.blockers,ready:p.ready})) },null,2)); break; }
   case 'graph': console.log('digraph accelerate {'); for (const p of packages) { console.log('  "'+p.id+'";'); for(const d of p.dependencies||[]) console.log('  "'+p.id+'" -> "'+d+'";'); } console.log('}'); break;
   case 'report': report(); break;
   case 'docs': docs(); break;
