@@ -24,9 +24,25 @@ jobs:
           package-manager-cache: false
       - run: npm install --global npm@^11.5.1
       - run: pnpm install --no-frozen-lockfile
+      - name: Validate package registry
+        run: |
+          node tools/registry/cli.mjs sync --check
+          node tools/registry/cli.mjs validate
+          node tools/registry/cli.mjs docs --check
+          node --test tools/registry/*.test.mjs
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Verify package archives
+        run: |
+          set -euo pipefail
+          node tools/registry/cli.mjs publish-order > /tmp/accelerate-packages.txt
+          while IFS= read -r pkg; do
+            case "$pkg" in
+              authorization-angular|logging-angular) (cd "packages/$pkg/dist" && npm pack --dry-run) ;;
+              *) (cd "packages/$pkg" && npm pack --dry-run) ;;
+            esac
+          done < /tmp/accelerate-packages.txt
       - name: Publish only missing package versions
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
