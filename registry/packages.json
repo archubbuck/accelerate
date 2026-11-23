@@ -1,0 +1,1111 @@
+{
+  "schemaVersion": 1,
+  "description": "Accelerate package lifecycle registry; npm publication is not inferred from source presence.",
+  "packages": [
+    {
+      "id": "authorization-core",
+      "name": "@accelerate/authorization-core",
+      "category": "authorization",
+      "lifecycle": "implemented",
+      "priority": "existing",
+      "wave": 0,
+      "path": "packages/authorization-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
+    },
+    {
+      "id": "authorization-angular",
+      "name": "@accelerate/authorization-angular",
+      "category": "authorization",
+      "lifecycle": "implemented",
+      "priority": "existing",
+      "wave": 0,
+      "path": "packages/authorization-angular",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
+    },
+    {
+      "id": "authorization-react",
+      "name": "@accelerate/authorization-react",
+      "category": "authorization",
+      "lifecycle": "implemented",
+      "priority": "existing",
+      "wave": 0,
+      "path": "packages/authorization-react",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
+    },
+    {
+      "id": "authorization-postgres",
+      "name": "@accelerate/authorization-postgres",
+      "category": "authorization",
+      "lifecycle": "implemented",
+      "priority": "existing",
+      "wave": 0,
+      "path": "packages/authorization-postgres",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
+    },
+    {
+      "id": "logging-core",
+      "name": "@accelerate/logging-core",
+      "category": "logging",
+      "lifecycle": "implemented",
+      "priority": "existing",
+      "wave": 0,
+      "path": "packages/logging-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
+    },
+    {
+      "id": "logging-node",
+      "name": "@accelerate/logging-node",
+      "category": "logging",
+      "lifecycle": "implemented",
+      "priority": "existing",
+      "wave": 0,
+      "path": "packages/logging-node",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
+    },
+    {
+      "id": "logging-react",
+      "name": "@accelerate/logging-react",
+      "category": "logging",
+      "lifecycle": "implemented",
+      "priority": "existing",
+      "wave": 0,
+      "path": "packages/logging-react",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
+    },
+    {
+      "id": "logging-otel",
+      "name": "@accelerate/logging-otel",
+      "category": "logging",
+      "lifecycle": "implemented",
+      "priority": "existing",
+      "wave": 0,
+      "path": "packages/logging-otel",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
+    },
+    {
+      "id": "logging-angular",
+      "name": "@accelerate/logging-angular",
+      "category": "logging",
+      "lifecycle": "implemented",
+      "priority": "existing",
+      "wave": 0,
+      "path": "packages/logging-angular",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
+    },
+    {
+      "id": "authentication-core",
+      "name": "@accelerate/authentication-core",
+      "category": "identity-security",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "authentication-node",
+      "name": "@accelerate/authentication-node",
+      "category": "identity-security",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "authentication-react",
+      "name": "@accelerate/authentication-react",
+      "category": "identity-security",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "authentication-angular",
+      "name": "@accelerate/authentication-angular",
+      "category": "identity-security",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "authentication-postgres",
+      "name": "@accelerate/authentication-postgres",
+      "category": "identity-security",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "security-core",
+      "name": "@accelerate/security-core",
+      "category": "identity-security",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "api-keys",
+      "name": "@accelerate/api-keys",
+      "category": "identity-security",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "audit-core",
+      "name": "@accelerate/audit-core",
+      "category": "identity-security",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "audit-postgres",
+      "name": "@accelerate/audit-postgres",
+      "category": "identity-security",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "data-core",
+      "name": "@accelerate/data-core",
+      "category": "data",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "data-postgres",
+      "name": "@accelerate/data-postgres",
+      "category": "data",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 3,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "data-sqlserver",
+      "name": "@accelerate/data-sqlserver",
+      "category": "data",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "data-prisma",
+      "name": "@accelerate/data-prisma",
+      "category": "data",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "cache-core",
+      "name": "@accelerate/cache-core",
+      "category": "data",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 2,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "cache-memory",
+      "name": "@accelerate/cache-memory",
+      "category": "data",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 2,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "cache-redis",
+      "name": "@accelerate/cache-redis",
+      "category": "data",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "transactions",
+      "name": "@accelerate/transactions",
+      "category": "data",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "http-core",
+      "name": "@accelerate/http-core",
+      "category": "api",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 2,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "http-node",
+      "name": "@accelerate/http-node",
+      "category": "api",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 2,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "http-client",
+      "name": "@accelerate/http-client",
+      "category": "api",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 2,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "http-react",
+      "name": "@accelerate/http-react",
+      "category": "api",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 2,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "http-angular",
+      "name": "@accelerate/http-angular",
+      "category": "api",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 2,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "errors-core",
+      "name": "@accelerate/errors-core",
+      "category": "api",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "validation-core",
+      "name": "@accelerate/validation-core",
+      "category": "api",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "resilience-core",
+      "name": "@accelerate/resilience-core",
+      "category": "api",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 2,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "contracts-openapi",
+      "name": "@accelerate/contracts-openapi",
+      "category": "api",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "events-core",
+      "name": "@accelerate/events-core",
+      "category": "events",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 4,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "events-memory",
+      "name": "@accelerate/events-memory",
+      "category": "events",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 4,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "events-redis",
+      "name": "@accelerate/events-redis",
+      "category": "events",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "events-postgres",
+      "name": "@accelerate/events-postgres",
+      "category": "events",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 4,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "jobs-core",
+      "name": "@accelerate/jobs-core",
+      "category": "events",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 4,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "jobs-postgres",
+      "name": "@accelerate/jobs-postgres",
+      "category": "events",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 4,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "scheduler-core",
+      "name": "@accelerate/scheduler-core",
+      "category": "events",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "workflows-core",
+      "name": "@accelerate/workflows-core",
+      "category": "events",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "config-core",
+      "name": "@accelerate/config-core",
+      "category": "configuration",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "config-node",
+      "name": "@accelerate/config-node",
+      "category": "configuration",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "config-react",
+      "name": "@accelerate/config-react",
+      "category": "configuration",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "config-angular",
+      "name": "@accelerate/config-angular",
+      "category": "configuration",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "feature-flags-core",
+      "name": "@accelerate/feature-flags-core",
+      "category": "configuration",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "feature-flags-memory",
+      "name": "@accelerate/feature-flags-memory",
+      "category": "configuration",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "feature-flags-postgres",
+      "name": "@accelerate/feature-flags-postgres",
+      "category": "configuration",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "secrets-core",
+      "name": "@accelerate/secrets-core",
+      "category": "configuration",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "metrics-core",
+      "name": "@accelerate/metrics-core",
+      "category": "observability",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 4,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "metrics-otel",
+      "name": "@accelerate/metrics-otel",
+      "category": "observability",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 4,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "tracing-core",
+      "name": "@accelerate/tracing-core",
+      "category": "observability",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 4,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "tracing-otel",
+      "name": "@accelerate/tracing-otel",
+      "category": "observability",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 4,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "health-core",
+      "name": "@accelerate/health-core",
+      "category": "observability",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "health-node",
+      "name": "@accelerate/health-node",
+      "category": "observability",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "diagnostics-core",
+      "name": "@accelerate/diagnostics-core",
+      "category": "observability",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "state-core",
+      "name": "@accelerate/state-core",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "state-react",
+      "name": "@accelerate/state-react",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "state-angular",
+      "name": "@accelerate/state-angular",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "forms-core",
+      "name": "@accelerate/forms-core",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "forms-react",
+      "name": "@accelerate/forms-react",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "forms-angular",
+      "name": "@accelerate/forms-angular",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "notifications-core",
+      "name": "@accelerate/notifications-core",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "tables-core",
+      "name": "@accelerate/tables-core",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "tables-react",
+      "name": "@accelerate/tables-react",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "tables-angular",
+      "name": "@accelerate/tables-angular",
+      "category": "frontend",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "testing-core",
+      "name": "@accelerate/testing-core",
+      "category": "testing-dx",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "testing-fixtures",
+      "name": "@accelerate/testing-fixtures",
+      "category": "testing-dx",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "testing-http",
+      "name": "@accelerate/testing-http",
+      "category": "testing-dx",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "testing-postgres",
+      "name": "@accelerate/testing-postgres",
+      "category": "testing-dx",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "testing-contracts",
+      "name": "@accelerate/testing-contracts",
+      "category": "testing-dx",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "testing-architecture",
+      "name": "@accelerate/testing-architecture",
+      "category": "testing-dx",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "create-accelerate",
+      "name": "@accelerate/create-accelerate",
+      "category": "testing-dx",
+      "lifecycle": "proposed",
+      "priority": "P1",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "eslint-config",
+      "name": "@accelerate/eslint-config",
+      "category": "testing-dx",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "typescript-config",
+      "name": "@accelerate/typescript-config",
+      "category": "testing-dx",
+      "lifecycle": "proposed",
+      "priority": "P0",
+      "wave": 1,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "ai-core",
+      "name": "@accelerate/ai-core",
+      "category": "ai",
+      "lifecycle": "proposed",
+      "priority": "P2",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "ai-gateway",
+      "name": "@accelerate/ai-gateway",
+      "category": "ai",
+      "lifecycle": "proposed",
+      "priority": "P2",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "ai-prompts",
+      "name": "@accelerate/ai-prompts",
+      "category": "ai",
+      "lifecycle": "proposed",
+      "priority": "P2",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "ai-structured",
+      "name": "@accelerate/ai-structured",
+      "category": "ai",
+      "lifecycle": "proposed",
+      "priority": "P2",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "ai-tools",
+      "name": "@accelerate/ai-tools",
+      "category": "ai",
+      "lifecycle": "proposed",
+      "priority": "P2",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "ai-usage",
+      "name": "@accelerate/ai-usage",
+      "category": "ai",
+      "lifecycle": "proposed",
+      "priority": "P2",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "ai-evaluation",
+      "name": "@accelerate/ai-evaluation",
+      "category": "ai",
+      "lifecycle": "proposed",
+      "priority": "P2",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    },
+    {
+      "id": "agents-core",
+      "name": "@accelerate/agents-core",
+      "category": "ai",
+      "lifecycle": "proposed",
+      "priority": "P2",
+      "wave": 5,
+      "path": null,
+      "dependencies": [],
+      "publication": {
+        "status": "unpublished"
+      }
+    }
+  ]
+}
