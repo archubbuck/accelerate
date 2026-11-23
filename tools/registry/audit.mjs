@@ -18,9 +18,10 @@ export function auditWorkspace(root, workspace = readWorkspace(root)) {
     const published = JSON.parse(readFileSync(manifestPath, 'utf8'));
     if (published.name !== pkg.name || published.version !== pkg.version) errors.push(id + ': publish manifest differs from workspace identity');
     const exported = published.exports?.['.'];
-    const main = published.main || exported?.default;
-    const types = published.types || exported?.types;
+    const main = exported?.default || published.main;
+    const types = exported?.types || published.types;
     if (!main || !types) errors.push(id + ': missing JS or TypeScript entrypoint');
+    if (typeof main !== 'string' || typeof types !== 'string') errors.push(id + ': invalid export entrypoint type');
     for (const entry of [main, types]) {
       if (typeof entry === 'string' && !existsSync(resolve(packageDir, entry))) errors.push(id + ': missing compiled entrypoint ' + entry);
     }
