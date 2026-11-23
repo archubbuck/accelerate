@@ -18,6 +18,8 @@ The following packages are implemented in source and awaiting independent public
 | `@accelerate/config-node` | Node.js environment configuration adapter | [README](packages/config-node/README.md) |
 | `@accelerate/health-core` | Dependency health check aggregation and timeouts | [README](packages/health-core/README.md) |
 | `@accelerate/health-node` | Node.js HTTP health endpoint adapter | [README](packages/health-node/README.md) |
+| `@accelerate/testing-core` | Typed assertions and asynchronous testing helpers | [README](packages/testing-core/README.md) |
+| `@accelerate/testing-fixtures` | Deterministic fixture factories and seeded test data | [README](packages/testing-fixtures/README.md) |
 
 ### Authorization
 
