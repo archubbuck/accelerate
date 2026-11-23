@@ -18,7 +18,8 @@
     "registry:next": "node tools/registry/cli.mjs next",
     "registry:search": "node tools/registry/cli.mjs search",
     "registry:readiness": "node tools/registry/cli.mjs readiness",
-    "registry:agent-context": "node tools/registry/cli.mjs agent-context"
+    "registry:agent-context": "node tools/registry/cli.mjs agent-context",
+    "registry:audit": "node tools/registry/cli.mjs audit"
   },
   "devDependencies": {
     "typescript": "~5.8.3",
