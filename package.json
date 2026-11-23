@@ -12,7 +12,9 @@
     "registry:report": "node tools/registry/cli.mjs report",
     "registry:graph": "node tools/registry/cli.mjs graph",
     "registry:validate": "node tools/registry/cli.mjs validate",
-    "registry:docs": "node tools/registry/cli.mjs docs"
+    "registry:docs": "node tools/registry/cli.mjs docs",
+    "registry:sync": "node tools/registry/cli.mjs sync",
+    "registry:test": "node --test tools/registry/*.test.mjs"
   },
   "devDependencies": {
     "typescript": "~5.8.3",
