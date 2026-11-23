@@ -749,14 +749,22 @@
       "id": "events-core",
       "name": "@accelerate/events-core",
       "category": "events",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 4,
-      "path": null,
+      "path": "packages/events-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": false
     },
     {
       "id": "events-memory",
@@ -808,14 +816,22 @@
       "id": "jobs-core",
       "name": "@accelerate/jobs-core",
       "category": "events",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 4,
-      "path": null,
+      "path": "packages/jobs-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": false
     },
     {
       "id": "jobs-postgres",
@@ -1000,14 +1016,22 @@
       "id": "metrics-core",
       "name": "@accelerate/metrics-core",
       "category": "observability",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 4,
-      "path": null,
+      "path": "packages/metrics-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": false
     },
     {
       "id": "metrics-otel",
@@ -1028,14 +1052,22 @@
       "id": "tracing-core",
       "name": "@accelerate/tracing-core",
       "category": "observability",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 4,
-      "path": null,
+      "path": "packages/tracing-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": false
     },
     {
       "id": "tracing-otel",
@@ -1371,27 +1403,43 @@
       "id": "eslint-config",
       "name": "@accelerate/eslint-config",
       "category": "testing-dx",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 1,
-      "path": null,
+      "path": "packages/eslint-config",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": false
     },
     {
       "id": "typescript-config",
       "name": "@accelerate/typescript-config",
       "category": "testing-dx",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 1,
-      "path": null,
+      "path": "packages/typescript-config",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
-      }
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "testsComplete": false,
+      "documentationComplete": false
     },
     {
       "id": "ai-core",
