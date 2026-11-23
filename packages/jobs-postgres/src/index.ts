@@ -20,6 +20,7 @@ export interface PostgresJobWorkerOptions {
   workerId: string;
   pollIntervalMs?: number;
   leaseMs?: number;
+  heartbeatMs?: number;
   maxAttempts?: number;
   retryDelayMs?: number;
   onError?: (error: unknown, job: Job) => void;
@@ -45,9 +46,10 @@ export function createPostgresJobWorker(db: Queryable, options: PostgresJobWorke
   if (!options.workerId) throw new Error("workerId is required");
   const pollMs = options.pollIntervalMs ?? 1000;
   const leaseMs = options.leaseMs ?? 30000;
+  const heartbeatMs = options.heartbeatMs ?? Math.floor(leaseMs / 3);
   const maxAttempts = options.maxAttempts ?? 5;
   const retryMs = options.retryDelayMs ?? 1000;
-  if (![pollMs, leaseMs, retryMs].every(n => Number.isFinite(n) && n > 0) || !Number.isInteger(maxAttempts) || maxAttempts < 1) throw new RangeError("Invalid worker options");
+  if (![pollMs, leaseMs, retryMs, heartbeatMs].every(n => Number.isFinite(n) && n > 0) || heartbeatMs >= leaseMs || !Number.isInteger(maxAttempts) || maxAttempts < 1) throw new RangeError("Invalid worker options");
   const handlers = new Map<string, JobHandler<unknown>>();
   let running = false;
   let controller: AbortController | undefined;
@@ -64,10 +66,21 @@ export function createPostgresJobWorker(db: Queryable, options: PostgresJobWorke
     return row && { id: row.id, name: row.name, payload: row.payload, attempts: row.attempts, createdAt: new Date(row.created_at).toISOString() };
   }
   async function process(job: Job, signal: AbortSignal) {
+    let leaseLost = false;
+    let renewing = false;
+    const heartbeat = setInterval(() => {
+      if (renewing || leaseLost) return;
+      renewing = true;
+      void db.query("UPDATE accelerate_jobs SET locked_until=now()+($3 * interval '1 millisecond') WHERE id=$1 AND locked_by=$2 AND status='running' AND locked_until>now()", [job.id, options.workerId, leaseMs])
+        .then(result => { if (result.rowCount !== 1) leaseLost = true; })
+        .catch(error => { leaseLost = true; options.onError?.(error, job); })
+        .finally(() => { renewing = false; });
+    }, heartbeatMs);
     try {
       const handler = handlers.get(job.name);
       if (!handler) throw new Error(`No handler registered for ${job.name}`);
       await handler(job, signal);
+      if (leaseLost) throw new Error("Job lease lost during execution");
       await db.query("UPDATE accelerate_jobs SET status='completed', locked_by=NULL, locked_until=NULL WHERE id=$1 AND locked_by=$2 AND status='running'", [job.id, options.workerId]);
     } catch (error) {
       const terminal = job.attempts >= maxAttempts;
@@ -76,7 +89,7 @@ export function createPostgresJobWorker(db: Queryable, options: PostgresJobWorke
         WHERE id=$1 AND locked_by=$2 AND status='running'`,
         [job.id, options.workerId, terminal ? "failed" : "pending", String(error), retryMs * Math.min(job.attempts, 60)]);
       options.onError?.(error, job);
-    }
+    } finally { clearInterval(heartbeat); }
   }
   async function run(signal: AbortSignal) {
     while (!signal.aborted) {
