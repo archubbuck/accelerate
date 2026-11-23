@@ -53,14 +53,12 @@ jobs:
             else
               (cd "$pkg" && npm pack --dry-run)
             fi
-          done
+          done < <(node "$GITHUB_WORKSPACE/tools/registry/cli.mjs" publish-order)
       - name: Publish unpublished package versions with npm OIDC
         run: |
           set -euo pipefail
 
-          for pkg_dir in "$GITHUB_WORKSPACE"/packages/*; do
-            test -f "$pkg_dir/package.json" || continue
-            pkg="${pkg_dir##*/}"
+          while IFS= read -r pkg; do
             if [ "$pkg" = "authorization-angular" ] || [ "$pkg" = "logging-angular" ]; then
               cd "$GITHUB_WORKSPACE/packages/$pkg/dist"
             else
