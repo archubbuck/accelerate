@@ -33,13 +33,18 @@ jobs:
         run: |
           set -eu
           test -n "$NODE_AUTH_TOKEN" || { echo "NPM_TOKEN missing"; exit 1; }
-          for pkg in authorization-core authorization-angular authorization-react authorization-postgres; do
-            cd "$GITHUB_WORKSPACE/packages/$pkg"
+          for pkg in authorization-core authorization-angular authorization-react authorization-postgres logging-core logging-node logging-react logging-otel logging-angular; do
+            if [ "$pkg" = "authorization-angular" ] || [ "$pkg" = "logging-angular" ]; then
+              cd "$GITHUB_WORKSPACE/packages/$pkg/dist"
+            else
+              cd "$GITHUB_WORKSPACE/packages/$pkg"
+            fi
             name=$(node -p "require('./package.json').name")
             version=$(node -p "require('./package.json').version")
             if npm view "$name@$version" version --registry=https://registry.npmjs.org >/dev/null 2>&1; then
               echo "Already published: $name@$version"
             else
+              echo "Publishing: $name@$version"
               npm publish --access public
             fi
           done
