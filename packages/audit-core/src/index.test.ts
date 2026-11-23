@@ -1,0 +1,2 @@
+import { expect, it } from "vitest"; import { MemoryAuditStore } from "./index.js";
+it("appends and filters audit events", async () => { const store = new MemoryAuditStore(); const event = { id:"1", occurredAt:new Date(), actorId:"u", action:"login", resource:"session", outcome:"success" as const }; await store.append(event); expect(await store.find({actorId:"u"})).toHaveLength(1); expect(await store.find({actorId:"other"})).toHaveLength(0); await expect(store.append(event)).rejects.toThrow(); });
