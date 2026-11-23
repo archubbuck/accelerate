@@ -30,6 +30,9 @@ jobs:
                 test -f "packages/$pkg/dist/package.json"
                 (cd "packages/$pkg/dist" && npm pack --dry-run)
                 ;;
+              eslint-config|typescript-config)
+                (cd "packages/$pkg" && npm pack --dry-run)
+                ;;
               *)
                 test -f "packages/$pkg/dist/index.js"
                 (cd "packages/$pkg" && npm pack --dry-run)
