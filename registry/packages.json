@@ -479,9 +479,7 @@
       "wave": 2,
       "path": "packages/http-node",
       "dependencies": [
-        "http-core",
-        "errors-core",
-        "validation-core"
+        "http-core"
       ],
       "publication": {
         "status": "unpublished"
@@ -504,8 +502,7 @@
       "wave": 2,
       "path": "packages/http-client",
       "dependencies": [
-        "http-core",
-        "errors-core"
+        "http-core"
       ],
       "publication": {
         "status": "unpublished"
@@ -528,7 +525,8 @@
       "wave": 2,
       "path": "packages/http-react",
       "dependencies": [
-        "http-client"
+        "http-client",
+        "http-core"
       ],
       "publication": {
         "status": "unpublished"
@@ -536,8 +534,8 @@
       "version": "0.1.0",
       "workspaceDependencies": {
         "runtime": [
-          "@accelerate/http-core",
-          "@accelerate/http-client"
+          "@accelerate/http-client",
+          "@accelerate/http-core"
         ],
         "peer": [],
         "optional": []
@@ -552,7 +550,8 @@
       "wave": 2,
       "path": "packages/http-angular",
       "dependencies": [
-        "http-client"
+        "http-client",
+        "http-core"
       ],
       "publication": {
         "status": "unpublished"
@@ -560,8 +559,8 @@
       "version": "0.1.0",
       "workspaceDependencies": {
         "runtime": [
-          "@accelerate/http-core",
-          "@accelerate/http-client"
+          "@accelerate/http-client",
+          "@accelerate/http-core"
         ],
         "peer": [],
         "optional": []
