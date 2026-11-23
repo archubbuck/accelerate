@@ -13,6 +13,12 @@
       "dependencies": [],
       "publication": {
         "status": "unknown"
+      },
+      "version": "0.1.3",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -26,6 +32,12 @@
       "dependencies": [],
       "publication": {
         "status": "unknown"
+      },
+      "version": "0.1.3",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -39,6 +51,12 @@
       "dependencies": [],
       "publication": {
         "status": "unknown"
+      },
+      "version": "0.1.3",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -49,9 +67,19 @@
       "priority": "existing",
       "wave": 0,
       "path": "packages/authorization-postgres",
-      "dependencies": [],
+      "dependencies": [
+        "authorization-core"
+      ],
       "publication": {
         "status": "unknown"
+      },
+      "version": "0.1.3",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [
+          "@accelerate/authorization-core"
+        ],
+        "optional": []
       }
     },
     {
@@ -65,6 +93,12 @@
       "dependencies": [],
       "publication": {
         "status": "unknown"
+      },
+      "version": "0.1.1",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -75,9 +109,19 @@
       "priority": "existing",
       "wave": 0,
       "path": "packages/logging-node",
-      "dependencies": [],
+      "dependencies": [
+        "logging-core"
+      ],
       "publication": {
         "status": "unknown"
+      },
+      "version": "0.1.1",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/logging-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -88,9 +132,19 @@
       "priority": "existing",
       "wave": 0,
       "path": "packages/logging-react",
-      "dependencies": [],
+      "dependencies": [
+        "logging-core"
+      ],
       "publication": {
         "status": "unknown"
+      },
+      "version": "0.1.1",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [
+          "@accelerate/logging-core"
+        ],
+        "optional": []
       }
     },
     {
@@ -101,9 +155,19 @@
       "priority": "existing",
       "wave": 0,
       "path": "packages/logging-otel",
-      "dependencies": [],
+      "dependencies": [
+        "logging-core"
+      ],
       "publication": {
         "status": "unknown"
+      },
+      "version": "0.1.1",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/logging-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -114,9 +178,19 @@
       "priority": "existing",
       "wave": 0,
       "path": "packages/logging-angular",
-      "dependencies": [],
+      "dependencies": [
+        "logging-core"
+      ],
       "publication": {
         "status": "unknown"
+      },
+      "version": "0.1.1",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [
+          "@accelerate/logging-core"
+        ],
+        "optional": []
       }
     },
     {
