@@ -7,13 +7,14 @@ export function createNodeHttpHandler(handler: NodeHttpHandler, options: NodeHtt
  if (!Number.isSafeInteger(maxBodyBytes) || maxBodyBytes < 0) throw new RangeError("Invalid maxBodyBytes");
  return async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
   try {
-   const chunks: Buffer[] = []; let bytes = 0;
+   const chunks: Buffer[] = []; let bytes = 0; let tooLarge = false;
    for await (const chunk of req) {
     const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
     bytes += buffer.length;
-    if (bytes > maxBodyBytes) { res.writeHead(413,{"content-type":"application/json"}); res.end(JSON.stringify({error:{code:"PAYLOAD_TOO_LARGE",message:"Request body too large"}})); return; }
+    if (bytes > maxBodyBytes) { tooLarge = true; continue; }
     chunks.push(buffer);
    }
+   if (tooLarge) { res.writeHead(413,{"content-type":"application/json"}); res.end(JSON.stringify({error:{code:"PAYLOAD_TOO_LARGE",message:"Request body too large"}})); return; }
    const raw = Buffer.concat(chunks).toString("utf8");
    const headers: Record<string,string> = {};
    for (const [key,value] of Object.entries(req.headers)) if (typeof value === "string") headers[key] = value; else if (Array.isArray(value)) headers[key] = value.join(", ");
