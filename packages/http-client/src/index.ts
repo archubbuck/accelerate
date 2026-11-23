@@ -19,7 +19,7 @@ export function createHttpClient(options: FetchClientOptions = {}): HttpTranspor
   const response = await fetcher(url,{method:request.method,headers,body,signal});
   const raw = response.status === 204 || response.status === 205 || request.method.toUpperCase() === "HEAD" ? "" : await response.text();
   const contentType = response.headers.get("content-type") ?? "";
-  const parsed: unknown = raw && /(?:^|\\/)json(?:;|$)|\\+json(?:;|$)/i.test(contentType) ? JSON.parse(raw) : raw || undefined;
+  const parsed: unknown = raw && (contentType.toLowerCase().includes("application/json") || contentType.toLowerCase().includes("+json")) ? JSON.parse(raw) : raw || undefined;
   return {status:response.status,headers:normalizeHeaders(response.headers),body:parsed as T};
  }};
 }
