@@ -15,6 +15,9 @@ The following packages are implemented in source and awaiting independent public
 | `@accelerate/errors-core` | Typed errors and safe API error responses | [README](packages/errors-core/README.md) |
 | `@accelerate/validation-core` | Framework-neutral validation schemas and typed results | [README](packages/validation-core/README.md) |
 | `@accelerate/config-core` | Typed configuration parsing, defaults, and fail-fast errors | [README](packages/config-core/README.md) |
+| `@accelerate/config-node` | Node.js environment configuration adapter | [README](packages/config-node/README.md) |
+| `@accelerate/health-core` | Dependency health check aggregation and timeouts | [README](packages/health-core/README.md) |
+| `@accelerate/health-node` | Node.js HTTP health endpoint adapter | [README](packages/health-node/README.md) |
 
 ### Authorization
 
