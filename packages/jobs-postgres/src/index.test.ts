@@ -19,6 +19,26 @@ describe("postgres jobs", () => {
     expect(handler).toHaveBeenCalledOnce();
     expect(query.mock.calls.some(([sql]) => String(sql).includes("status='completed'"))).toBe(true);
   });
+  it("rejects a heartbeat interval that exceeds the lease", () => {
+    expect(() => createPostgresJobWorker({ query: vi.fn() }, { workerId: "w", leaseMs: 100, heartbeatMs: 100 })).toThrow();
+  });
+  it("renews a lease while a handler is running", async () => {
+    let claimed = false;
+    const query = vi.fn(async (sql: string) => {
+      if (sql.includes("RETURNING id,name,payload")) {
+        if (claimed) return { rows: [], rowCount: 0 };
+        claimed = true;
+        return { rows: [{ id: "job-1", name: "slow", payload: {}, attempts: 1, created_at: "2026-01-01T00:00:00Z" }], rowCount: 1 };
+      }
+      return { rows: [], rowCount: 1 };
+    });
+    const worker = createPostgresJobWorker({ query }, { workerId: "w", pollIntervalMs: 5, leaseMs: 90, heartbeatMs: 10 });
+    worker.register("slow", async () => { await new Promise(resolve => setTimeout(resolve, 45)); });
+    await worker.start();
+    await new Promise(resolve => setTimeout(resolve, 70));
+    await worker.stop();
+    expect(query.mock.calls.some(([sql]) => String(sql).includes("SET locked_until="))).toBe(true);
+  });
   it("rejects invalid worker configuration", () => {
     expect(() => createPostgresJobWorker({ query: vi.fn() }, { workerId: "", leaseMs: -1 })).toThrow();
   });
