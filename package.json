@@ -14,7 +14,11 @@
     "registry:validate": "node tools/registry/cli.mjs validate",
     "registry:docs": "node tools/registry/cli.mjs docs",
     "registry:sync": "node tools/registry/cli.mjs sync",
-    "registry:test": "node --test tools/registry/*.test.mjs"
+    "registry:test": "node --test tools/registry/*.test.mjs",
+    "registry:next": "node tools/registry/cli.mjs next",
+    "registry:search": "node tools/registry/cli.mjs search",
+    "registry:readiness": "node tools/registry/cli.mjs readiness",
+    "registry:agent-context": "node tools/registry/cli.mjs agent-context"
   },
   "devDependencies": {
     "typescript": "~5.8.3",
