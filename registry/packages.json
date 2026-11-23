@@ -815,8 +815,9 @@
       "wave": 4,
       "path": "packages/events-postgres",
       "dependencies": [
-        "events-core",
-        "data-postgres"
+        "data-core",
+        "data-postgres",
+        "events-core"
       ],
       "publication": {
         "status": "unpublished"
@@ -826,9 +827,9 @@
       "documentationComplete": false,
       "workspaceDependencies": {
         "runtime": [
-          "@accelerate/events-core",
+          "@accelerate/data-core",
           "@accelerate/data-postgres",
-          "@accelerate/data-core"
+          "@accelerate/events-core"
         ],
         "peer": [],
         "optional": []
@@ -864,8 +865,9 @@
       "wave": 4,
       "path": "packages/jobs-postgres",
       "dependencies": [
-        "jobs-core",
-        "data-postgres"
+        "data-core",
+        "data-postgres",
+        "jobs-core"
       ],
       "publication": {
         "status": "unpublished"
@@ -875,9 +877,9 @@
       "documentationComplete": false,
       "workspaceDependencies": {
         "runtime": [
-          "@accelerate/jobs-core",
+          "@accelerate/data-core",
           "@accelerate/data-postgres",
-          "@accelerate/data-core"
+          "@accelerate/jobs-core"
         ],
         "peer": [],
         "optional": []
