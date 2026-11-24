@@ -28,3 +28,31 @@ export function transformSource(fileName,source,edits){
  if(parseSource(fileName,result).diagnostics.length)throw new Error('TRANSFORM_PARSE_ERROR');
  return result;
 }
+
+/** Add a named value import without rewriting existing declarations. */
+export function ensureNamedImport(fileName,source,{moduleSpecifier,imported,local=imported}){
+ const {ast,diagnostics}=parseSource(fileName,source);
+ if(diagnostics.length)throw new Error('SOURCE_PARSE_ERROR');
+ if(typeof moduleSpecifier!=='string'||!moduleSpecifier||![imported,local].every(n=>typeof n==='string'&&/^[A-Za-z_$][\w$]*$/.test(n)))throw new Error('INVALID_IMPORT');
+ for(const statement of ast.statements){
+  if(!ts.isImportDeclaration(statement)||!ts.isStringLiteral(statement.moduleSpecifier))continue;
+  const clause=statement.importClause;
+  if(statement.moduleSpecifier.text===moduleSpecifier&&!clause?.isTypeOnly&&clause?.namedBindings&&ts.isNamedImports(clause.namedBindings)){
+   for(const element of clause.namedBindings.elements){
+    if(!element.isTypeOnly&&element.name.text===local&&(element.propertyName??element.name).text===imported)return source;
+   }
+  }
+ }
+ // Conservative collision detection: reject any existing identifier with the proposed local name.
+ if(findNodes(ast,n=>ts.isIdentifier(n)&&n.text===local).length)throw new Error('IMPORT_BINDING_CONFLICT');
+ const newline=source.includes('\r\n')?'\r\n':'\n';
+ const declaration='import { '+imported+(local===imported?'':' as '+local)+' } from '+JSON.stringify(moduleSpecifier)+';'+newline;
+ // Append after the last import or directive, preserving shebangs and leading comments.
+ let offset=ast.statements[0]?.getStart(ast)??source.length;
+ for(const statement of ast.statements){
+  if(ts.isImportDeclaration(statement)||(ts.isExpressionStatement(statement)&&ts.isStringLiteral(statement.expression)))offset=statement.end;
+  else break;
+ }
+ const prefix=offset>0&&!/[\r\n]$/.test(source.slice(0,offset))?newline:'';
+ return transformSource(fileName,source,[{start:offset,end:offset,expected:'',text:prefix+declaration}]);
+}
