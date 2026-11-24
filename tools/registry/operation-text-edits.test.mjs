@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport,findSymbolReferences,planLocalRename} from '../../packages/tooling-ast/src/index.mjs';
+import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport,findSymbolReferences,planLocalRename,rewriteImportModule,planUnusedImportRemoval} from '../../packages/tooling-ast/src/index.mjs';
 test('preserves unrelated source and orders edits',()=>{
  assert.equal(applyTextEdits('abc def',[{start:4,end:7,expected:'def',text:'XYZ'},{start:0,end:3,expected:'abc',text:'123'}]),'123 XYZ');
 });
@@ -51,4 +51,14 @@ test('local rename preserves shadowed bindings and rejects collisions',()=>{
  const result=planLocalRename(files,'/example.ts',source.indexOf('flag'),'enabled');
  assert.equal(result.source,'const enabled = 1; function f(){ const flag = 2; return flag; } console.log(enabled);');
  assert.throws(()=>planLocalRename(files,'/example.ts',source.indexOf('flag'),'f'),/RENAME_COLLISION/);
+});
+
+test('module rewrite only changes matching static imports',()=>{
+ const source="import { x } from 'old'; const label = 'old';";
+ assert.equal(rewriteImportModule('a.ts',source,'old','new').source,'import { x } from "new"; const label = \'old\';');
+});
+test('unused import removal preserves side effects and rejects usage',()=>{
+ const options={moduleSpecifier:'pkg',local:'x'};
+ assert.equal(planUnusedImportRemoval('a.ts',"import { x } from 'pkg';",options).source,"import 'pkg';");
+ assert.throws(()=>planUnusedImportRemoval('a.ts',"import { x } from 'pkg'; console.log(x);",options),/IMPORT_POTENTIALLY_USED/);
 });
