@@ -84,3 +84,26 @@ export function findSymbolReferences(files,fileName,position){
  }
  return {references,resolved:true,complete:false};
 }
+
+/** Preview a conservative local binding rename. Exported and aliased symbols are excluded. */
+export function planLocalRename(files,fileName,position,newName){
+ if(typeof newName!=='string'||!/^[A-Za-z_$][\w$]*$/.test(newName)||ts.stringToToken(newName)!==undefined)throw new Error('INVALID_IDENTIFIER');
+ const result=findSymbolReferences(files,fileName,position);
+ if(!result.resolved||!result.references.length)throw new Error('UNRESOLVED_SYMBOL');
+ const source=files[fileName],{ast,diagnostics}=parseSource(fileName,source);
+ if(diagnostics.length)throw new Error('SOURCE_PARSE_ERROR');
+ const original=result.references[0].text;
+ if(result.references.some(r=>r.fileName!==fileName||r.text!==original))throw new Error('CROSS_FILE_OR_ALIAS_RENAME_UNSUPPORTED');
+ const nodes=findNodes(ast,n=>ts.isIdentifier(n)&&result.references.some(r=>r.start===n.getStart(ast)));
+ // Restrict to ordinary variable declarations and expression references; reject property shorthand,
+ // imports, exports and other contexts that can change public names or object shape.
+ const declarations=nodes.filter(n=>ts.isVariableDeclaration(n.parent)&&n.parent.name===n);
+ if(declarations.length!==1)throw new Error('UNSUPPORTED_BINDING');
+ const declaration=declarations[0];
+ if(!ts.isVariableStatement(declaration.parent.parent.parent)||declaration.parent.parent.parent.modifiers?.some(m=>m.kind===ts.SyntaxKind.ExportKeyword))throw new Error('UNSUPPORTED_BINDING');
+ if(nodes.some(n=>n!==declaration&&(ts.isShorthandPropertyAssignment(n.parent)||ts.isExportSpecifier(n.parent)||ts.isImportSpecifier(n.parent)||ts.isBindingElement(n.parent)||ts.isPropertyAccessExpression(n.parent)&&n.parent.name===n)))throw new Error('UNSUPPORTED_REFERENCE');
+ if(newName===original)return {status:'no-op',edits:[],complete:false};
+ if(findNodes(ast,n=>ts.isIdentifier(n)&&n.text===newName).length)throw new Error('RENAME_COLLISION');
+ const edits=result.references.map(r=>({start:r.start,end:r.end,expected:r.text,text:newName}));
+ return {status:'success',edits,source:transformSource(fileName,source,edits),complete:false};
+}
