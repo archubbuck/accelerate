@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport} from '../../packages/tooling-ast/src/index.mjs';
+import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport,findSymbolReferences} from '../../packages/tooling-ast/src/index.mjs';
 test('preserves unrelated source and orders edits',()=>{
  assert.equal(applyTextEdits('abc def',[{start:4,end:7,expected:'def',text:'XYZ'},{start:0,end:3,expected:'abc',text:'123'}]),'123 XYZ');
 });
@@ -28,4 +28,12 @@ test('named imports preserve directives and are idempotent',()=>{
  assert.ok(result.includes('import { FeatureFlags } from "@accelerate/feature-flags-core";'));
  assert.equal(ensureNamedImport('example.ts',result,options),result);
  assert.throws(()=>ensureNamedImport('example.ts','const FeatureFlags = 1;',options),/IMPORT_BINDING_CONFLICT/);
+});
+
+test('symbol references exclude shadowed identifiers',()=>{
+ const source='const flag = 1; function f(){ const flag = 2; return flag; } console.log(flag);';
+ const result=findSymbolReferences({'/example.ts':source},'/example.ts',source.indexOf('flag'));
+ assert.equal(result.resolved,true);
+ assert.deepEqual(result.references.map(r=>r.start),[source.indexOf('flag'),source.lastIndexOf('flag')]);
+ assert.equal(result.complete,false);
 });
