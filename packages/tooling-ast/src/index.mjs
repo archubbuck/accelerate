@@ -56,3 +56,31 @@ export function ensureNamedImport(fileName,source,{moduleSpecifier,imported,loca
  const prefix=offset>0&&!/[\r\n]$/.test(source.slice(0,offset))?newline:'';
  return transformSource(fileName,source,[{start:offset,end:offset,expected:'',text:prefix+declaration}]);
 }
+
+/** Resolve references within an explicitly supplied virtual TypeScript project. */
+export function findSymbolReferences(files,fileName,position){
+ const normalize=n=>n.replace(/\\/g,'/');
+ const sources=new Map(Object.entries(files).map(([n,s])=>[normalize(n),s]));
+ const options={noLib:true,noResolve:false,target:ts.ScriptTarget.Latest,module:ts.ModuleKind.ESNext,moduleResolution:ts.ModuleResolutionKind.Bundler};
+ const host={
+  getSourceFile(n){const s=sources.get(normalize(n));return s===undefined?undefined:ts.createSourceFile(n,s,options.target,true);},
+  getDefaultLibFileName:()=>'',writeFile(){},getCurrentDirectory:()=>'/',
+  getDirectories:()=>[],fileExists:n=>sources.has(normalize(n)),readFile:n=>sources.get(normalize(n)),
+  getCanonicalFileName:normalize,useCaseSensitiveFileNames:()=>true,getNewLine:()=>'\n'
+ };
+ const program=ts.createProgram([...sources.keys()],options,host),checker=program.getTypeChecker();
+ const source=program.getSourceFile(fileName);
+ if(!source||!Number.isInteger(position)||position<0||position>=source.text.length)throw new Error('INVALID_SYMBOL_POSITION');
+ const identifier=findNodes(source,n=>ts.isIdentifier(n)&&n.getStart(source)<=position&&position<n.end)[0];
+ const symbol=identifier&&checker.getSymbolAtLocation(identifier);
+ if(!symbol)return {references:[],resolved:false,complete:false};
+ const canonical=s=>s&&(s.flags&ts.SymbolFlags.Alias?checker.getAliasedSymbol(s):s);
+ const target=canonical(symbol),references=[];
+ if(!target?.declarations?.length)return {references,resolved:false,complete:false};
+ for(const sf of program.getSourceFiles()){
+  for(const n of findNodes(sf,ts.isIdentifier)){
+   if(canonical(checker.getSymbolAtLocation(n))===target)references.push({fileName:sf.fileName,start:n.getStart(sf),end:n.end,text:n.text});
+  }
+ }
+ return {references,resolved:true,complete:false};
+}
