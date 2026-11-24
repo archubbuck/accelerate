@@ -8,4 +8,6 @@ Experimental deterministic TypeScript/JavaScript source transformations.
 - `transformSource`: syntax checks before and after edits.
 - `ensureNamedImport`: conservative, idempotent named value import insertion; rejects identifier collisions.
 
-Semantic symbol resolution and cross-file transformations are not yet implemented.
+- `findSymbolReferences`: compiler symbol identity within explicitly supplied virtual files, excluding shadowed bindings. No filesystem or installed dependency resolution; results are not exhaustive.
+
+Cross-file transformations and full semantic validation are not yet implemented.
