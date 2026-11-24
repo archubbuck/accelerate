@@ -1940,6 +1940,25 @@
         "peer": [],
         "optional": []
       }
+    },
+    {
+      "id": "tooling-ast",
+      "name": "@accelerate/tooling-ast",
+      "category": "agent-tooling",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 6,
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      },
+      "path": "packages/tooling-ast",
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
     }
   ]
 }
