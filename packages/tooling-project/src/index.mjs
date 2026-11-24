@@ -210,7 +210,7 @@ export async function inspectInstalledCapabilities(root){
  for(const pkg of project.installed){
   try{
    const file=path.join(base,'node_modules',pkg.name,'package.json');
-   const manifest=JSON.parse(await readFile(file,'utf8'));
+   const manifest=await readManifest(path.dirname(file));
    if(manifest.name!==pkg.name||manifest.version!==pkg.version)throw Error('PACKAGE_CHANGED');
    const declaration=manifest.accelerate?.operations;
    if(declaration===undefined){packages.push({...pkg,status:'not-declared'});continue;}
@@ -222,4 +222,35 @@ export async function inspectInstalledCapabilities(root){
   }catch{diagnostics.push({package:pkg.name,code:'CAPABILITY_DECLARATION_UNREADABLE_OR_INVALID'});packages.push({...pkg,status:'invalid'});}
  }
  return {packages,diagnostics,handlersLoaded:false,compatibilityVerified:false};
+}
+
+/** Resolve a bounded chain of local JSON configuration files, without executing project code.
+ * Compiler glob expansion and package-based extends are intentionally not supported.
+ */
+export async function inspectConfigInheritance(root,configPath='tsconfig.json'){
+ const base=await realpath(root),chain=[],seen=new Set(),diagnostics=[];
+ let relative=configPath,options={};
+ try{
+  while(relative!==null){
+   if(typeof relative!=='string'||!relative.split('/').every(s=>/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(s))||!relative.endsWith('.json'))throw Error('UNSAFE_CONFIG_PATH');
+   if(seen.has(relative))throw Error('CONFIG_CYCLE');
+   if(chain.length>=32)throw Error('CONFIG_DEPTH_LIMIT');
+   seen.add(relative);
+   const file=path.join(base,relative),stat=await lstat(file);
+   if(await realpath(file)!==file||!stat.isFile()||stat.size>1048576)throw Error('UNSAFE_CONFIG');
+   const config=JSON.parse(await readFile(file,'utf8'));
+   if(!config||typeof config!=='object'||Array.isArray(config))throw Error('INVALID_CONFIG');
+   const own=config.compilerOptions??{};
+   if(typeof own!=='object'||Array.isArray(own))throw Error('INVALID_COMPILER_OPTIONS');
+   chain.push(relative);
+   options={...own,...options};
+   if(config.extends===undefined){relative=null;continue;}
+   if(typeof config.extends!=='string'||!config.extends.startsWith('./'))throw Error('UNSUPPORTED_EXTENDS');
+   const segments=config.extends.slice(2).split('/');
+   if(!segments.every(s=>/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(s)))throw Error('UNSAFE_EXTENDS');
+   relative=path.posix.join(path.posix.dirname(relative),...segments);
+   if(!relative.endsWith('.json'))relative+='.json';
+  }
+ }catch(e){diagnostics.push({path:typeof relative==='string'?relative:configPath,code:'CONFIG_INHERITANCE_UNRESOLVED'});}
+ return {chain,declaredCompilerOptions:options,diagnostics,inheritanceResolved:diagnostics.length===0,configurationResolved:false,sourceCoverageVerified:false};
 }
