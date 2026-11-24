@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
-import {discoverPackages,inspectWorkspace,inspectDependencyGraph} from '../../packages/tooling-project/src/index.mjs';
+import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies} from '../../packages/tooling-project/src/index.mjs';
 test('discovers candidate packages and excludes dependency directories',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-discovery-'));
  try{
@@ -32,5 +32,23 @@ test('workspace membership and declared internal dependencies',async()=>{
   const graph=await inspectDependencyGraph(root,result.members.map(p=>p.path));
   assert.deepEqual(graph.edges,[{from:'a',to:'b',section:'dependencies',range:'workspace:*'}]);
   await assert.rejects(inspectDependencyGraph(root,['../outside']),/INVALID_PACKAGE_PATHS/);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('pnpm simple workspace and dependency ordering',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-pnpm-'));
+ try{
+  await writeFile(path.join(root,'package.json'),'{"name":"root"}');
+  await writeFile(path.join(root,'pnpm-workspace.yaml'),"packages:\n  - 'packages/*'\n");
+  for(const name of ['a','b']){
+   await mkdir(path.join(root,'packages',name),{recursive:true});
+   await writeFile(path.join(root,'packages',name,'package.json'),JSON.stringify({name,dependencies:name==='a'?{b:'workspace:*'}:{}}));
+  }
+  const workspace=await inspectWorkspace(root);
+  assert.equal(workspace.workspaceMembershipVerified,true);
+  const graph=await inspectDependencyGraph(root,workspace.members.map(p=>p.path));
+  assert.deepEqual(orderDependencies(graph).order,['b','a']);
+  graph.edges.push({from:'b',to:'a',section:'dependencies',range:'workspace:*'});
+  assert.deepEqual(orderDependencies(graph),{order:[],blocked:['a','b'],acyclic:false});
  }finally{await rm(root,{recursive:true,force:true});}
 });
