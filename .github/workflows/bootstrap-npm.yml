@@ -6,6 +6,9 @@ on:
         description: 'Type BOOTSTRAP to publish missing @accelerate packages with NPM_TOKEN'
         required: true
         type: string
+concurrency:
+  group: accelerate-npm-release
+  cancel-in-progress: false
 jobs:
   bootstrap:
     if: ${{ inputs.confirm == 'BOOTSTRAP' }}
@@ -36,33 +39,10 @@ jobs:
       - name: Audit package artifacts
         run: pnpm registry:audit
       - name: Verify package archives
-        run: |
-          set -euo pipefail
-          node tools/registry/cli.mjs publish-order > /tmp/accelerate-packages.txt
-          while IFS= read -r pkg; do
-            case "$pkg" in
-              authorization-angular|logging-angular) (cd "packages/$pkg/dist" && npm pack --dry-run) ;;
-              *) (cd "packages/$pkg" && npm pack --dry-run) ;;
-            esac
-          done < /tmp/accelerate-packages.txt
-      - name: Publish only missing package versions
+        run: node tools/registry/release.mjs pack
+      - name: Publish missing package versions
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          set -euo pipefail
           test -n "$NODE_AUTH_TOKEN" || { echo "NPM_TOKEN missing"; exit 1; }
-          while IFS= read -r pkg; do
-            if [ "$pkg" = "authorization-angular" ] || [ "$pkg" = "logging-angular" ]; then
-              cd "$GITHUB_WORKSPACE/packages/$pkg/dist"
-            else
-              cd "$GITHUB_WORKSPACE/packages/$pkg"
-            fi
-            name=$(node -p "require('./package.json').name")
-            version=$(node -p "require('./package.json').version")
-            if npm view "$name@$version" version --registry=https://registry.npmjs.org >/dev/null 2>&1; then
-              echo "Already published: $name@$version"
-            else
-              echo "Publishing: $name@$version"
-              npm publish --access public
-            fi
-          done < <(node "$GITHUB_WORKSPACE/tools/registry/cli.mjs" publish-order)
+          node tools/registry/release.mjs publish

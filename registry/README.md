@@ -34,3 +34,7 @@ Readiness is intentionally conservative: the presence of source code does not pr
 ## Prepublication artifact audit
 
 After building the workspace, run `pnpm registry:audit`. This checks publish manifests, compiled JavaScript and declaration entrypoints, npm access settings, and internal dependency version alignment. Run `pnpm registry:test` to execute the audit's automated tests along with the other registry tests. The audit does not publish packages and does not replace `npm pack --dry-run` or a consumer smoke test.
+
+## Publishing
+
+Both npm release workflows use `node tools/registry/release.mjs` to discover public workspace packages from the registry, order dependencies first, detect generated distribution manifests, verify archives and publish missing versions. Run `node tools/registry/release.mjs plan` after building to preview the release. Existing npm versions are immutable: bump changed package versions and synchronize dependent manifests and registry metadata before release. Only a confirmed npm 404 permits publishing; other lookup errors stop the release. New npm packages may require token bootstrap and trusted publisher configuration before OIDC releases.

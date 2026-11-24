@@ -13,7 +13,7 @@ export function auditWorkspace(root, workspace = readWorkspace(root)) {
     if (pkg.publishConfig?.access !== 'public') errors.push(id + ': public npm access not configured');
     // Only ng-packagr packages publish a generated manifest from dist.
     // Other Angular adapters use tsc and publish their workspace manifest.
-    const angular = id === 'authorization-angular' || id === 'logging-angular';
+    const angular = existsSync(join(root, path, 'dist', 'package.json')) || /ng-packagr/.test(pkg.scripts?.build || '');
     const packageDir = join(root, path, ...(angular ? ['dist'] : []));
     const manifestPath = join(packageDir, 'package.json');
     if (!existsSync(manifestPath)) { errors.push(id + ': missing publish manifest at ' + manifestPath); continue; }
