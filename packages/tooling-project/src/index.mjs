@@ -155,3 +155,23 @@ export async function classifyPackage(root){
  if(evidence.includes('start-script')&&evidence.includes('framework-dependency'))roles.push('application');
  return {name:project.name,roles:roles.length?roles:['unknown'],evidence,frameworks:project.frameworks,verified:false};
 }
+
+/** Inspect conventional source roots and explicit JSON configuration without executing project code. */
+export async function inspectSourceLayout(root){
+ const base=await realpath(root),roots=[],configs=[],diagnostics=[];
+ for(const name of ['src','app','pages','lib','test','tests']){
+  try{if((await lstat(path.join(base,name))).isDirectory())roots.push(name);}
+  catch(e){if(e.code!=='ENOENT')diagnostics.push({path:name,code:'SOURCE_ROOT_UNREADABLE'});}
+ }
+ const entries=await readdir(base,{withFileTypes:true});
+ for(const entry of entries.filter(e=>/^tsconfig(?:\.[a-zA-Z0-9_-]+)*\.json$/.test(e.name)).sort((a,b)=>a.name.localeCompare(b.name,'en'))){
+  try{
+   const file=path.join(base,entry.name),stat=await lstat(file);
+   if(!stat.isFile()||stat.size>1048576)throw Error('UNSAFE_CONFIG');
+   const config=JSON.parse(await readFile(file,'utf8'));
+   if(!config||typeof config!=='object'||Array.isArray(config))throw Error('INVALID_CONFIG');
+   configs.push({path:entry.name,extends:config.extends??null,rootDir:config.compilerOptions?.rootDir??null,include:config.include??null,exclude:config.exclude??null,files:config.files??null,references:config.references??null});
+  }catch{diagnostics.push({path:entry.name,code:'CONFIG_UNSUPPORTED_OR_UNREADABLE'});}
+ }
+ return {roots,configs,diagnostics,configurationResolved:false,sourceCoverageVerified:false};
+}
