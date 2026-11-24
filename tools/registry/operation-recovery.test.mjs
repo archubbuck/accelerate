@@ -1,0 +1,25 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,rm,unlink,rename} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {planCreation,planReplacement,planDeletion,planRename,planRecovery} from '../../packages/tooling-patches/src/index.mjs';
+import {prepareJournal} from '../../packages/tooling-patches/src/journal.mjs';
+test('recovery classifies mixed interrupted states without exposing content',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-recovery-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ for(const f of ['a','b','c'])await writeFile(path.join(root,f),'original-'+f);
+ const changes=[await planCreation(root,'new','new'),await planReplacement(root,'a',()=> 'updated'),await planDeletion(root,'b'),await planRename(root,'c','renamed')];
+ await prepareJournal(root,changes);
+ assert.deepEqual((await planRecovery(root)).entries.map(e=>e.state),['original','original','original','original']);
+ await writeFile(path.join(root,'new'),'new');
+ await writeFile(path.join(root,'a'),'updated');
+ await unlink(path.join(root,'b'));
+ await rename(path.join(root,'c'),path.join(root,'renamed'));
+ assert.deepEqual((await planRecovery(root)).entries.map(e=>e.state),['applied','applied','applied','applied']);
+ await writeFile(path.join(root,'a'),'unrelated');
+ const result=await planRecovery(root);
+ assert.equal(result.status,'conflict');
+ assert.equal(result.entries[1].state,'conflict');
+ assert.ok(!JSON.stringify(result).includes('original-a'));
+});
