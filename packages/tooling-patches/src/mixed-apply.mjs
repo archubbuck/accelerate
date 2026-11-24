@@ -1,3 +1,4 @@
+import {acquireProjectLock} from './lock.mjs';
 import {open,unlink,link,rename,realpath,lstat} from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
 import path from 'node:path';
@@ -24,7 +25,7 @@ export async function applyMixedPlan(root,changes,{apply=false,verify}={}){
  if(!apply)return {status:'blocked',diagnostics:[{code:'EXPLICIT_APPLY_REQUIRED'}]};
  const base=await realpath(root),lockPath=path.join(base,'.accelerate-operation.lock');
  let lock;
- try{lock=await open(lockPath,'wx',0o600);}catch{return {status:'blocked',diagnostics:[{code:'PROJECT_LOCK_UNAVAILABLE'}]};}
+ try{lock=await acquireProjectLock(base);}catch{return {status:'blocked',diagnostics:[{code:'PROJECT_LOCK_UNAVAILABLE'}]};}
  const undo=[],diagnostics=[];
  let journalPrepared=false;
  try{
@@ -69,5 +70,5 @@ export async function applyMixedPlan(root,changes,{apply=false,verify}={}){
   for(const revert of undo.reverse())try{await revert();}catch{diagnostics.push({code:'ROLLBACK_CONFLICT'});}
   if(journalPrepared&&diagnostics.length===1){try{await clearJournal(base);}catch{diagnostics.push({code:'JOURNAL_CLEANUP_FAILED'});}}
   return {status:diagnostics.length>1?'partial':'failed',diagnostics};
- }finally{await lock.close();await unlink(lockPath);}
+ }finally{await lock.release();}
 }
