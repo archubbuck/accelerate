@@ -32,3 +32,30 @@ export async function inspectProject(root){
  }
  return {name:typeof manifest.name==='string'?manifest.name:null,packageManager:typeof manifest.packageManager==='string'?manifest.packageManager:null,markers:markers.filter(n=>names.has(n)),frameworks,frameworkEvidence:'declared-dependencies',accelerateDependencies:dependencies.filter(d=>d.name.startsWith('@accelerate/')).sort((a,b)=>a.name.localeCompare(b.name,'en')||a.section.localeCompare(b.section,'en')),installed,limitations:['Root manifest only; workspace members and lockfile resolutions are not inspected','Installed versions are local package metadata, not verified runtime compatibility']};
 }
+
+/** Discover candidate package boundaries without following symlinks or scanning dependencies. */
+export async function discoverPackages(root,{maxDepth=5,maxDirectories=2000}={}){
+ if(!Number.isInteger(maxDepth)||maxDepth<0||maxDepth>20||!Number.isInteger(maxDirectories)||maxDirectories<1||maxDirectories>100000)throw new Error('INVALID_DISCOVERY_LIMIT');
+ const base=await realpath(root),packages=[],diagnostics=[];
+ const queue=[{relative:'.',depth:0}];
+ let visited=0;
+ const excluded=new Set(['node_modules','dist','build','coverage','vendor']);
+ while(queue.length&&visited<maxDirectories){
+  const {relative,depth}=queue.shift(),dir=path.join(base,relative);
+  visited++;
+  let entries;
+  try{
+   if(!(await lstat(dir)).isDirectory())throw new Error('UNSAFE_DIRECTORY');
+   entries=await readdir(dir,{withFileTypes:true});
+  }catch{diagnostics.push({path:relative,code:'DIRECTORY_UNREADABLE'});continue;}
+  if(entries.some(e=>e.name==='package.json'&&e.isFile())){
+   try{packages.push({path:relative,...await inspectProject(dir)});}
+   catch{diagnostics.push({path:relative,code:'MANIFEST_INVALID'});}
+  }
+  const children=entries.filter(e=>e.isDirectory()&&!e.name.startsWith('.')&&!excluded.has(e.name)).sort((a,b)=>a.name.localeCompare(b.name,'en'));
+  if(depth===maxDepth){if(children.length)diagnostics.push({path:relative,code:'DEPTH_LIMIT'});continue;}
+  for(const child of children)queue.push({relative:relative==='.'?child.name:relative+'/'+child.name,depth:depth+1});
+ }
+ if(queue.length)diagnostics.push({path:'.',code:'DIRECTORY_LIMIT'});
+ return {packages,diagnostics,visited,complete:diagnostics.length===0,workspaceMembershipVerified:false};
+}
