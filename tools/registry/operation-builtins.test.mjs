@@ -26,5 +26,19 @@ test('registered feature flag operation previews without writing',async t=>{
  assert.equal((await executeBuiltin(root,{...request,input:{...request.input,enabled:'false'}})).diagnostics[0].code,'INVALID_INPUT');
  await writeFile(path.join(root,'flags.json'),result.changes[0].content);
  assert.equal((await executeBuiltin(root,request)).status,'no-op');
- assert.equal((await executeBuiltin(root,{...request,options:{mode:'apply'}})).status,'unsupported');
+ assert.equal((await executeBuiltin(root,{...request,options:{mode:'apply'}})).status,'no-op');
+});
+
+test('registration and update apply through journaled executor',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-apply-builtin-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const file=path.join(root,'flags.json');
+ await writeFile(file,'[]');
+ const request={schemaVersion:'1.0',operation:'feature-flags.register',operationVersion:'1.0.0',input:{target:'flags.json',key:'dashboard',enabled:false},options:{mode:'apply'}};
+ assert.equal((await executeBuiltin(root,request)).status,'success');
+ assert.deepEqual(JSON.parse(await readFile(file,'utf8')),[{key:'dashboard',enabled:false}]);
+ assert.equal((await executeBuiltin(root,request)).status,'no-op');
+ assert.equal((await executeBuiltin(root,{...request,operation:'feature-flags.update',input:{...request.input,enabled:true}})).status,'success');
+ assert.deepEqual(JSON.parse(await readFile(file,'utf8')),[{key:'dashboard',enabled:true}]);
+ await assert.rejects(readFile(path.join(root,'.accelerate-operation-journal.json')),{code:'ENOENT'});
 });
