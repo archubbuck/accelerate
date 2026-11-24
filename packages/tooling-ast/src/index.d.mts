@@ -12,3 +12,6 @@ export interface SourceEditPlan {status:'success'|'no-op';edits:TextEdit[];sourc
 export function rewriteImportModule(fileName:string,source:string,from:string,to:string):SourceEditPlan;
 export function planUnusedImportRemoval(fileName:string,source:string,options:{moduleSpecifier:string;local:string}):SourceEditPlan;
 export function planSourceTransforms(files:Readonly<Record<string,string>>,changes:readonly {fileName:string;edits:readonly TextEdit[]}[]):{status:'success'|'no-op';plans:{fileName:string;before:string;after:string}[];verification:{syntax:true;semantic:false}};
+export interface SemanticDiagnostic extends ParseDiagnostic {fileName:string|null}
+export function inspectSemanticDiagnostics(files:Readonly<Record<string,string>>):SemanticDiagnostic[];
+export function compareSemanticDiagnostics(before:Readonly<Record<string,string>>,after:Readonly<Record<string,string>>):{baseline:SemanticDiagnostic[];current:SemanticDiagnostic[];introduced:SemanticDiagnostic[];passed:boolean;complete:false};
