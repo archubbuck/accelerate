@@ -17,3 +17,4 @@ export function planRename(root:string,relative:string,destination:string):Promi
 export type FilePatch = Creation | Replacement | Deletion | Rename;
 export function verifyMixedPlan(root:string,changes:readonly FilePatch[]):Promise<PatchDiagnostic[]>;
 export function applyMixedPlan(root:string,changes:readonly FilePatch[],options?:{apply?:boolean;verify?:()=>boolean|Promise<boolean>}):ReturnType<typeof applyReplacements>;
+export function inspectJournal(root:string):Promise<{status:'absent'|'blocked'|'recovery-required';code?:string;entries?:{kind:string;path:string;destination?:string}[]}>;
