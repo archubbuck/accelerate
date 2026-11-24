@@ -139,3 +139,19 @@ export function inspectDependencyImpact(graph,target,{sections=['dependencies','
  }
  return {target,dependencies:walk(forward),dependents:walk(reverse),resolutionVerified:false};
 }
+
+/** Classify package roles using explicit manifest evidence, without executing scripts. */
+export async function classifyPackage(root){
+ const base=await realpath(root),manifest=await readManifest(base),project=await inspectProject(base);
+ const evidence=[];
+ if(manifest.private===true)evidence.push('private');
+ if(manifest.exports||manifest.main||manifest.module||manifest.types)evidence.push('library-entrypoint');
+ if(manifest.bin)evidence.push('cli-entrypoint');
+ if(typeof manifest.scripts?.start==='string')evidence.push('start-script');
+ if(project.frameworks.length)evidence.push('framework-dependency');
+ const roles=[];
+ if(evidence.includes('library-entrypoint'))roles.push('library');
+ if(evidence.includes('cli-entrypoint'))roles.push('cli');
+ if(evidence.includes('start-script')&&evidence.includes('framework-dependency'))roles.push('application');
+ return {name:project.name,roles:roles.length?roles:['unknown'],evidence,frameworks:project.frameworks,verified:false};
+}
