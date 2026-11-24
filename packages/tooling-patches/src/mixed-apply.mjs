@@ -1,3 +1,4 @@
+import {planRecovery} from './recovery.mjs';
 import {acquireProjectLock} from './lock.mjs';
 import {open,unlink,link,rename,realpath,lstat} from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
@@ -68,7 +69,7 @@ export async function applyMixedPlan(root,changes,{apply=false,verify}={}){
  }catch{
   diagnostics.push({code:'APPLY_FAILED'});
   for(const revert of undo.reverse())try{await revert();}catch{diagnostics.push({code:'ROLLBACK_CONFLICT'});}
-  if(journalPrepared&&diagnostics.length===1){try{await clearJournal(base);}catch{diagnostics.push({code:'JOURNAL_CLEANUP_FAILED'});}}
+  if(journalPrepared&&diagnostics.length===1){try{const recovery=await planRecovery(base);if(recovery.status!=='recovery-required'||recovery.entries.some(e=>e.state!=='original'))throw new Error('ROLLBACK_UNVERIFIED');await clearJournal(base);}catch{diagnostics.push({code:'ROLLBACK_UNVERIFIED_JOURNAL_RETAINED'});}}
   return {status:diagnostics.length>1?'partial':'failed',diagnostics};
  }finally{await lock.release();}
 }
