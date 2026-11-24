@@ -1,3 +1,5 @@
 export interface ProjectInspection {name:string|null;packageManager:string|null;markers:string[];frameworks:string[];frameworkEvidence:'declared-dependencies';accelerateDependencies:{name:string;range:string;section:string}[];installed:{name:string;version:string}[];limitations:string[]}
 export function inspectProject(root:string):Promise<ProjectInspection>;
 export function discoverPackages(root:string,options?:{maxDepth?:number;maxDirectories?:number}):Promise<{packages:(ProjectInspection&{path:string})[];diagnostics:{path:string;code:string}[];visited:number;complete:boolean;workspaceMembershipVerified:false}>;
+export function inspectWorkspace(root:string,options?:{maxDepth?:number;maxDirectories?:number}):Promise<Omit<Awaited<ReturnType<typeof discoverPackages>>,'workspaceMembershipVerified'>&{members:(ProjectInspection&{path:string})[];workspaceMembershipVerified:boolean}>;
+export function inspectDependencyGraph(root:string,packagePaths:readonly string[]):Promise<{nodes:{name:string;path:string}[];edges:{from:string;to:string;section:string;range:string}[];resolutionVerified:false}>;
