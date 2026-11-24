@@ -11,6 +11,7 @@ import {planFlagRemoval} from '../../packages/feature-flags-core/operations/remo
 import {planRetirement} from '../../packages/feature-flags-core/operations/retire.mjs';
 import {planIntegration,planCreation} from '../../packages/feature-flags-core/operations/integrate.mjs';
 import {generateFlagTests} from '../../packages/feature-flags-core/operations/generate-tests.mjs';
+import {planFlagMigration} from '../../packages/feature-flags-core/operations/migrate.mjs';
 import {inspectProject} from './project.mjs';
 export async function createBuiltinRegistry(root){
  const registry=new OperationRegistry();
@@ -37,6 +38,7 @@ export async function createBuiltinRegistry(root){
   registry.register({...base,id:'feature-flags.'+id,description:'Preview explicit async branch '+id,mutatesProject:true,modes:['preview','plan'],inputSchema:{type:'object',required:Object.keys(properties),additionalProperties:false,properties}},request=>handler(root,request.input));
  }
  registry.register({...base,id:'feature-flags.generate-tests',description:'Generate standalone flag evaluation test source',mutatesProject:false,modes:['preview','plan'],inputSchema:{type:'object',required:['target','key'],additionalProperties:false,properties:{target,key:{type:'string',minLength:1}}}},request=>generateFlagTests(root,request.input));
+ registry.register({...base,id:'feature-flags.migrate',description:'Preview explicit boolean-map to flag-array migration',mutatesProject:true,modes:['preview','plan'],inputSchema:{type:'object',required:['target','from'],additionalProperties:false,properties:{target,from:{const:'boolean-map'}}}},request=>planFlagMigration(root,request.input));
  return registry;
 }
 export async function executeBuiltin(root,request){
