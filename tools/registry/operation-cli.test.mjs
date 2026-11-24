@@ -1,0 +1,28 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
+import {fileURLToPath} from 'node:url';
+const exec=promisify(execFile);
+const cli=fileURLToPath(new URL('../operations/cli.mjs',import.meta.url));
+test('CLI discovers, previews, applies and rejects stale plans',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-cli-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const run=async(...args)=>JSON.parse((await exec(process.execPath,[cli,...args,'--root',root])).stdout);
+ await writeFile(path.join(root,'flags.json'),'[]');
+ const request={schemaVersion:'1.0',operation:'feature-flags.register',operationVersion:'1.0.0',input:{target:'flags.json',key:'dashboard',enabled:false}};
+ const input=path.join(root,'request.json'),planFile=path.join(root,'plan.json');
+ await writeFile(input,JSON.stringify(request));
+ assert.ok((await run('list')).data.some(x=>x.id===request.operation));
+ const plan=await run('execute',input);
+ assert.equal(plan.status,'success');
+ assert.equal(await readFile(path.join(root,'flags.json'),'utf8'),'[]');
+ await writeFile(planFile,JSON.stringify(plan));
+ assert.equal((await run('apply-plan',planFile,'--apply')).status,'success');
+ assert.deepEqual(JSON.parse(await readFile(path.join(root,'flags.json'),'utf8')),[{key:'dashboard',enabled:false}]);
+ await assert.rejects(run('apply-plan',planFile,'--apply'));
+ assert.equal((await run('execute',input)).status,'no-op');
+});
