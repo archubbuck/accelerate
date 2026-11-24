@@ -13,3 +13,5 @@ Read-only root project inspection, framework detection and Accelerate dependency
 `classifyPackage(root)` reports candidate library, CLI and application roles with manifest evidence. Roles may overlap and are not verified runtime behavior.
 
 `inspectSourceLayout(root)` reports conventional source directories and strict JSON TypeScript configuration evidence. JSONC, inherited settings, glob expansion and effective compiler configuration are not resolved.
+
+`discoverSourceFiles` enumerates candidate JS/TS source files in explicit relative roots, with file and directory limits. It does not expand TypeScript compiler include/exclude patterns.
