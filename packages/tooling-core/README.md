@@ -2,6 +2,24 @@
 
 Canonical operation contracts, schema validation and execution registry for Accelerate agent tooling.
 
-The current source extraction is experimental. Package metadata, declarations, build integration, registry registration and publication are pending.
+## Usage
 
-Operations default to preview. The execution engine does not enable apply mode. Schema validation supports an explicit subset of JSON Schema and rejects unsupported keywords.
+```js
+import { OperationRegistry, executeOperation, validateSchema } from '@accelerate/tooling-core';
+const registry = new OperationRegistry();
+// Register a versioned manifest and handler before execution.
+const result = await executeOperation(registry, {
+  schemaVersion: '1.0',
+  operation: 'example.inspect',
+  operationVersion: '1.0.0',
+  input: {}
+}, { validateSchema });
+```
+
+Operations default to preview. Apply mode remains disabled. Schema validation supports an explicit subset of JSON Schema and rejects unsupported keywords.
+
+## Development
+
+Run `pnpm --filter @accelerate/tooling-core build`, `pnpm --filter @accelerate/tooling-core typecheck` and `pnpm --filter @accelerate/tooling-core test` from the repository root.
+
+Distribution verification and npm publication are pending.
