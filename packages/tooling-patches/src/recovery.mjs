@@ -1,3 +1,4 @@
+import {acquireProjectLock} from './lock.mjs';
 import {readFile,lstat,realpath,open,unlink,rename,link} from 'node:fs/promises';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
@@ -35,7 +36,7 @@ export async function recoverJournal(root,{apply=false}={}){
  if(!apply)return {status:'blocked',code:'EXPLICIT_APPLY_REQUIRED'};
  const base=await realpath(root),lockPath=path.join(base,'.accelerate-operation.lock');
  let lock;
- try{lock=await open(lockPath,'wx',0o600);}catch{return {status:'blocked',code:'PROJECT_LOCK_UNAVAILABLE'};}
+ try{lock=await acquireProjectLock(base);}catch{return {status:'blocked',code:'PROJECT_LOCK_UNAVAILABLE'};}
  try{
   const plan=await planRecovery(base);
   if(plan.status!=='recovery-required')return plan;
@@ -71,5 +72,5 @@ export async function recoverJournal(root,{apply=false}={}){
   await unlink(path.join(base,journalName));
   return {status:'success'};
  }catch{return {status:'partial',code:'RECOVERY_FAILED_JOURNAL_RETAINED'};}
- finally{await lock.close();await unlink(lockPath);}
+ finally{await lock.release();}
 }
