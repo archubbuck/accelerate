@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {createBuiltinRegistry,executeBuiltin} from '../operations/builtins.mjs';
+import {validateSchema} from '../operations/schema.mjs';
+test('schema subset rejects unknown keywords and invalid inputs',()=>{
+ const schema={type:'object',required:['enabled'],additionalProperties:false,properties:{enabled:{type:'boolean'}}};
+ assert.equal(validateSchema(schema,{enabled:false}),true);
+ for(const input of [{},{enabled:'false'},{enabled:true,extra:1}]) assert.equal(validateSchema(schema,input),false);
+ assert.equal(validateSchema({type:'string',pattern:'x'},'x'),false);
+});
+test('registered feature flag operation previews without writing',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-builtin-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ await writeFile(path.join(root,'flags.json'),'[]');
+ const registry=await createBuiltinRegistry(root);
+ assert.ok(registry.list().some(x=>x.id==='feature-flags.register'));
+ const request={schemaVersion:'1.0',operation:'feature-flags.register',operationVersion:'1.0.0',input:{target:'flags.json',key:'dashboard.redesign',enabled:false}};
+ const result=await executeBuiltin(root,request);
+ assert.equal(result.status,'success');
+ assert.deepEqual(JSON.parse(result.changes[0].content),[{key:'dashboard.redesign',enabled:false}]);
+ assert.equal(result.data.registrationVerified,false);
+ assert.equal(await readFile(path.join(root,'flags.json'),'utf8'),'[]');
+ assert.equal((await executeBuiltin(root,{...request,input:{...request.input,enabled:'false'}})).diagnostics[0].code,'INVALID_INPUT');
+ await writeFile(path.join(root,'flags.json'),result.changes[0].content);
+ assert.equal((await executeBuiltin(root,request)).status,'no-op');
+ assert.equal((await executeBuiltin(root,{...request,options:{mode:'apply'}})).status,'unsupported');
+});
