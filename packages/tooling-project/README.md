@@ -15,3 +15,5 @@ Read-only root project inspection, framework detection and Accelerate dependency
 `inspectSourceLayout(root)` reports conventional source directories and strict JSON TypeScript configuration evidence. JSONC, inherited settings, glob expansion and effective compiler configuration are not resolved.
 
 `discoverSourceFiles` enumerates candidate JS/TS source files in explicit relative roots, with file and directory limits. It does not expand TypeScript compiler include/exclude patterns.
+
+`inspectInstalledCapabilities(root)` inspects installed Accelerate package metadata for an `accelerate.operations` relative manifest path. This convention is provisional; discovery does not validate manifest contents, compatibility or executable handlers.
