@@ -2,7 +2,7 @@ import {readFile} from 'node:fs/promises';
 import {OperationRegistry,executeOperation} from './engine.mjs';
 import {validateSchema} from './schema.mjs';
 import {planFlagRegistration} from '../../packages/feature-flags-core/operations/register.mjs';
-import {listFlags,planFlagUpdate} from '../../packages/feature-flags-core/operations/lifecycle.mjs';
+import {listFlags,planFlagUpdate,describeFlag,validateFlags} from '../../packages/feature-flags-core/operations/lifecycle.mjs';
 import {inspectProject} from './project.mjs';
 export async function createBuiltinRegistry(root){
  const registry=new OperationRegistry();
@@ -13,6 +13,8 @@ export async function createBuiltinRegistry(root){
  const base={version:'1.0.0',package:'@accelerate/feature-flags-core',outputSchema:{type:'object'}};
  registry.register({...base,id:'feature-flags.list',description:'Inspect explicit JSON flag registry',mutatesProject:false,modes:['inspect','preview'],inputSchema:{type:'object',required:['target'],additionalProperties:false,properties:{target}}},request=>listFlags(root,request.input));
  registry.register({...base,id:'feature-flags.update',description:'Preview change to existing flag default',mutatesProject:true,modes:['plan','preview'],inputSchema:manifest.inputSchema},request=>planFlagUpdate(root,request.input));
+ registry.register({...base,id:'feature-flags.describe',description:'Describe an existing flag definition',mutatesProject:false,modes:['inspect','preview'],inputSchema:{type:'object',required:['target','key'],additionalProperties:false,properties:{target,key:{type:'string',minLength:1}}}},request=>describeFlag(root,request.input));
+ registry.register({...base,id:'feature-flags.validate',description:'Validate explicit JSON flag definitions',mutatesProject:false,modes:['inspect','preview','verify'],inputSchema:{type:'object',required:['target'],additionalProperties:false,properties:{target}}},request=>validateFlags(root,request.input));
  return registry;
 }
 export async function executeBuiltin(root,request){
