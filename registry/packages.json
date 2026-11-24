@@ -1333,30 +1333,46 @@
       "id": "state-react",
       "name": "@accelerate/state-react",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/state-react",
       "dependencies": [
         "state-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/state-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "state-angular",
       "name": "@accelerate/state-angular",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/state-angular",
       "dependencies": [
         "state-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/state-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -1382,30 +1398,46 @@
       "id": "forms-react",
       "name": "@accelerate/forms-react",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/forms-react",
       "dependencies": [
         "forms-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/forms-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "forms-angular",
       "name": "@accelerate/forms-angular",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/forms-angular",
       "dependencies": [
         "forms-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/forms-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -1450,30 +1482,46 @@
       "id": "tables-react",
       "name": "@accelerate/tables-react",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/tables-react",
       "dependencies": [
         "tables-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/tables-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "tables-angular",
       "name": "@accelerate/tables-angular",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/tables-angular",
       "dependencies": [
         "tables-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/tables-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
