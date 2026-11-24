@@ -3,3 +3,4 @@ export * from './apply.mjs';
 export * from './file-plans.mjs';
 export * from './preflight.mjs';
 export * from './mixed-apply.mjs';
+export {inspectJournal} from './journal.mjs';
