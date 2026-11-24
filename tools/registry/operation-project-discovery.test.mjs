@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
-import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies} from '../../packages/tooling-project/src/index.mjs';
+import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact} from '../../packages/tooling-project/src/index.mjs';
 test('discovers candidate packages and excludes dependency directories',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-discovery-'));
  try{
@@ -51,4 +51,12 @@ test('pnpm simple workspace and dependency ordering',async()=>{
   graph.edges.push({from:'b',to:'a',section:'dependencies',range:'workspace:*'});
   assert.deepEqual(orderDependencies(graph),{order:[],blocked:['a','b'],acyclic:false});
  }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('dependency impact traverses cycles without repeating nodes',()=>{
+ const graph={nodes:['app','feature','core'].map(name=>({name,path:name})),edges:[['app','feature'],['feature','core'],['core','feature']].map(([from,to])=>({from,to,section:'dependencies',range:'workspace:*'})),resolutionVerified:false};
+ const impact=inspectDependencyImpact(graph,'core');
+ assert.deepEqual(impact.dependents,[{name:'feature',distance:1},{name:'app',distance:2}]);
+ assert.deepEqual(impact.dependencies,[{name:'feature',distance:1}]);
+ assert.throws(()=>inspectDependencyImpact(graph,'missing'),/INVALID_GRAPH_TARGET/);
 });
