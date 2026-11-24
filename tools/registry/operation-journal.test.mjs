@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {planReplacement,applyMixedPlan,inspectJournal} from '../../packages/tooling-patches/src/index.mjs';
+import {prepareJournal,journalName} from '../../packages/tooling-patches/src/journal.mjs';
+test('journal blocks subsequent mutations and inspection omits original content',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-journal-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ await writeFile(path.join(root,'a'),'private original');
+ const change=await planReplacement(root,'a',()=> 'updated');
+ assert.equal((await inspectJournal(root)).status,'absent');
+ await prepareJournal(root,[change]);
+ const inspection=await inspectJournal(root);
+ assert.equal(inspection.status,'recovery-required');
+ assert.ok(!JSON.stringify(inspection).includes('private original'));
+ assert.equal((await applyMixedPlan(root,[change],{apply:true})).status,'blocked');
+ assert.equal(await readFile(path.join(root,'a'),'utf8'),'private original');
+ assert.equal(JSON.parse(await readFile(path.join(root,journalName),'utf8')).entries[0].before.content,'private original');
+});
