@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
-import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact,classifyPackage,inspectSourceLayout,discoverSourceFiles,inspectInstalledCapabilities} from '../../packages/tooling-project/src/index.mjs';
+import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact,classifyPackage,inspectSourceLayout,discoverSourceFiles,inspectInstalledCapabilities,inspectConfigInheritance} from '../../packages/tooling-project/src/index.mjs';
 test('discovers candidate packages and excludes dependency directories',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-discovery-'));
  try{
@@ -109,5 +109,21 @@ test('installed capability discovery does not execute handlers',async()=>{
   assert.equal(result.handlersLoaded,false);
   await writeFile(path.join(dir,'package.json'),JSON.stringify({name:'@accelerate/example',version:'1.0.0',accelerate:{operations:'./../outside.json'}}));
   assert.equal((await inspectInstalledCapabilities(root)).packages[0].status,'invalid');
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('local config inheritance preserves child overrides and rejects cycles',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-config-'));
+ try{
+  await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({extends:'./base',compilerOptions:{strict:false}}));
+  await writeFile(path.join(root,'base.json'),JSON.stringify({compilerOptions:{strict:true,target:'ES2022'}}));
+  const result=await inspectConfigInheritance(root);
+  assert.deepEqual(result.chain,['tsconfig.json','base.json']);
+  assert.deepEqual(result.declaredCompilerOptions,{strict:false,target:'ES2022'});
+  assert.equal(result.inheritanceResolved,true);
+  assert.equal(result.configurationResolved,false);
+  await writeFile(path.join(root,'base.json'),JSON.stringify({extends:'./tsconfig.json'}));
+  assert.equal((await inspectConfigInheritance(root)).inheritanceResolved,false);
+  assert.equal((await inspectConfigInheritance(root,'../outside.json')).inheritanceResolved,false);
  }finally{await rm(root,{recursive:true,force:true});}
 });
