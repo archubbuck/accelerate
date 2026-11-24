@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
-import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact,classifyPackage,inspectSourceLayout,discoverSourceFiles} from '../../packages/tooling-project/src/index.mjs';
+import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact,classifyPackage,inspectSourceLayout,discoverSourceFiles,inspectInstalledCapabilities} from '../../packages/tooling-project/src/index.mjs';
 test('discovers candidate packages and excludes dependency directories',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-discovery-'));
  try{
@@ -93,5 +93,21 @@ test('source discovery bounds scope and excludes generated directories',async()=
   assert.deepEqual((await discoverSourceFiles(root)).files,['src/a.ts','src/b.tsx']);
   assert.equal((await discoverSourceFiles(root,{maxFiles:1})).complete,false);
   await assert.rejects(discoverSourceFiles(root,{roots:['../outside']}),/INVALID_SOURCE_SCOPE/);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('installed capability discovery does not execute handlers',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-capabilities-'));
+ try{
+  await writeFile(path.join(root,'package.json'),JSON.stringify({dependencies:{'@accelerate/example':'1.0.0'}}));
+  const dir=path.join(root,'node_modules/@accelerate/example');
+  await mkdir(dir,{recursive:true});
+  await writeFile(path.join(dir,'package.json'),JSON.stringify({name:'@accelerate/example',version:'1.0.0',accelerate:{operations:'./operations.json'}}));
+  await writeFile(path.join(dir,'operations.json'),'{}');
+  const result=await inspectInstalledCapabilities(root);
+  assert.equal(result.packages[0].status,'declared');
+  assert.equal(result.handlersLoaded,false);
+  await writeFile(path.join(dir,'package.json'),JSON.stringify({name:'@accelerate/example',version:'1.0.0',accelerate:{operations:'./../outside.json'}}));
+  assert.equal((await inspectInstalledCapabilities(root)).packages[0].status,'invalid');
  }finally{await rm(root,{recursive:true,force:true});}
 });
