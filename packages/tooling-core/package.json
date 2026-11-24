@@ -1,0 +1,31 @@
+{
+  "name": "@accelerate/tooling-core",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --moduleResolution nodenext src/index.d.mts",
+    "test": "node --test ../../tools/registry/operation-contracts.test.mjs ../../tools/registry/operation-engine.test.mjs ../../tools/registry/operation-schema.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/tooling-core"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
