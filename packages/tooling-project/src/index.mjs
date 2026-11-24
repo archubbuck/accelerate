@@ -63,11 +63,14 @@ export async function discoverPackages(root,{maxDepth=5,maxDirectories=2000}={})
 /** Resolve a deliberately limited subset of package.json workspace patterns. */
 export async function inspectWorkspace(root,options={}){
  const base=await realpath(root),manifest=await readManifest(base),discovery=await discoverPackages(base,options);
- const patterns=Array.isArray(manifest.workspaces)?manifest.workspaces:manifest.workspaces?.packages;
+ let patterns=Array.isArray(manifest.workspaces)?manifest.workspaces:manifest.workspaces?.packages;
  const diagnostics=[...discovery.diagnostics];
  let pnpm=false;
  try{await lstat(path.join(base,'pnpm-workspace.yaml'));pnpm=true;}catch(e){if(e.code!=='ENOENT')throw e;}
- if(pnpm||!Array.isArray(patterns)||patterns.some(p=>typeof p!=='string'||!p.split('/').every(s=>s==='*'||/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(s)))){
+ if(pnpm){
+  try{const file=path.join(base,'pnpm-workspace.yaml'),stat=await lstat(file);if(!stat.isFile()||stat.size>1048576)throw Error('INVALID_WORKSPACE');const yaml=await readFile(file,'utf8');const lines=yaml.split(/\r?\n/).filter(l=>l.trim()&&!l.trim().startsWith('#'));if(lines[0]?.trim()!=='packages:')throw Error('UNSUPPORTED_YAML');patterns=lines.slice(1).map(l=>{const match=/^ +-[ \t]+(?:'([^']+)'|"([^"]+)"|([a-zA-Z0-9_.*\/-]+))\s*$/.exec(l);if(!match)throw Error('UNSUPPORTED_YAML');return match[1]??match[2]??match[3];});if(!patterns.length)throw Error('EMPTY_WORKSPACE');}catch{patterns=null;}
+ }
+ if(!Array.isArray(patterns)||patterns.some(p=>typeof p!=='string'||!p.split('/').every(s=>s==='*'||/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(s)))){
   diagnostics.push({path:'.',code:pnpm?'PNPM_WORKSPACE_UNSUPPORTED':'WORKSPACE_PATTERNS_UNSUPPORTED'});
   return {...discovery,diagnostics,members:[],workspaceMembershipVerified:false};
  }
