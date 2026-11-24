@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {planCreation,planDeletion,planRename,planReplacement,verifyMixedPlan} from '../../packages/tooling-patches/src/index.mjs';
+test('mixed preflight accepts independent patches and rejects conflicts',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-mixed-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ for(const file of ['a','b','c'])await writeFile(path.join(root,file),file);
+ const create=await planCreation(root,'new','new');
+ const replace=await planReplacement(root,'a',()=> 'updated');
+ const remove=await planDeletion(root,'b');
+ const rename=await planRename(root,'c','renamed');
+ assert.deepEqual(await verifyMixedPlan(root,[create,replace,remove,rename]),[]);
+ assert.ok((await verifyMixedPlan(root,[create,{...rename,destination:'new'}])).some(d=>d.code==='OVERLAPPING_PATCH'));
+ assert.ok((await verifyMixedPlan(root,[{...create,content:'tampered'}])).some(d=>d.code==='INVALID_PATCH'));
+ await writeFile(path.join(root,'a'),'external');
+ assert.ok((await verifyMixedPlan(root,[replace])).some(d=>d.code==='STALE_PATCH'));
+ await writeFile(path.join(root,'new'),'collision');
+ assert.ok((await verifyMixedPlan(root,[create])).length);
+});
