@@ -20,7 +20,7 @@ async function main(){
  // Apply a previously reviewed plan, not an implicitly regenerated one.
  if(command==='apply-plan'&&args.length===2&&args[1]==='--apply'){
   const plan=JSON.parse(await readFile(args[0],'utf8'));
-  if(plan.schemaVersion!=='1.0'||plan.operation!=='feature-flags.register'||plan.operationVersion!=='1.0.0'||plan.status!=='success'||!Array.isArray(plan.changes)||plan.changes.length!==1)throw new Error('INVALID_PLAN');
+  if(plan.schemaVersion!=='1.0'||!['feature-flags.register','feature-flags.update'].includes(plan.operation)||plan.operationVersion!=='1.0.0'||plan.status!=='success'||!Array.isArray(plan.changes)||plan.changes.length!==1)throw new Error('INVALID_PLAN');
   const change=plan.changes[0];
   const expected=await executeBuiltin(root,{schemaVersion:'1.0',operation:plan.operation,operationVersion:plan.operationVersion,input:{target:change.path,key:plan.data?.key,enabled:plan.data?.enabled}});
   if(expected.status!=='success'||JSON.stringify(expected.changes)!==JSON.stringify(plan.changes))return {status:'conflict',diagnostics:[{code:'PLAN_MISMATCH'}]};
