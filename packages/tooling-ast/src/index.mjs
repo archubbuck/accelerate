@@ -1,3 +1,4 @@
+import ts from 'typescript';
 // Apply nonoverlapping AST-derived text edits without reprinting unrelated source.
 export function applyTextEdits(source,edits){
  const ordered=[...edits].sort((a,b)=>a.start-b.start||a.end-b.end);
@@ -8,4 +9,22 @@ export function applyTextEdits(source,edits){
   cursor=edit.end;
  }
  return result+source.slice(cursor);
+}
+
+export function parseSource(fileName,source){
+ if(typeof fileName!=='string'||typeof source!=='string'||! /\.[cm]?[jt]sx?$/.test(fileName))throw new Error('UNSUPPORTED_SOURCE');
+ const ast=ts.createSourceFile(fileName,source,ts.ScriptTarget.Latest,true);
+ const diagnostics=ast.parseDiagnostics.map(d=>({code:d.code,start:d.start??0,length:d.length??0,message:ts.flattenDiagnosticMessageText(d.messageText,'\n')}));
+ return {ast,diagnostics};
+}
+export function findNodes(root,predicate){
+ const matches=[];
+ function visit(node){if(predicate(node))matches.push(node);ts.forEachChild(node,visit);}
+ visit(root);return matches;
+}
+export function transformSource(fileName,source,edits){
+ if(parseSource(fileName,source).diagnostics.length)throw new Error('SOURCE_PARSE_ERROR');
+ const result=applyTextEdits(source,edits);
+ if(parseSource(fileName,result).diagnostics.length)throw new Error('TRANSFORM_PARSE_ERROR');
+ return result;
 }
