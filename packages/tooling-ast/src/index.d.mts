@@ -5,3 +5,4 @@ export interface ParseDiagnostic {code:number;start:number;length:number;message
 export function parseSource(fileName:string,source:string):{ast:ts.SourceFile;diagnostics:ParseDiagnostic[]};
 export function findNodes(root:ts.Node,predicate:(node:ts.Node)=>boolean):ts.Node[];
 export function transformSource(fileName:string,source:string,edits:readonly TextEdit[]):string;
+export function ensureNamedImport(fileName:string,source:string,options:{moduleSpecifier:string;imported:string;local?:string}):string;
