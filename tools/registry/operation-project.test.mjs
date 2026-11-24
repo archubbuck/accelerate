@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,mkdir,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {inspectProject} from '../operations/project.mjs';
+test('inspection distinguishes declarations from installed versions and never runs scripts',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-inspect-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ await writeFile(path.join(root,'package.json'),JSON.stringify({name:'consumer',packageManager:'pnpm@9.15.4',scripts:{postinstall:'exit 1'},dependencies:{react:'^19.0.0','@accelerate/feature-flags-core':'^0.1.0'},devDependencies:{'@accelerate/testing-core':'^0.1.0'}}));
+ await writeFile(path.join(root,'pnpm-lock.yaml'),'');
+ const dir=path.join(root,'node_modules','@accelerate','feature-flags-core');
+ await mkdir(dir,{recursive:true});
+ await writeFile(path.join(dir,'package.json'),JSON.stringify({name:'@accelerate/feature-flags-core',version:'0.1.2'}));
+ const result=await inspectProject(root);
+ assert.deepEqual(result.frameworks,['react']);
+ assert.deepEqual(result.markers,['pnpm-lock.yaml']);
+ assert.equal(result.accelerateDependencies.length,2);
+ assert.deepEqual(result.installed,[{name:'@accelerate/feature-flags-core',version:'0.1.2'}]);
+ assert.equal(result.frameworkEvidence,'declared-dependencies');
+ assert.ok(result.limitations.length);
+});
