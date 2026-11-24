@@ -1,0 +1,1 @@
+import {it,expect} from "vitest";import {evaluate,assertEvaluation} from "./index.js";it("reports scores and enforces threshold",async()=>{const results=await evaluate({generate:async()=>({content:"ok"})},[{id:"x",request:{model:"m",messages:[]},score:r=>r.content==="ok"?1:0}]);expect(()=>assertEvaluation(results,1)).not.toThrow();});

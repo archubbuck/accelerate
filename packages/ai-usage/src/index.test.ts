@@ -1,0 +1,1 @@
+import {it,expect} from "vitest";import {estimateCost,UsageBudget} from "./index.js";it("records actual costs even above budget",()=>{const budget=new UsageBudget(1);budget.record(estimateCost({inputTokens:1000000,outputTokens:0},{inputPerMillion:2,outputPerMillion:3}));expect(budget.consumed).toBe(2);expect(budget.canAfford(1)).toBe(false);});

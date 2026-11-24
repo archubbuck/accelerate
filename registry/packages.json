@@ -1721,121 +1721,186 @@
       "id": "ai-core",
       "name": "@accelerate/ai-core",
       "category": "ai",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P2",
       "wave": 5,
-      "path": null,
+      "path": "packages/ai-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "ai-gateway",
       "name": "@accelerate/ai-gateway",
       "category": "ai",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P2",
       "wave": 5,
-      "path": null,
+      "path": "packages/ai-gateway",
       "dependencies": [
         "ai-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/ai-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "ai-prompts",
       "name": "@accelerate/ai-prompts",
       "category": "ai",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P2",
       "wave": 5,
-      "path": null,
+      "path": "packages/ai-prompts",
       "dependencies": [
         "ai-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/ai-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "ai-structured",
       "name": "@accelerate/ai-structured",
       "category": "ai",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P2",
       "wave": 5,
-      "path": null,
+      "path": "packages/ai-structured",
       "dependencies": [
         "ai-core",
         "validation-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/ai-core",
+          "@accelerate/validation-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "ai-tools",
       "name": "@accelerate/ai-tools",
       "category": "ai",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P2",
       "wave": 5,
-      "path": null,
+      "path": "packages/ai-tools",
       "dependencies": [
         "ai-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/ai-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "ai-usage",
       "name": "@accelerate/ai-usage",
       "category": "ai",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P2",
       "wave": 5,
-      "path": null,
+      "path": "packages/ai-usage",
       "dependencies": [
         "ai-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/ai-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "ai-evaluation",
       "name": "@accelerate/ai-evaluation",
       "category": "ai",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P2",
       "wave": 5,
-      "path": null,
+      "path": "packages/ai-evaluation",
       "dependencies": [
         "ai-core",
         "testing-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/ai-core",
+          "@accelerate/testing-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "agents-core",
       "name": "@accelerate/agents-core",
       "category": "ai",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P2",
       "wave": 5,
-      "path": null,
+      "path": "packages/agents-core",
       "dependencies": [
         "ai-core",
         "ai-tools"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/ai-core",
+          "@accelerate/ai-tools"
+        ],
+        "peer": [],
+        "optional": []
       }
     }
   ]

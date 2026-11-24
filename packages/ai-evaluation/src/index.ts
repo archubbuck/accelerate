@@ -1,0 +1,5 @@
+import type {ModelProvider,ModelRequest,ModelResponse} from "@accelerate/ai-core";
+import {AssertionFailure} from "@accelerate/testing-core";
+export interface EvaluationCase {readonly id:string;readonly request:ModelRequest;score(response:ModelResponse):number|Promise<number>;}
+export async function evaluate(provider:ModelProvider,cases:readonly EvaluationCase[]){const results:{id:string;score:number;error?:unknown}[]=[];for(const item of cases){item.request.signal?.throwIfAborted();try{const score=await item.score(await provider.generate(item.request));if(!Number.isFinite(score)||score<0||score>1)throw new RangeError("Score must be between zero and one");results.push({id:item.id,score});}catch(error){item.request.signal?.throwIfAborted();results.push({id:item.id,score:0,error});}}return results;}
+export function assertEvaluation(results:readonly {score:number;error?:unknown}[],minimum:number):void{if(!Number.isFinite(minimum)||minimum<0||minimum>1||!results.length||results.some(r=>Object.hasOwn(r,"error")||!Number.isFinite(r.score)||r.score<minimum||r.score>1))throw new AssertionFailure("Evaluation threshold not met");}

@@ -1,0 +1,1 @@
+import {it,expect} from "vitest";import {string} from "@accelerate/validation-core";import {parseStructured} from "./index.js";it("validates parsed JSON",()=>{expect(parseStructured({content:'"ok"'},string())).toBe("ok");expect(()=>parseStructured({content:"123"},string())).toThrow();});
