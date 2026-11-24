@@ -65,7 +65,7 @@ export function findSymbolReferences(files,fileName,position){
  const host={
   getSourceFile(n){const s=sources.get(normalize(n));return s===undefined?undefined:ts.createSourceFile(n,s,options.target,true);},
   getDefaultLibFileName:()=>'',writeFile(){},getCurrentDirectory:()=>'/',
-  getDirectories:()=>[],fileExists:n=>sources.has(normalize(n)),readFile:n=>sources.get(normalize(n)),
+  directoryExists:n=>n==='/'||[...sources.keys()].some(f=>f.startsWith(normalize(n).replace(/\/$/,'')+'/')),getDirectories:()=>[],fileExists:n=>sources.has(normalize(n)),readFile:n=>sources.get(normalize(n)),
   getCanonicalFileName:normalize,useCaseSensitiveFileNames:()=>true,getNewLine:()=>'\n'
  };
  const program=ts.createProgram([...sources.keys()],options,host),checker=program.getTypeChecker();
