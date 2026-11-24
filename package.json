@@ -19,7 +19,12 @@
     "registry:search": "node tools/registry/cli.mjs search",
     "registry:readiness": "node tools/registry/cli.mjs readiness",
     "registry:agent-context": "node tools/registry/cli.mjs agent-context",
-    "registry:audit": "node tools/registry/cli.mjs audit"
+    "registry:audit": "node tools/registry/cli.mjs audit",
+    "registry:trust:plan": "node tools/registry/trust.mjs plan",
+    "registry:trust:configure": "node tools/registry/trust.mjs configure",
+    "registry:trust:audit": "node tools/registry/trust.mjs audit",
+    "registry:trust:report": "node tools/registry/trust.mjs report",
+    "registry:trust:verify": "node tools/registry/trust.mjs verify"
   },
   "devDependencies": {
     "typescript": "~5.8.3",

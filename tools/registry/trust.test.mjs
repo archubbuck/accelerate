@@ -1,0 +1,3 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {classifyTrust,trustArgs} from './trust.mjs';
+test('only explicit empty lists authorize creation',()=>{assert.equal(classifyTrust([]),'missing');assert.equal(classifyTrust({trusts:[]}),'missing');assert.equal(classifyTrust({unexpected:[]}),'unknown');assert.equal(classifyTrust([{id:'existing'}]),'review');});
+test('targets the production OIDC workflow',()=>assert.deepEqual(trustArgs('@accelerate/example'),['trust','github','@accelerate/example','--repo','archubbuck/accelerate','--file','publish.yml','--allow-publish','--yes']));

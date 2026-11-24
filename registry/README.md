@@ -38,3 +38,17 @@ After building the workspace, run `pnpm registry:audit`. This checks publish man
 ## Publishing
 
 Both npm release workflows use `node tools/registry/release.mjs` to discover public workspace packages from the registry, order dependencies first, detect generated distribution manifests, verify archives and publish missing versions. Run `node tools/registry/release.mjs plan` after building to preview the release. Existing npm versions are immutable: bump changed package versions and synchronize dependent manifests and registry metadata before release. Only a confirmed npm 404 permits publishing; other lookup errors stop the release. New npm packages may require token bootstrap and trusted publisher configuration before OIDC releases.
+
+## Trusted publisher migration
+
+Use npm CLI 11.15.0 or later and interactive npm authentication with package administration rights. Run locally; no admin token is stored in the repository.
+
+1. Bootstrap missing packages with the existing token workflow.
+2. Prepare unpublished release versions before trust provisioning; npm versions cannot be overwritten.
+3. Run `pnpm registry:trust:plan` to inspect current relationships. Optional package IDs restrict a run.
+4. Run `pnpm registry:trust:configure --confirm` to create relationships only where npm explicitly returns an empty list. Existing relationships and unfamiliar response shapes require review; nothing is deleted or replaced. Results are JSON, and creation attempts are spaced apart. Interactive npm authentication may be required.
+5. Inspect `pnpm registry:trust:audit` output for repository archubbuck/accelerate, workflow publish.yml and publish permission. Run the OIDC release promptly after configuration.
+6. Run `pnpm registry:trust:verify` to retrieve release attestation metadata and inspect it alongside npm trusted publisher verification status. Presence of attestations alone does not prove the expected publisher was verified.
+7. Once all relationships and releases are verified, restrict token publishing and revoke the bootstrap token when no longer needed. Keep bootstrap available for future new packages.
+
+The trust commands intentionally report existing records for operator review instead of guessing undocumented npm response schemas. See https://docs.npmjs.com/cli/commands/npm-trust/ and https://docs.npmjs.com/trusted-publishers/.
