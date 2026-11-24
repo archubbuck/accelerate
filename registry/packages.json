@@ -1902,6 +1902,18 @@
         "peer": [],
         "optional": []
       }
+    },
+    {
+      "id": "tooling-core",
+      "name": "@accelerate/tooling-core",
+      "category": "agent-tooling",
+      "lifecycle": "planned",
+      "priority": "P0",
+      "wave": 6,
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      }
     }
   ]
 }
