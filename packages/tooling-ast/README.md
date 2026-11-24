@@ -16,3 +16,5 @@ Cross-file transformations and full semantic validation are not yet implemented.
 
 - `rewriteImportModule`: preview static module specifier replacements; does not verify target exports.
 - `planUnusedImportRemoval`: conservative single named binding removal, retaining side-effect imports and rejecting potential usages.
+
+- `planSourceTransforms`: preview a batch of explicit source edits, rejecting duplicate targets and invalid syntax before returning any plan. No disk writes or semantic verification.
