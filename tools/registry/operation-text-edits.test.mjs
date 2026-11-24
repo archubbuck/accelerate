@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport,findSymbolReferences,planLocalRename,rewriteImportModule,planUnusedImportRemoval} from '../../packages/tooling-ast/src/index.mjs';
+import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport,findSymbolReferences,planLocalRename,rewriteImportModule,planUnusedImportRemoval,planSourceTransforms} from '../../packages/tooling-ast/src/index.mjs';
 test('preserves unrelated source and orders edits',()=>{
  assert.equal(applyTextEdits('abc def',[{start:4,end:7,expected:'def',text:'XYZ'},{start:0,end:3,expected:'abc',text:'123'}]),'123 XYZ');
 });
@@ -61,4 +61,14 @@ test('unused import removal preserves side effects and rejects usage',()=>{
  const options={moduleSpecifier:'pkg',local:'x'};
  assert.equal(planUnusedImportRemoval('a.ts',"import { x } from 'pkg';",options).source,"import 'pkg';");
  assert.throws(()=>planUnusedImportRemoval('a.ts',"import { x } from 'pkg'; console.log(x);",options),/IMPORT_POTENTIALLY_USED/);
+});
+
+test('cross-file transforms validate every target before returning a plan',()=>{
+ const files={'a.ts':'const a = 1;','b.ts':'const b = 2;'};
+ const changes=[{fileName:'a.ts',edits:[{start:10,end:11,expected:'1',text:'3'}]},{fileName:'b.ts',edits:[{start:10,end:11,expected:'2',text:'4'}]}];
+ const result=planSourceTransforms(files,changes);
+ assert.deepEqual(result.plans.map(p=>p.after),['const a = 3;','const b = 4;']);
+ assert.equal(files['a.ts'],'const a = 1;');
+ assert.throws(()=>planSourceTransforms(files,[...changes,changes[0]]),/INVALID_TRANSFORM_TARGET/);
+ assert.throws(()=>planSourceTransforms(files,[changes[0],{fileName:'b.ts',edits:[{start:10,end:11,expected:'2',text:')'}]}]),/TRANSFORM_PARSE_ERROR/);
 });
