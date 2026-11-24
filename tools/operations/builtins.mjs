@@ -9,6 +9,7 @@ import {planUsageRename} from '../../packages/feature-flags-core/operations/rena
 import {planFlagRename} from '../../packages/feature-flags-core/operations/rename.mjs';
 import {planFlagRemoval} from '../../packages/feature-flags-core/operations/remove.mjs';
 import {planRetirement} from '../../packages/feature-flags-core/operations/retire.mjs';
+import {planIntegration,planCreation} from '../../packages/feature-flags-core/operations/integrate.mjs';
 import {inspectProject} from './project.mjs';
 export async function createBuiltinRegistry(root){
  const registry=new OperationRegistry();
@@ -30,6 +31,10 @@ export async function createBuiltinRegistry(root){
  registry.register({...base,id:'feature-flags.rename',description:'Preview coordinated registry and candidate source reference rename',mutatesProject:true,modes:['preview','plan'],inputSchema:{type:'object',required:['target','files','receivers','key','newKey'],additionalProperties:false,properties:{target,files:strings,receivers:strings,key:{type:'string',minLength:1},newKey:{type:'string',minLength:1}}}},request=>planFlagRename(root,request.input));
  registry.register({...base,id:'feature-flags.remove',description:'Preview registry removal after scoped reference checks',mutatesProject:true,modes:['preview','plan'],inputSchema:{type:'object',required:['target','files','receivers','key'],additionalProperties:false,properties:{target,files:strings,receivers:strings,key:{type:'string',minLength:1}}}},request=>planFlagRemoval(root,request.input));
  registry.register({...base,id:'feature-flags.retire',description:'Preview retention of selected conditional branches and removal of registration',mutatesProject:true,modes:['preview','plan'],inputSchema:{type:'object',required:['target','files','receivers','key','retainBehavior'],additionalProperties:false,properties:{target,files:strings,receivers:strings,key:{type:'string',minLength:1},retainBehavior:{enum:['enabled','disabled']}}}},request=>planRetirement(root,request.input));
+ const integrationProperties=Object.fromEntries(['file','key','receiver','enabledCall','disabledCall'].map(k=>[k,{type:'string',minLength:1}]));
+ for(const [id,handler,properties] of [['integrate',planIntegration,integrationProperties],['create',planCreation,{...integrationProperties,target,enabled:{type:'boolean'}}]]){
+  registry.register({...base,id:'feature-flags.'+id,description:'Preview explicit async branch '+id,mutatesProject:true,modes:['preview','plan'],inputSchema:{type:'object',required:Object.keys(properties),additionalProperties:false,properties}},request=>handler(root,request.input));
+ }
  return registry;
 }
 export async function executeBuiltin(root,request){
