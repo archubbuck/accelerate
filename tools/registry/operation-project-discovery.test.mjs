@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
-import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact} from '../../packages/tooling-project/src/index.mjs';
+import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact,classifyPackage} from '../../packages/tooling-project/src/index.mjs';
 test('discovers candidate packages and excludes dependency directories',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-discovery-'));
  try{
@@ -59,4 +59,14 @@ test('dependency impact traverses cycles without repeating nodes',()=>{
  assert.deepEqual(impact.dependents,[{name:'feature',distance:1},{name:'app',distance:2}]);
  assert.deepEqual(impact.dependencies,[{name:'feature',distance:1}]);
  assert.throws(()=>inspectDependencyImpact(graph,'missing'),/INVALID_GRAPH_TARGET/);
+});
+
+test('package classification retains evidence and multiple roles',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-role-'));
+ try{
+  await writeFile(path.join(root,'package.json'),JSON.stringify({name:'app',private:true,exports:'./index.js',scripts:{start:'node index.js'},dependencies:{react:'^19.0.0'}}));
+  const result=await classifyPackage(root);
+  assert.deepEqual(result.roles,['library','application']);
+  assert.equal(result.verified,false);
+ }finally{await rm(root,{recursive:true,force:true});}
 });
