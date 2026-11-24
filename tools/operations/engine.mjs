@@ -1,3 +1,4 @@
+import {validateSchemaDefinition} from './schema.mjs';
 import {normalizeRequest,response,modes,statuses} from './contracts.mjs';
 const idPattern=/^[a-z][a-z0-9-]*(\.[a-z][a-z0-9-]*)+$/;
 const versionPattern=/^\d+\.\d+\.\d+$/;
@@ -10,9 +11,9 @@ export function validateManifest(m) {
   if(typeof m.package!=='string'||!m.package.startsWith('@accelerate/')) errors.push('Invalid package owner');
   if(typeof m.description!=='string'||!m.description.trim()) errors.push('Description required');
   if(typeof m.mutatesProject!=='boolean') errors.push('Mutation declaration required');
-  if(!Array.isArray(m.modes)||!m.modes.length||m.modes.some(x=>!modes.includes(x))) errors.push('Invalid execution modes');
+  if(!Array.isArray(m.modes)||!m.modes.length||m.modes.some(x=>!modes.includes(x))||new Set(m.modes).size!==m.modes.length) errors.push('Invalid execution modes');
   if(Array.isArray(m.modes)&&m.modes.includes('apply')&&(!m.mutatesProject||!m.modes.includes('preview'))) errors.push('Apply requires mutation declaration and preview support');
-  for(const key of ['inputSchema','outputSchema']) if(!record(m[key])) errors.push(key+' required');
+  for(const key of ['inputSchema','outputSchema']) if(!validateSchemaDefinition(m[key])) errors.push(key+' invalid or unsupported');
   return errors;
 }
 export class OperationRegistry {
@@ -45,7 +46,7 @@ export async function executeOperation(registry,raw,{validateSchema}={}) {
     const result=await entry.handler(request);
     if(!record(result)||!statuses.includes(result.status)) return fail('failed','INVALID_HANDLER_RESULT','Handler returned an invalid status');
     const envelope=response(request,result.status,result);
-    if(!await validateSchema(entry.manifest.outputSchema,envelope.data)) return fail('failed','INVALID_OUTPUT','Output schema validation failed');
+    if(['success','no-op'].includes(envelope.status)&&!await validateSchema(entry.manifest.outputSchema,envelope.data)) return fail('failed','INVALID_OUTPUT','Output schema validation failed');
     return envelope;
   } catch {
     return fail('failed','EXECUTION_FAILED','Operation execution failed; inspect controlled diagnostics');
