@@ -9,3 +9,5 @@ Read-only root project inspection, framework detection and Accelerate dependency
 `orderDependencies` returns dependency-first ordering and cycle-blocked nodes. Defaults to runtime and optional dependency edges; callers can select other sections.
 
 `inspectDependencyImpact(graph, target)` reports transitive dependencies and dependents with shortest graph distances. All declared dependency sections are included by default; cycles are traversed without repeating nodes.
+
+`classifyPackage(root)` reports candidate library, CLI and application roles with manifest evidence. Roles may overlap and are not verified runtime behavior.
