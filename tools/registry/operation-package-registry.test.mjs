@@ -33,3 +33,14 @@ test('discovery indexes metadata without importing handlers',async t=>{
  await writeFile(path.join(dir,'package.json'),JSON.stringify({name,version:'1.0.0',accelerate:{operations:'./../outside.json'}}));
  assert.equal((await discoverPackageOperations(root,[name])).diagnostics.length,1);
 });
+
+import {resolveOperation} from '../../packages/tooling-registry/src/index.mjs';
+test('exact resolution rejects incompatible installed versions and conflicts',()=>{
+ const request={id:'example.inspect',operationVersion:'1.0.0',packageName:'@accelerate/example',packageVersion:'1.0.0'};
+ const entry={manifest:{id:request.id,version:request.operationVersion,package:request.packageName},packageVersion:'1.0.0'};
+ const index={operations:[entry],conflicts:[]};
+ assert.equal(resolveOperation(index,request).status,'resolved');
+ assert.equal(resolveOperation(index,{...request,packageVersion:'2.0.0'}).status,'incompatible');
+ assert.equal(resolveOperation(index,{...request,operationVersion:'2.0.0'}).status,'not-found');
+ assert.equal(resolveOperation({...index,conflicts:['example.inspect@1.0.0']},request).status,'conflict');
+});
