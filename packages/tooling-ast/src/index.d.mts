@@ -7,3 +7,4 @@ export function findNodes(root:ts.Node,predicate:(node:ts.Node)=>boolean):ts.Nod
 export function transformSource(fileName:string,source:string,edits:readonly TextEdit[]):string;
 export function ensureNamedImport(fileName:string,source:string,options:{moduleSpecifier:string;imported:string;local?:string}):string;
 export function findSymbolReferences(files:Readonly<Record<string,string>>,fileName:string,position:number):{references:{fileName:string;start:number;end:number;text:string}[];resolved:boolean;complete:false};
+export function planLocalRename(files:Readonly<Record<string,string>>,fileName:string,position:number,newName:string):{status:'success'|'no-op';edits:TextEdit[];source?:string;complete:false};
