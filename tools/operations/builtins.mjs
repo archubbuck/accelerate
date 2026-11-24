@@ -10,6 +10,7 @@ import {planFlagRename} from '../../packages/feature-flags-core/operations/renam
 import {planFlagRemoval} from '../../packages/feature-flags-core/operations/remove.mjs';
 import {planRetirement} from '../../packages/feature-flags-core/operations/retire.mjs';
 import {planIntegration,planCreation} from '../../packages/feature-flags-core/operations/integrate.mjs';
+import {generateFlagTests} from '../../packages/feature-flags-core/operations/generate-tests.mjs';
 import {inspectProject} from './project.mjs';
 export async function createBuiltinRegistry(root){
  const registry=new OperationRegistry();
@@ -35,6 +36,7 @@ export async function createBuiltinRegistry(root){
  for(const [id,handler,properties] of [['integrate',planIntegration,integrationProperties],['create',planCreation,{...integrationProperties,target,enabled:{type:'boolean'}}]]){
   registry.register({...base,id:'feature-flags.'+id,description:'Preview explicit async branch '+id,mutatesProject:true,modes:['preview','plan'],inputSchema:{type:'object',required:Object.keys(properties),additionalProperties:false,properties}},request=>handler(root,request.input));
  }
+ registry.register({...base,id:'feature-flags.generate-tests',description:'Generate standalone flag evaluation test source',mutatesProject:false,modes:['preview','plan'],inputSchema:{type:'object',required:['target','key'],additionalProperties:false,properties:{target,key:{type:'string',minLength:1}}}},request=>generateFlagTests(root,request.input));
  return registry;
 }
 export async function executeBuiltin(root,request){
