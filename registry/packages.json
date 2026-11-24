@@ -1978,6 +1978,29 @@
         "peer": [],
         "optional": []
       }
+    },
+    {
+      "id": "tooling-registry",
+      "name": "@accelerate/tooling-registry",
+      "category": "agent-tooling",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 6,
+      "dependencies": [
+        "@accelerate/tooling-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "path": "packages/tooling-registry",
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/tooling-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
     }
   ]
 }
