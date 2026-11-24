@@ -14,3 +14,5 @@ export function resolveAbsentFile(root:string,relative:string):Promise<string>;
 export function planCreation(root:string,relative:string,content:string):Promise<Creation>;
 export function planDeletion(root:string,relative:string):Promise<Deletion>;
 export function planRename(root:string,relative:string,destination:string):Promise<Rename>;
+export type FilePatch = Creation | Replacement | Deletion | Rename;
+export function verifyMixedPlan(root:string,changes:readonly FilePatch[]):Promise<PatchDiagnostic[]>;
