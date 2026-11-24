@@ -107,3 +107,17 @@ export function planLocalRename(files,fileName,position,newName){
  const edits=result.references.map(r=>({start:r.start,end:r.end,expected:r.text,text:newName}));
  return {status:'success',edits,source:transformSource(fileName,source,edits),complete:false};
 }
+
+/** Preview changing the module specifier of explicitly matched static imports. */
+export function rewriteImportModule(fileName,source,from,to){
+ if(typeof from!=='string'||!from||typeof to!=='string'||!to)throw new Error('INVALID_MODULE_SPECIFIER');
+ const {ast,diagnostics}=parseSource(fileName,source);
+ if(diagnostics.length)throw new Error('SOURCE_PARSE_ERROR');
+ const edits=[];
+ for(const statement of ast.statements){
+  if(!ts.isImportDeclaration(statement)||!ts.isStringLiteral(statement.moduleSpecifier)||statement.moduleSpecifier.text!==from||from===to)continue;
+  const n=statement.moduleSpecifier;
+  edits.push({start:n.getStart(ast),end:n.end,expected:n.getText(ast),text:JSON.stringify(to)});
+ }
+ return {status:edits.length?'success':'no-op',edits,source:transformSource(fileName,source,edits),complete:false};
+}
