@@ -5,3 +5,4 @@ export function inspectWorkspace(root:string,options?:{maxDepth?:number;maxDirec
 export function inspectDependencyGraph(root:string,packagePaths:readonly string[]):Promise<{nodes:{name:string;path:string}[];edges:{from:string;to:string;section:string;range:string}[];resolutionVerified:false}>;
 export function orderDependencies(graph:Awaited<ReturnType<typeof inspectDependencyGraph>>,options?:{sections?:readonly string[]}):{order:string[];blocked:string[];acyclic:boolean};
 export function inspectDependencyImpact(graph:Awaited<ReturnType<typeof inspectDependencyGraph>>,target:string,options?:{sections?:readonly string[]}):{target:string;dependencies:{name:string;distance:number}[];dependents:{name:string;distance:number}[];resolutionVerified:false};
+export function classifyPackage(root:string):Promise<{name:string|null;roles:('library'|'cli'|'application'|'unknown')[];evidence:string[];frameworks:string[];verified:false}>;
