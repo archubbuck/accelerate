@@ -1027,30 +1027,46 @@
       "id": "config-react",
       "name": "@accelerate/config-react",
       "category": "configuration",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/config-react",
       "dependencies": [
         "config-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/config-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "config-angular",
       "name": "@accelerate/config-angular",
       "category": "configuration",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/config-angular",
       "dependencies": [
         "config-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/config-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -1099,15 +1115,23 @@
       "id": "feature-flags-postgres",
       "name": "@accelerate/feature-flags-postgres",
       "category": "configuration",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/feature-flags-postgres",
       "dependencies": [
         "feature-flags-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/feature-flags-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {

@@ -1,0 +1,3 @@
+import {createContext,createElement,useContext,type ReactNode} from "react";
+import {defineConfig,type ConfigShape,type ConfigValues} from "@accelerate/config-core";
+export function createConfigContext<T extends ConfigShape>(shape:T){const Context=createContext<ConfigValues<T>|undefined>(undefined);return {Provider({source,children}:{source:Readonly<Record<string,unknown>>;children?:ReactNode}){return createElement(Context.Provider,{value:defineConfig(shape,source)},children);},useConfig():ConfigValues<T>{const value=useContext(Context);if(value===undefined)throw new Error("Configuration provider missing");return value;}};}

@@ -1,0 +1,2 @@
+import {it,expect,vi} from "vitest";import {PostgresFlagStore} from "./index.js";
+it("uses bound parameters for writes",async()=>{const query=vi.fn(async()=>({rows:[]}));const store=new PostgresFlagStore({query});await store.set({key:"x",enabled:true});expect(query).toHaveBeenCalledWith(expect.stringContaining("$2::jsonb"),["x",'{"key":"x","enabled":true}']);expect(await store.get("missing")).toBeUndefined();});
