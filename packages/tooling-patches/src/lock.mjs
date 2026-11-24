@@ -20,3 +20,21 @@ export async function inspectProjectLock(root){
   catch(e){return {status:e.code==='ESRCH'?'stale':'unknown',pid:owner.pid};}
  }catch(e){return {status:e.code==='ENOENT'?'absent':'unknown'};}
 }
+
+export async function removeStaleProjectLock(root,{apply=false,exclusiveMaintenance=false}={}){
+ if(!apply||!exclusiveMaintenance)return {status:'blocked',code:'EXCLUSIVE_MAINTENANCE_REQUIRED'};
+ const base=await realpath(root),file=path.join(base,name),guardPath=path.join(base,'.accelerate-lock-recovery');
+ let guard;
+ try{guard=await open(guardPath,'wx',0o600);}catch{return {status:'blocked',code:'RECOVERY_GUARD_UNAVAILABLE'};}
+ try{
+  const initial=await inspectProjectLock(base);
+  if(initial.status==='absent')return {status:'no-op'};
+  if(initial.status!=='stale')return {status:'blocked',code:'LOCK_NOT_CONFIRMED_STALE'};
+  const before=await lstat(file),raw=await readFile(file,'utf8');
+  const current=await inspectProjectLock(base),after=await lstat(file);
+  if(current.status!=='stale'||current.pid!==initial.pid||before.dev!==after.dev||before.ino!==after.ino||raw!==await readFile(file,'utf8'))return {status:'conflict',code:'LOCK_CHANGED'};
+  await unlink(file);
+  return {status:'success'};
+ }catch{return {status:'blocked',code:'LOCK_RECOVERY_FAILED'};}
+ finally{await guard.close();await unlink(guardPath);}
+}
