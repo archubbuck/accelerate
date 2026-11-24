@@ -144,3 +144,17 @@ export function planUnusedImportRemoval(fileName,source,{moduleSpecifier,local})
  const edits=[{start,end,expected,text:'import '+statement.moduleSpecifier.getText(ast)+';'}];
  return {status:'success',edits,source:transformSource(fileName,source,edits),complete:false};
 }
+
+/** Plan syntax-validated edits across explicit source files without writing to disk. */
+export function planSourceTransforms(files,changes){
+ if(!Array.isArray(changes))throw new Error('INVALID_TRANSFORM_LIST');
+ const seen=new Set(),plans=[];
+ for(const change of changes){
+  const {fileName,edits}=change;
+  if(typeof fileName!=='string'||!Object.hasOwn(files,fileName)||seen.has(fileName)||!Array.isArray(edits))throw new Error('INVALID_TRANSFORM_TARGET');
+  seen.add(fileName);
+  const before=files[fileName],after=transformSource(fileName,before,edits);
+  if(before!==after)plans.push({fileName,before,after});
+ }
+ return {status:plans.length?'success':'no-op',plans,verification:{syntax:true,semantic:false}};
+}
