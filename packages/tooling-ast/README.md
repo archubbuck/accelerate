@@ -11,3 +11,5 @@ Experimental deterministic TypeScript/JavaScript source transformations.
 - `findSymbolReferences`: compiler symbol identity within explicitly supplied virtual files, excluding shadowed bindings. No filesystem or installed dependency resolution; results are not exhaustive.
 
 Cross-file transformations and full semantic validation are not yet implemented.
+
+- `planLocalRename`: preview-only local variable rename; rejects exported declarations, aliases, cross-file references and identifier collisions. Not a general-purpose refactoring engine.
