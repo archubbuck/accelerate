@@ -20,3 +20,4 @@ export function applyMixedPlan(root:string,changes:readonly FilePatch[],options?
 export function inspectJournal(root:string):Promise<{status:'absent'|'blocked'|'recovery-required';code?:string;entries?:{kind:string;path:string;destination?:string}[]}>;
 export function planRecovery(root:string):Promise<{status:'absent'|'blocked'|'recovery-required'|'conflict';code?:string;entries?:{kind:string;path:string;destination?:string;state:'original'|'applied'|'conflict'}[]}>;
 export function recoverJournal(root:string,options?:{apply?:boolean}):Promise<{status:string;code?:string;entries?:unknown[]}>;
+export function inspectProjectLock(root:string):Promise<{status:'absent'|'active'|'stale'|'unknown';pid?:number}>;
