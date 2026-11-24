@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
-import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact,classifyPackage} from '../../packages/tooling-project/src/index.mjs';
+import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact,classifyPackage,inspectSourceLayout} from '../../packages/tooling-project/src/index.mjs';
 test('discovers candidate packages and excludes dependency directories',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-discovery-'));
  try{
@@ -68,5 +68,19 @@ test('package classification retains evidence and multiple roles',async()=>{
   const result=await classifyPackage(root);
   assert.deepEqual(result.roles,['library','application']);
   assert.equal(result.verified,false);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('source layout reports explicit config evidence without resolving extends',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-layout-'));
+ try{
+  await mkdir(path.join(root,'src'));
+  await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({extends:'./base.json',compilerOptions:{rootDir:'src'},include:['src/**/*']}));
+  await writeFile(path.join(root,'tsconfig.bad.json'),'{ invalid');
+  const result=await inspectSourceLayout(root);
+  assert.deepEqual(result.roots,['src']);
+  assert.equal(result.configs[0].extends,'./base.json');
+  assert.equal(result.configurationResolved,false);
+  assert.equal(result.diagnostics[0].code,'CONFIG_UNSUPPORTED_OR_UNREADABLE');
  }finally{await rm(root,{recursive:true,force:true});}
 });
