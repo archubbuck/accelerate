@@ -84,6 +84,7 @@ Generated from registry/packages.json. Do not edit manually.
 | `@accelerate/testing-http` | testing-dx | implemented | P1 | 5 |
 | `@accelerate/testing-postgres` | testing-dx | implemented | P1 | 5 |
 | `@accelerate/tooling-core` | agent-tooling | in-progress | P0 | 6 |
+| `@accelerate/tooling-patches` | agent-tooling | in-progress | P0 | 6 |
 | `@accelerate/tracing-core` | observability | implemented | P1 | 4 |
 | `@accelerate/tracing-otel` | observability | implemented | P1 | 4 |
 | `@accelerate/transactions` | data | implemented | P1 | 5 |
