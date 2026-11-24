@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
-import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact,classifyPackage,inspectSourceLayout} from '../../packages/tooling-project/src/index.mjs';
+import {discoverPackages,inspectWorkspace,inspectDependencyGraph,orderDependencies,inspectDependencyImpact,classifyPackage,inspectSourceLayout,discoverSourceFiles} from '../../packages/tooling-project/src/index.mjs';
 test('discovers candidate packages and excludes dependency directories',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-discovery-'));
  try{
@@ -82,5 +82,16 @@ test('source layout reports explicit config evidence without resolving extends',
   assert.equal(result.configs[0].extends,'./base.json');
   assert.equal(result.configurationResolved,false);
   assert.equal(result.diagnostics[0].code,'CONFIG_UNSUPPORTED_OR_UNREADABLE');
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('source discovery bounds scope and excludes generated directories',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-sources-'));
+ try{
+  await mkdir(path.join(root,'src','dist'),{recursive:true});
+  for(const file of ['src/a.ts','src/b.tsx','src/dist/generated.ts','src/notes.txt'])await writeFile(path.join(root,file),'');
+  assert.deepEqual((await discoverSourceFiles(root)).files,['src/a.ts','src/b.tsx']);
+  assert.equal((await discoverSourceFiles(root,{maxFiles:1})).complete,false);
+  await assert.rejects(discoverSourceFiles(root,{roots:['../outside']}),/INVALID_SOURCE_SCOPE/);
  }finally{await rm(root,{recursive:true,force:true});}
 });
