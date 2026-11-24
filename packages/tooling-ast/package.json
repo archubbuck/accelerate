@@ -27,5 +27,8 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "typescript": "~5.8.3"
   }
 }
