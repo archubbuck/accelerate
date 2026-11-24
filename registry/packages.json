@@ -532,28 +532,42 @@
       "id": "cache-redis",
       "name": "@accelerate/cache-redis",
       "category": "data",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/cache-redis",
       "dependencies": [
         "cache-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "cache-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "transactions",
       "name": "@accelerate/transactions",
       "category": "data",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/transactions",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
