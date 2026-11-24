@@ -1057,28 +1057,42 @@
       "id": "feature-flags-core",
       "name": "@accelerate/feature-flags-core",
       "category": "configuration",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/feature-flags-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "feature-flags-memory",
       "name": "@accelerate/feature-flags-memory",
       "category": "configuration",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/feature-flags-memory",
       "dependencies": [
         "feature-flags-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/feature-flags-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -1100,13 +1114,19 @@
       "id": "secrets-core",
       "name": "@accelerate/secrets-core",
       "category": "configuration",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/secrets-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -1251,13 +1271,19 @@
       "id": "diagnostics-core",
       "name": "@accelerate/diagnostics-core",
       "category": "observability",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/diagnostics-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {

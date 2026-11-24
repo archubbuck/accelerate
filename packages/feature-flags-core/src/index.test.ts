@@ -1,0 +1,2 @@
+import {it,expect} from "vitest";import {FeatureFlags,evaluateFlag} from "./index.js";
+it("evaluates first matching rule and defaults",async()=>{const flag={key:"new",enabled:false,rules:[{attribute:"team",equals:"beta",enabled:true}]};expect(evaluateFlag(flag,{attributes:{team:"beta"}})).toBe(true);expect(evaluateFlag(flag)).toBe(false);expect(await new FeatureFlags({get:async()=>undefined}).enabled("missing")).toBe(false);});
