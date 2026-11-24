@@ -6,6 +6,7 @@ import {listFlags,planFlagUpdate,describeFlag,validateFlags} from '../../package
 import {findFlagUsages} from '../../packages/feature-flags-core/operations/usages.mjs';
 import {compareFlagUsage} from '../../packages/feature-flags-core/operations/usage-audit.mjs';
 import {planUsageRename} from '../../packages/feature-flags-core/operations/rename-usages.mjs';
+import {planFlagRename} from '../../packages/feature-flags-core/operations/rename.mjs';
 import {inspectProject} from './project.mjs';
 export async function createBuiltinRegistry(root){
  const registry=new OperationRegistry();
@@ -24,6 +25,7 @@ export async function createBuiltinRegistry(root){
   registry.register({...base,id:'feature-flags.find-'+kind,description:'Find candidate '+kind+' flags within explicit source scope',mutatesProject:false,modes:['inspect','preview'],inputSchema:{type:'object',required:['target','files','receivers'],additionalProperties:false,properties:{target,files:strings,receivers:strings}}},request=>compareFlagUsage(root,request.input,kind));
  }
  registry.register({...base,id:'feature-flags.preview-usage-rename',description:'Preview candidate source reference renames; not a complete flag rename',mutatesProject:true,modes:['preview','plan'],inputSchema:{type:'object',required:['files','receivers','key','newKey'],additionalProperties:false,properties:{files:strings,receivers:strings,key:{type:'string',minLength:1},newKey:{type:'string',minLength:1}}}},request=>planUsageRename(root,request.input));
+ registry.register({...base,id:'feature-flags.rename',description:'Preview coordinated registry and candidate source reference rename',mutatesProject:true,modes:['preview','plan'],inputSchema:{type:'object',required:['target','files','receivers','key','newKey'],additionalProperties:false,properties:{target,files:strings,receivers:strings,key:{type:'string',minLength:1},newKey:{type:'string',minLength:1}}}},request=>planFlagRename(root,request.input));
  return registry;
 }
 export async function executeBuiltin(root,request){
