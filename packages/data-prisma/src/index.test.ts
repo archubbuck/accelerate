@@ -1,0 +1,2 @@
+import {it,expect,vi} from "vitest";import {createPrismaDatabase,type PrismaQueryBridge} from "./index.js";
+it("delegates parameterized queries",async()=>{const query=vi.fn(async()=>({rows:[1],rowCount:1}));const client={query,transaction:async<T>(fn:(tx:PrismaQueryBridge)=>Promise<T>)=>fn({query}),disconnect:async()=>{}};const db=createPrismaDatabase(client);expect(await db.query("SELECT $1",[1])).toEqual({rows:[1],rowCount:1});expect(query).toHaveBeenCalledWith("SELECT $1",[1]);});

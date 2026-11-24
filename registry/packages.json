@@ -460,30 +460,46 @@
       "id": "data-sqlserver",
       "name": "@accelerate/data-sqlserver",
       "category": "data",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/data-sqlserver",
       "dependencies": [
         "data-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "data-prisma",
       "name": "@accelerate/data-prisma",
       "category": "data",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/data-prisma",
       "dependencies": [
         "data-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -545,7 +561,7 @@
       "version": "0.1.0",
       "workspaceDependencies": {
         "runtime": [
-          "cache-core"
+          "@accelerate/cache-core"
         ],
         "peer": [],
         "optional": []
@@ -750,13 +766,19 @@
       "id": "contracts-openapi",
       "name": "@accelerate/contracts-openapi",
       "category": "api",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/contracts-openapi",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {

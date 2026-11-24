@@ -1,0 +1,2 @@
+import {it,expect,vi} from "vitest";import {createSqlServerDatabase} from "./index.js";
+it("binds parameters separately",async()=>{const request={input:vi.fn(),query:vi.fn(async()=>({recordset:[{id:1}]}))};request.input.mockReturnValue(request);const db=createSqlServerDatabase({request:()=>request,close:async()=>{}},()=>{throw new Error("unused");});expect(await db.query("SELECT @p1",[1])).toEqual({rows:[{id:1}],rowCount:1});expect(request.input).toHaveBeenCalledWith("p1",1);});
