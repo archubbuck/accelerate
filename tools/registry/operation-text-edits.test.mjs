@@ -37,3 +37,10 @@ test('symbol references exclude shadowed identifiers',()=>{
  assert.deepEqual(result.references.map(r=>r.start),[source.indexOf('flag'),source.lastIndexOf('flag')]);
  assert.equal(result.complete,false);
 });
+
+test('virtual relative imports resolve to exported symbol identity',()=>{
+ const files={'/src/a.ts':'export const flag = true;','/src/b.ts':"import { flag as localFlag } from './a'; console.log(localFlag);"};
+ const result=findSymbolReferences(files,'/src/a.ts',files['/src/a.ts'].indexOf('flag'));
+ assert.equal(result.resolved,true);
+ assert.ok(result.references.some(r=>r.fileName==='/src/b.ts'&&r.text==='localFlag'));
+});
