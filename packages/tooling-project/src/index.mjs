@@ -77,3 +77,23 @@ export async function inspectWorkspace(root,options={}){
  }));
  return {...discovery,members,diagnostics,workspaceMembershipVerified:discovery.complete};
 }
+
+/** Build declared internal dependency edges from explicitly selected package boundaries. */
+export async function inspectDependencyGraph(root,packagePaths){
+ if(!Array.isArray(packagePaths)||packagePaths.some(p=>typeof p!=='string'||(p!=='.'&&!p.split('/').every(s=>/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(s)))))throw new Error('INVALID_PACKAGE_PATHS');
+ const base=await realpath(root),nodes=[],edges=[],names=new Map();
+ for(const relative of [...new Set(packagePaths)].sort()){
+  const dir=path.join(base,relative);
+  if(await realpath(dir)!==dir)throw new Error('UNSAFE_PACKAGE_PATH');
+  const manifest=await readManifest(dir);
+  if(typeof manifest.name!=='string'||!manifest.name||names.has(manifest.name))throw new Error('INVALID_OR_DUPLICATE_PACKAGE_NAME');
+  names.set(manifest.name,relative);
+  nodes.push({name:manifest.name,path:relative,manifest});
+ }
+ for(const node of nodes)for(const section of ['dependencies','devDependencies','peerDependencies','optionalDependencies']){
+  for(const [name,range] of Object.entries(node.manifest[section]??{}).sort(([a],[b])=>a.localeCompare(b,'en'))){
+   if(names.has(name)&&typeof range==='string')edges.push({from:node.name,to:name,section,range});
+  }
+ }
+ return {nodes:nodes.map(({name,path})=>({name,path})),edges,resolutionVerified:false};
+}
