@@ -13,3 +13,6 @@ Experimental deterministic TypeScript/JavaScript source transformations.
 Cross-file transformations and full semantic validation are not yet implemented.
 
 - `planLocalRename`: preview-only local variable rename; rejects exported declarations, aliases, cross-file references and identifier collisions. Not a general-purpose refactoring engine.
+
+- `rewriteImportModule`: preview static module specifier replacements; does not verify target exports.
+- `planUnusedImportRemoval`: conservative single named binding removal, retaining side-effect imports and rejecting potential usages.
