@@ -7,3 +7,5 @@ Read-only root project inspection, framework detection and Accelerate dependency
 `inspectWorkspace` supports literal and single-segment wildcard package.json workspace declarations; simple pnpm YAML package lists are supported; complex YAML and globs are explicitly unsupported. `inspectDependencyGraph` reports declared internal dependency edges for explicit package paths, not resolved versions.
 
 `orderDependencies` returns dependency-first ordering and cycle-blocked nodes. Defaults to runtime and optional dependency edges; callers can select other sections.
+
+`inspectDependencyImpact(graph, target)` reports transitive dependencies and dependents with shortest graph distances. All declared dependency sections are included by default; cycles are traversed without repeating nodes.
