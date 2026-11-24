@@ -100,3 +100,22 @@ export async function inspectDependencyGraph(root,packagePaths){
  }
  return {nodes:nodes.map(({name,path})=>({name,path})),edges,resolutionVerified:false};
 }
+
+/** Dependency-first ordering and cycle-blocked nodes for a declared graph. */
+export function orderDependencies(graph,{sections=['dependencies','optionalDependencies']}={}){
+ const names=new Set(graph.nodes.map(n=>n.name));
+ if(names.size!==graph.nodes.length)throw Error('DUPLICATE_GRAPH_NODE');
+ const pending=new Map([...names].map(n=>[n,new Set()]));
+ for(const e of graph.edges){
+  if(!names.has(e.from)||!names.has(e.to))throw Error('UNKNOWN_GRAPH_NODE');
+  if(sections.includes(e.section))pending.get(e.from).add(e.to);
+ }
+ const order=[];
+ while(pending.size){
+  const ready=[...pending].filter(([,deps])=>deps.size===0).map(([name])=>name).sort();
+  if(!ready.length)break;
+  for(const name of ready){order.push(name);pending.delete(name);}
+  for(const deps of pending.values())for(const name of ready)deps.delete(name);
+ }
+ return {order,blocked:[...pending.keys()].sort(),acyclic:pending.size===0};
+}
