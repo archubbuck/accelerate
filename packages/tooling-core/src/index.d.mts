@@ -21,4 +21,4 @@ export class OperationRegistry {
  list(): OperationManifest[];
  resolve(id:string,version:string): {manifest:OperationManifest;handler:OperationHandler}|undefined;
 }
-export function executeOperation(registry:OperationRegistry,request:unknown,options?:{validateSchema?:(schema:Record<string,unknown>,value:unknown)=>boolean|Promise<boolean>}):Promise<OperationResponse>;
+export function executeOperation(registry:OperationRegistry,request:unknown,options?:{validateSchema?:(schema:Record<string,unknown>,value:unknown)=>boolean|Promise<boolean>;applyChanges?:(changes:unknown[],request:NormalizedRequest)=>OperationResult|Promise<OperationResult>}):Promise<OperationResponse>;
