@@ -11,3 +11,4 @@ export function planLocalRename(files:Readonly<Record<string,string>>,fileName:s
 export interface SourceEditPlan {status:'success'|'no-op';edits:TextEdit[];source:string;complete:false}
 export function rewriteImportModule(fileName:string,source:string,from:string,to:string):SourceEditPlan;
 export function planUnusedImportRemoval(fileName:string,source:string,options:{moduleSpecifier:string;local:string}):SourceEditPlan;
+export function planSourceTransforms(files:Readonly<Record<string,string>>,changes:readonly {fileName:string;edits:readonly TextEdit[]}[]):{status:'success'|'no-op';plans:{fileName:string;before:string;after:string}[];verification:{syntax:true;semantic:false}};
