@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,writeFile,rm,unlink,rename} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
-import {planCreation,planReplacement,planDeletion,planRename,planRecovery} from '../../packages/tooling-patches/src/index.mjs';
+import {planCreation,planReplacement,planDeletion,planRename,planRecovery,recoverJournal,inspectJournal} from '../../packages/tooling-patches/src/index.mjs';
 import {prepareJournal} from '../../packages/tooling-patches/src/journal.mjs';
 test('recovery classifies mixed interrupted states without exposing content',async t=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-recovery-'));
@@ -22,4 +22,28 @@ test('recovery classifies mixed interrupted states without exposing content',asy
  assert.equal(result.status,'conflict');
  assert.equal(result.entries[1].state,'conflict');
  assert.ok(!JSON.stringify(result).includes('original-a'));
+});
+
+test('explicit recovery restores mixed changes and retains conflicting journals',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-restore-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const {readFile,chmod,stat}=await import('node:fs/promises');
+ for(const f of ['a','b','c'])await writeFile(path.join(root,f),f);
+ await chmod(path.join(root,'a'),0o600);
+ const changes=[await planCreation(root,'new','new'),await planReplacement(root,'a',()=> 'updated'),await planDeletion(root,'b'),await planRename(root,'c','renamed')];
+ await prepareJournal(root,changes);
+ await writeFile(path.join(root,'new'),'new');
+ await writeFile(path.join(root,'a'),'unrelated');
+ await unlink(path.join(root,'b'));
+ await rename(path.join(root,'c'),path.join(root,'renamed'));
+ assert.equal((await recoverJournal(root)).status,'blocked');
+ assert.equal((await recoverJournal(root,{apply:true})).status,'conflict');
+ assert.equal(await readFile(path.join(root,'a'),'utf8'),'unrelated');
+ assert.equal((await inspectJournal(root)).status,'recovery-required');
+ await writeFile(path.join(root,'a'),'updated');
+ assert.equal((await recoverJournal(root,{apply:true})).status,'success');
+ for(const f of ['a','b','c'])assert.equal(await readFile(path.join(root,f),'utf8'),f);
+ if(process.platform!=='win32')assert.equal((await stat(path.join(root,'a'))).mode&0o777,0o600);
+ for(const f of ['new','renamed'])await assert.rejects(readFile(path.join(root,f)),{code:'ENOENT'});
+ assert.equal((await inspectJournal(root)).status,'absent');
 });
