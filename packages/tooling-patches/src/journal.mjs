@@ -6,7 +6,7 @@ export async function prepareJournal(root,changes){
  const base=await realpath(root);
  const entries=[];
  for(const change of changes){
-  if(change.path===journalName||change.destination===journalName||change.path==='.accelerate-operation.lock'||change.destination==='.accelerate-operation.lock')throw new Error('RESERVED_PATH');
+  if([change.path,change.destination].some(p=>[journalName,'.accelerate-operation.lock','.accelerate-lock-recovery'].includes(p)))throw new Error('RESERVED_PATH');
   const before=change.kind==='create'?null:await snapshotFile(base,change.path);
   if(before&&before.hash!==change.beforeHash)throw new Error('STALE_PATCH');
   const mode=before?(await lstat(path.join(base,change.path))).mode&0o777:null;
