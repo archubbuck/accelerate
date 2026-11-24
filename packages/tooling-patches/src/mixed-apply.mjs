@@ -63,7 +63,7 @@ export async function applyMixedPlan(root,changes,{apply=false,verify}={}){
   }
   if(verify&&!await verify())throw new Error('VERIFICATION_FAILED');
   await clearJournal(base);journalPrepared=false;
-  return {status:'success',diagnostics:[],verification:[{code:'CONTENT_HASH_VERIFIED',passed:true}]};
+  return {status:'success',diagnostics:[],verification:[{code:'CONTENT_HASH_VERIFIED',passed:true},...(verify?[{code:'CUSTOM_VERIFICATION',passed:true}]:[])]};
  }catch{
   diagnostics.push({code:'APPLY_FAILED'});
   for(const revert of undo.reverse())try{await revert();}catch{diagnostics.push({code:'ROLLBACK_CONFLICT'});}
