@@ -1,0 +1,2 @@
+import {it,expect} from "vitest";import {MockHttpTransport} from "./index.js";
+it("matches requests and verifies consumption",async()=>{const mock=new MockHttpTransport().expect({method:"GET",url:"/items",respond:()=>({status:200,headers:{},body:[1]})});expect(()=>mock.verify()).toThrow();await expect(mock.send({method:"POST",url:"/items"})).rejects.toThrow();expect((await mock.send<number[]>({method:"GET",url:"/items"})).body).toEqual([1]);expect(()=>mock.verify()).not.toThrow();});

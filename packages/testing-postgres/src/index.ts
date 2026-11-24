@@ -1,0 +1,4 @@
+import {AssertionFailure} from "@accelerate/testing-core";
+export interface TestPgClient {query(sql:string,parameters?:readonly unknown[]):Promise<unknown>;}
+export async function withRollback<T>(client:TestPgClient,operation:(client:TestPgClient)=>Promise<T>):Promise<T>{await client.query("BEGIN");let result:T;try{result=await operation(client);}catch(error){try{await client.query("ROLLBACK");}catch(cleanup){throw new AggregateError([error,cleanup],"Test and rollback failed");}throw error;}await client.query("ROLLBACK");return result;}
+export async function applyFixtures(client:TestPgClient,fixtures:readonly {sql:string;parameters?:readonly unknown[]}[]):Promise<void>{for(const fixture of fixtures){if(!fixture.sql.trim())throw new AssertionFailure("Empty fixture SQL");await client.query(fixture.sql,fixture.parameters);}}

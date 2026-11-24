@@ -1,0 +1,2 @@
+import {it,expect,vi} from "vitest";import {withRollback,applyFixtures} from "./index.js";
+it("rolls back successful and failed tests",async()=>{const query=vi.fn(async()=>{});const client={query};await withRollback(client,c=>applyFixtures(c,[{sql:"INSERT INTO test VALUES ($1)",parameters:[1]}]));expect(query.mock.calls.map(c=>c[0])).toEqual(["BEGIN","INSERT INTO test VALUES ($1)","ROLLBACK"]);await expect(withRollback(client,async()=>{throw Error("failed");})).rejects.toThrow("failed");expect(query).toHaveBeenLastCalledWith("ROLLBACK");});

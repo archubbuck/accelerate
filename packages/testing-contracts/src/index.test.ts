@@ -1,0 +1,2 @@
+import {it,expect,vi} from "vitest";import {verifyContract,assertContract} from "./index.js";
+it("isolates cases and cleans up failed subjects",async()=>{const dispose=vi.fn();const results=await verifyContract(()=>({}),[{name:"bad",run(){throw Error("bad");}},{name:"good",run(){}}],dispose);expect(results.map(r=>r.passed)).toEqual([false,true]);expect(dispose).toHaveBeenCalledTimes(2);expect(()=>assertContract(results)).toThrow("bad");});

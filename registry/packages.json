@@ -1570,59 +1570,90 @@
       "id": "testing-http",
       "name": "@accelerate/testing-http",
       "category": "testing-dx",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/testing-http",
       "dependencies": [
-        "testing-core",
-        "http-core"
+        "http-core",
+        "testing-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/http-core",
+          "@accelerate/testing-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "testing-postgres",
       "name": "@accelerate/testing-postgres",
       "category": "testing-dx",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/testing-postgres",
       "dependencies": [
         "testing-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/testing-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "testing-contracts",
       "name": "@accelerate/testing-contracts",
       "category": "testing-dx",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/testing-contracts",
       "dependencies": [
         "testing-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/testing-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "testing-architecture",
       "name": "@accelerate/testing-architecture",
       "category": "testing-dx",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/testing-architecture",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
