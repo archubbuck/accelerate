@@ -5,3 +5,4 @@ export function discoverPackageOperations(root:string,names:readonly string[]):P
 export interface CapabilityIndex {operations:(OperationEntry&{packageVersion:string})[];conflicts:string[]}
 export function indexOperations(packages:readonly DiscoveredPackage[]):CapabilityIndex;
 export function searchOperations(index:CapabilityIndex,options?:{query?:string;packageName?:string;mode?:string}):CapabilityIndex['operations'];
+export function resolveOperation(index:CapabilityIndex,request:{id:string;operationVersion:string;packageName:string;packageVersion:string}):{status:'conflict'|'not-found'|'incompatible'}|{status:'resolved';entry:CapabilityIndex['operations'][number]};
