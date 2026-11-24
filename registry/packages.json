@@ -831,15 +831,23 @@
       "id": "events-redis",
       "name": "@accelerate/events-redis",
       "category": "events",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/events-redis",
       "dependencies": [
         "events-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/events-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -925,31 +933,48 @@
       "id": "scheduler-core",
       "name": "@accelerate/scheduler-core",
       "category": "events",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/scheduler-core",
       "dependencies": [
         "jobs-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/jobs-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "workflows-core",
       "name": "@accelerate/workflows-core",
       "category": "events",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/workflows-core",
       "dependencies": [
-        "jobs-core",
-        "events-core"
+        "events-core",
+        "jobs-core"
       ],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/events-core",
+          "@accelerate/jobs-core"
+        ],
+        "peer": [],
+        "optional": []
       }
     },
     {

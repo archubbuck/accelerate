@@ -1,0 +1,2 @@
+import {it,expect,vi} from "vitest";import {Scheduler} from "./index.js";
+it("coalesces missed intervals and avoids repeat enqueue",async()=>{const enqueue=vi.fn(async()=>"job");const scheduler=new Scheduler({enqueue},()=>350);scheduler.register({id:"s",name:"work",payload:null,startAt:100,intervalMs:100});expect(await scheduler.tick()).toBe(1);expect(await scheduler.tick()).toBe(0);expect(enqueue).toHaveBeenCalledWith("work",null,{id:"s:300"});});

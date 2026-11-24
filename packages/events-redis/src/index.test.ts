@@ -1,0 +1,2 @@
+import {it,expect,vi} from "vitest";import {RedisEventBus} from "./index.js";
+it("publishes to namespaced channels",async()=>{const publish=vi.fn(async()=>{});const bus=new RedisEventBus({publish,subscribe:()=>()=>{}},"app",()=>{});const event={id:"1",type:"created",payload:1,occurredAt:"2026-01-01"};await bus.publish(event);expect(publish).toHaveBeenCalledWith("app:created",JSON.stringify(event));});
