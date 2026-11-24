@@ -1,0 +1,4 @@
+import {it,expect} from "vitest";import {resolvePackages,scaffold} from "./index.js";
+it("resolves transitive dependencies",()=>{expect(resolvePackages([{id:"a",name:"@accelerate/a",version:"1.0.0",lifecycle:"implemented",dependencies:["b"]},{id:"b",name:"@accelerate/b",version:"1.0.0",lifecycle:"implemented",dependencies:[]}],["a"])).toEqual({"@accelerate/a":"1.0.0","@accelerate/b":"1.0.0"});});
+it("rejects unknown packages and unsafe names",()=>{expect(()=>resolvePackages([],["missing"])).toThrow();expect(()=>scaffold("../bad","node",{})).toThrow();});
+it("generates framework starter files",()=>{expect(scaffold("app","react",{})).toHaveProperty("src/main.tsx");expect(scaffold("app","angular",{})).toHaveProperty("angular.json");expect(scaffold("app","node",{})).toHaveProperty("src/main.ts");});
