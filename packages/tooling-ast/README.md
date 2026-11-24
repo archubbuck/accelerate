@@ -18,3 +18,5 @@ Cross-file transformations and full semantic validation are not yet implemented.
 - `planUnusedImportRemoval`: conservative single named binding removal, retaining side-effect imports and rejecting potential usages.
 
 - `planSourceTransforms`: preview a batch of explicit source edits, rejecting duplicate targets and invalid syntax before returning any plan. No disk writes or semantic verification.
+
+- `inspectSemanticDiagnostics` and `compareSemanticDiagnostics`: bounded compiler type diagnostics and baseline comparison. No standard libraries, external dependencies or project tsconfig resolution; passing is not proof of full project correctness.
