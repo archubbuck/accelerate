@@ -1,0 +1,60 @@
+{
+  "id": "feature-flags.register",
+  "version": "1.0.0",
+  "package": "@accelerate/feature-flags-core",
+  "description": "Preview registration in an existing JSON array consumed by a FlagStore",
+  "mutatesProject": true,
+  "modes": [
+    "preview",
+    "plan"
+  ],
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "target",
+      "key",
+      "enabled"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "target": {
+        "type": "string",
+        "minLength": 1
+      },
+      "key": {
+        "type": "string",
+        "minLength": 1
+      },
+      "enabled": {
+        "type": "boolean"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "key",
+      "enabled",
+      "outcome",
+      "registrationVerified"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "key": {
+        "type": "string"
+      },
+      "enabled": {
+        "type": "boolean"
+      },
+      "outcome": {
+        "enum": [
+          "created",
+          "existing"
+        ]
+      },
+      "registrationVerified": {
+        "const": false
+      }
+    }
+  }
+}
