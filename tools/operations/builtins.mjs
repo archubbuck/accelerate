@@ -13,12 +13,23 @@ import {planRetirement} from '../../packages/feature-flags-core/operations/retir
 import {planIntegration,planCreation} from '../../packages/feature-flags-core/operations/integrate.mjs';
 import {generateFlagTests} from '../../packages/feature-flags-core/operations/generate-tests.mjs';
 import {planFlagMigration} from '../../packages/feature-flags-core/operations/migrate.mjs';
-import {inspectProject} from './project.mjs';
+import {inspectProject,inspectWorkspace,classifyPackage,inspectSourceLayout,inspectInstalledCapabilities,inspectConfigInheritance,discoverSourceFiles} from './project.mjs';
 export async function createBuiltinRegistry(root){
  const registry=new OperationRegistry();
  const manifest=JSON.parse(await readFile(new URL('../../packages/feature-flags-core/operations/manifest.json',import.meta.url),'utf8'));
  registry.register({...manifest,modes:[...manifest.modes,'apply']},request=>planFlagRegistration(root,request.input));
  registry.register({id:'project.inspect',version:'1.0.0',package:'@accelerate/tooling-project',description:'Inspect root project metadata',mutatesProject:false,modes:['inspect','preview'],inputSchema:{type:'object',additionalProperties:false},outputSchema:{type:'object'}},async()=>({status:'success',data:await inspectProject(root)}));
+ const projectBase={version:'1.0.0',package:'@accelerate/tooling-project',mutatesProject:false,modes:['inspect','preview'],outputSchema:{type:'object'}};
+ for(const [id,description,handler] of [
+  ['workspace','Inspect supported workspace membership',inspectWorkspace],
+  ['classify','Classify project package roles',classifyPackage],
+  ['source-layout','Inspect conventional source layout',inspectSourceLayout],
+  ['capabilities','Inspect installed operation declarations',inspectInstalledCapabilities]
+ ]){
+  registry.register({...projectBase,id:'project.'+id,description,inputSchema:{type:'object',additionalProperties:false}},async()=>({status:'success',data:await handler(root)}));
+ }
+ registry.register({...projectBase,id:'project.config-inheritance',description:'Inspect bounded local JSON config inheritance',inputSchema:{type:'object',additionalProperties:false,properties:{configPath:{type:'string',minLength:1}}}},async request=>{const data=await inspectConfigInheritance(root,request.input.configPath);return {status:data.inheritanceResolved?'success':'partial',data};});
+ registry.register({...projectBase,id:'project.source-files',description:'Discover candidate source files in explicit roots',inputSchema:{type:'object',additionalProperties:false,properties:{roots:{type:'array',items:{type:'string',minLength:1}}}}},async request=>{const data=await discoverSourceFiles(root,request.input);return {status:data.complete?'success':'partial',data};});
  const target={type:'string',minLength:1};
  const base={version:'1.0.0',package:'@accelerate/feature-flags-core',outputSchema:{type:'object'}};
  registry.register({...base,id:'feature-flags.list',description:'Inspect explicit JSON flag registry',mutatesProject:false,modes:['inspect','preview'],inputSchema:{type:'object',required:['target'],additionalProperties:false,properties:{target}}},request=>listFlags(root,request.input));
