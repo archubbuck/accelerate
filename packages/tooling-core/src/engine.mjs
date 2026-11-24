@@ -30,7 +30,7 @@ export class OperationRegistry {
   resolve(id,version){const entry=this.#entries.get(id+'@'+version);return entry&&{manifest:structuredClone(entry.manifest),handler:entry.handler};}
 }
 const diagnostic=(code,message)=>({code,severity:'error',message});
-export async function executeOperation(registry,raw,{validateSchema}={}) {
+export async function executeOperation(registry,raw,{validateSchema,applyChanges}={}) {
   const normalized=normalizeRequest(raw);
   if(!normalized.ok) return response({operation:typeof raw?.operation==='string'?raw.operation:'unknown.operation',operationVersion:typeof raw?.operationVersion==='string'?raw.operationVersion:'0.0.0'},'failed',{diagnostics:normalized.diagnostics});
   const request=normalized.request;
@@ -39,14 +39,21 @@ export async function executeOperation(registry,raw,{validateSchema}={}) {
   if(!entry) return fail('unsupported','OPERATION_NOT_FOUND','Operation version is not registered');
   if(!entry.manifest.modes.includes(request.options.mode)) return fail('unsupported','MODE_NOT_SUPPORTED','Requested mode is not supported');
   // Mutations remain disabled until the patch engine can enforce transactional safety.
-  if(request.options.mode==='apply') return fail('blocked','PATCH_ENGINE_REQUIRED','Mutation execution is not enabled');
+  if(request.options.mode==='apply'&&typeof applyChanges!=='function') return fail('blocked','PATCH_ENGINE_REQUIRED','Mutation execution is not enabled');
   if(typeof validateSchema!=='function') return fail('blocked','SCHEMA_VALIDATOR_REQUIRED','A schema validator is required');
   try {
     if(!await validateSchema(entry.manifest.inputSchema,request.input)) return fail('failed','INVALID_INPUT','Input schema validation failed');
-    const result=await entry.handler(request);
+    const applying=request.options.mode==='apply';
+    const result=await entry.handler(applying?{...request,options:{...request.options,mode:'preview'}}:request);
     if(!record(result)||!statuses.includes(result.status)) return fail('failed','INVALID_HANDLER_RESULT','Handler returned an invalid status');
     const envelope=response(request,result.status,result);
     if(['success','no-op'].includes(envelope.status)&&!await validateSchema(entry.manifest.outputSchema,envelope.data)) return fail('failed','INVALID_OUTPUT','Output schema validation failed');
+    if(applying&&envelope.status==='success'){
+      if(!Array.isArray(result.changes)||!result.changes.length)return fail('failed','PATCH_PLAN_REQUIRED','Mutation requires a nonempty patch plan');
+      const applied=await applyChanges(structuredClone(result.changes),request);
+      if(!record(applied)||!statuses.includes(applied.status))return fail('failed','INVALID_APPLY_RESULT','Patch executor returned invalid status');
+      return response(request,applied.status,{...result,diagnostics:[...(result.diagnostics??[]),...(applied.diagnostics??[])],verification:applied.verification??[]});
+    }
     return envelope;
   } catch {
     return fail('failed','EXECUTION_FAILED','Operation execution failed; inspect controlled diagnostics');
