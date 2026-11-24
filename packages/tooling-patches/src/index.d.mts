@@ -16,3 +16,4 @@ export function planDeletion(root:string,relative:string):Promise<Deletion>;
 export function planRename(root:string,relative:string,destination:string):Promise<Rename>;
 export type FilePatch = Creation | Replacement | Deletion | Rename;
 export function verifyMixedPlan(root:string,changes:readonly FilePatch[]):Promise<PatchDiagnostic[]>;
+export function applyMixedPlan(root:string,changes:readonly FilePatch[],options?:{apply?:boolean;verify?:()=>boolean|Promise<boolean>}):ReturnType<typeof applyReplacements>;
