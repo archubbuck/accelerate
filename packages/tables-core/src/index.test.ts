@@ -1,0 +1,2 @@
+import {it,expect} from "vitest";import {createTable} from "./index.js";
+it("ignores superseded results",async()=>{let finish!:(v:{rows:number[];total:number})=>void;const table=createTable<number>({load:q=>q.page===0?new Promise(r=>{finish=r;}):Promise.resolve({rows:[2],total:2})},{page:0,pageSize:1});const first=table.load();await table.load({page:1,pageSize:1});finish({rows:[1],total:2});await first;expect(table.getSnapshot().page?.rows).toEqual([2]);});

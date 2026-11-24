@@ -1314,13 +1314,19 @@
       "id": "state-core",
       "name": "@accelerate/state-core",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/state-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -1357,13 +1363,19 @@
       "id": "forms-core",
       "name": "@accelerate/forms-core",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/forms-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
@@ -1400,26 +1412,38 @@
       "id": "notifications-core",
       "name": "@accelerate/notifications-core",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/notifications-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
       "id": "tables-core",
       "name": "@accelerate/tables-core",
       "category": "frontend",
-      "lifecycle": "proposed",
+      "lifecycle": "implemented",
       "priority": "P1",
       "wave": 5,
-      "path": null,
+      "path": "packages/tables-core",
       "dependencies": [],
       "publication": {
         "status": "unpublished"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     },
     {
