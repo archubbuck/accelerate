@@ -1,0 +1,25 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,readFile,rm,symlink} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {planCreation,planDeletion,planRename} from '../../packages/tooling-patches/src/index.mjs';
+test('file plans are read-only and reject unsafe destinations',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-file-plans-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ await writeFile(path.join(root,'old.ts'),'original');
+ const create=await planCreation(root,'new.ts','new');
+ assert.equal(create.kind,'create');
+ const remove=await planDeletion(root,'old.ts');
+ assert.equal(remove.kind,'delete');
+ const rename=await planRename(root,'old.ts','renamed.ts');
+ assert.equal(rename.beforeHash,remove.beforeHash);
+ assert.equal(rename.afterHash,remove.beforeHash);
+ assert.equal(await readFile(path.join(root,'old.ts'),'utf8'),'original');
+ await assert.rejects(readFile(path.join(root,'new.ts')), {code:'ENOENT'});
+ await assert.rejects(planCreation(root,'old.ts','x'),/DESTINATION_EXISTS/);
+ await assert.rejects(planCreation(root,'../escape.ts','x'),/INVALID_PATH/);
+ await assert.rejects(planRename(root,'old.ts','old.ts'),/DESTINATION_EXISTS/);
+ await symlink(root,path.join(root,'linked'));
+ await assert.rejects(planCreation(root,'linked/new.ts','x'),/UNSAFE_PATH/);
+});
