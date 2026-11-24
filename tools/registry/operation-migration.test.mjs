@@ -1,0 +1,24 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {executeBuiltin} from '../operations/builtins.mjs';
+test('migration and test generation return structured previews',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-migrate-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const file=path.join(root,'flags.json');
+ const run=(operation,input)=>executeBuiltin(root,{schemaVersion:'1.0',operation,operationVersion:'1.0.0',input:{target:'flags.json',...input}});
+ await writeFile(file,'{"dashboard":true}');
+ const result=await run('feature-flags.migrate',{from:'boolean-map'});
+ assert.equal(result.status,'success');
+ assert.deepEqual(JSON.parse(result.changes[0].content),[{key:'dashboard',enabled:true}]);
+ await writeFile(file,result.changes[0].content);
+ assert.equal((await run('feature-flags.migrate',{from:'boolean-map'})).status,'no-op');
+ const generated=await run('feature-flags.generate-tests',{key:'dashboard'});
+ assert.equal(generated.status,'success');
+ assert.match(generated.data.source,/new FeatureFlags/);
+ assert.equal(generated.data.applicationBehaviorVerified,false);
+ await writeFile(file,'{"dashboard":"true"}');
+ assert.equal((await run('feature-flags.migrate',{from:'boolean-map'})).status,'blocked');
+});
