@@ -18,3 +18,19 @@ test('flag inventory and update preserve rules and handle missing flags',async t
  assert.equal((await run('feature-flags.update',{key:'z',enabled:false})).status,'no-op');
  assert.equal((await run('feature-flags.update',{key:'missing',enabled:false})).status,'unsupported');
 });
+
+test('description and validation expose registry evidence',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-validate-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const file=path.join(root,'flags.json');
+ const flag={key:'dashboard',enabled:false,rules:[{attribute:'role',equals:'admin',enabled:true}]};
+ await writeFile(file,JSON.stringify([flag]));
+ const run=(operation,input={})=>executeBuiltin(root,{schemaVersion:'1.0',operation,operationVersion:'1.0.0',input:{target:'flags.json',...input}});
+ assert.deepEqual((await run('feature-flags.describe',{key:'dashboard'})).data.flag,flag);
+ assert.equal((await run('feature-flags.describe',{key:'missing'})).status,'unsupported');
+ assert.equal((await run('feature-flags.validate')).data.valid,true);
+ await writeFile(file,JSON.stringify([{...flag,rules:[{enabled:'yes'}]}]));
+ assert.equal((await run('feature-flags.validate')).diagnostics[0].code,'INVALID_FLAG_RULES');
+ await writeFile(file,JSON.stringify([flag,flag]));
+ assert.equal((await run('feature-flags.validate')).status,'failed');
+});
