@@ -4,6 +4,7 @@ import {validateSchema} from './schema.mjs';
 import {planFlagRegistration} from '../../packages/feature-flags-core/operations/register.mjs';
 import {listFlags,planFlagUpdate,describeFlag,validateFlags} from '../../packages/feature-flags-core/operations/lifecycle.mjs';
 import {findFlagUsages} from '../../packages/feature-flags-core/operations/usages.mjs';
+import {compareFlagUsage} from '../../packages/feature-flags-core/operations/usage-audit.mjs';
 import {inspectProject} from './project.mjs';
 export async function createBuiltinRegistry(root){
  const registry=new OperationRegistry();
@@ -18,6 +19,9 @@ export async function createBuiltinRegistry(root){
  registry.register({...base,id:'feature-flags.validate',description:'Validate explicit JSON flag definitions',mutatesProject:false,modes:['inspect','preview','verify'],inputSchema:{type:'object',required:['target'],additionalProperties:false,properties:{target}}},request=>validateFlags(root,request.input));
  const strings={type:'array',items:{type:'string',minLength:1}};
  registry.register({...base,id:'feature-flags.find-usages',description:'Find candidate literal flag calls in explicit TypeScript files',mutatesProject:false,modes:['inspect','preview'],inputSchema:{type:'object',required:['files','receivers'],additionalProperties:false,properties:{files:strings,receivers:strings,key:{type:'string',minLength:1}}}},request=>findFlagUsages(root,request.input));
+ for(const kind of ['unused','unregistered']){
+  registry.register({...base,id:'feature-flags.find-'+kind,description:'Find candidate '+kind+' flags within explicit source scope',mutatesProject:false,modes:['inspect','preview'],inputSchema:{type:'object',required:['target','files','receivers'],additionalProperties:false,properties:{target,files:strings,receivers:strings}}},request=>compareFlagUsage(root,request.input,kind));
+ }
  return registry;
 }
 export async function executeBuiltin(root,request){
