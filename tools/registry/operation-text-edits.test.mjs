@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport,findSymbolReferences,planLocalRename,rewriteImportModule,planUnusedImportRemoval,planSourceTransforms} from '../../packages/tooling-ast/src/index.mjs';
+import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport,findSymbolReferences,planLocalRename,rewriteImportModule,planUnusedImportRemoval,planSourceTransforms,compareSemanticDiagnostics} from '../../packages/tooling-ast/src/index.mjs';
 test('preserves unrelated source and orders edits',()=>{
  assert.equal(applyTextEdits('abc def',[{start:4,end:7,expected:'def',text:'XYZ'},{start:0,end:3,expected:'abc',text:'123'}]),'123 XYZ');
 });
@@ -71,4 +71,14 @@ test('cross-file transforms validate every target before returning a plan',()=>{
  assert.equal(files['a.ts'],'const a = 1;');
  assert.throws(()=>planSourceTransforms(files,[...changes,changes[0]]),/INVALID_TRANSFORM_TARGET/);
  assert.throws(()=>planSourceTransforms(files,[changes[0],{fileName:'b.ts',edits:[{start:10,end:11,expected:'2',text:')'}]}]),/TRANSFORM_PARSE_ERROR/);
+});
+
+test('semantic comparison detects introduced type errors',()=>{
+ const before={'/a.ts':'const value: number = 1;'};
+ const after={'/a.ts':'const value: number = "bad";'};
+ const result=compareSemanticDiagnostics(before,after);
+ assert.equal(result.passed,false);
+ assert.ok(result.introduced.some(d=>d.code===2322));
+ assert.equal(compareSemanticDiagnostics(before,before).passed,true);
+ assert.equal(result.complete,false);
 });
