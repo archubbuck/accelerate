@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport,findSymbolReferences} from '../../packages/tooling-ast/src/index.mjs';
+import {applyTextEdits,parseSource,findNodes,transformSource,ensureNamedImport,findSymbolReferences,planLocalRename} from '../../packages/tooling-ast/src/index.mjs';
 test('preserves unrelated source and orders edits',()=>{
  assert.equal(applyTextEdits('abc def',[{start:4,end:7,expected:'def',text:'XYZ'},{start:0,end:3,expected:'abc',text:'123'}]),'123 XYZ');
 });
@@ -43,4 +43,12 @@ test('virtual relative imports resolve to exported symbol identity',()=>{
  const result=findSymbolReferences(files,'/src/a.ts',files['/src/a.ts'].indexOf('flag'));
  assert.equal(result.resolved,true);
  assert.ok(result.references.some(r=>r.fileName==='/src/b.ts'&&r.text==='localFlag'));
+});
+
+test('local rename preserves shadowed bindings and rejects collisions',()=>{
+ const source='const flag = 1; function f(){ const flag = 2; return flag; } console.log(flag);';
+ const files={'/example.ts':source};
+ const result=planLocalRename(files,'/example.ts',source.indexOf('flag'),'enabled');
+ assert.equal(result.source,'const enabled = 1; function f(){ const flag = 2; return flag; } console.log(enabled);');
+ assert.throws(()=>planLocalRename(files,'/example.ts',source.indexOf('flag'),'f'),/RENAME_COLLISION/);
 });
