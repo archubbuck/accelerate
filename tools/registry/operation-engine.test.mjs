@@ -33,3 +33,16 @@ test('invalid schema and handler failures are structured',async()=>{
  assert.equal(result.diagnostics[0].code,'EXECUTION_FAILED');
  assert.ok(!JSON.stringify(result).includes('secret detail'));
 });
+
+test('registration rejects invalid nested schemas and duplicate modes',()=>{
+ const registry=new OperationRegistry();
+ assert.throws(()=>registry.register({...manifest,inputSchema:{properties:{optional:{pattern:'x'}}}},()=>({})),/inputSchema/);
+ assert.throws(()=>registry.register({...manifest,modes:['preview','preview']},()=>({})),/modes/);
+});
+test('failure diagnostics survive strict success payload schema',async()=>{
+ const registry=new OperationRegistry();
+ registry.register({...manifest,outputSchema:{type:'object',required:['flags']}},()=>({status:'blocked',diagnostics:[{code:'REVIEW_REQUIRED',severity:'error'}]}));
+ const result=await executeOperation(registry,request,{validateSchema:(schema,value)=>!schema.required||schema.required.every(k=>Object.hasOwn(value,k))});
+ assert.equal(result.status,'blocked');
+ assert.equal(result.diagnostics[0].code,'REVIEW_REQUIRED');
+});
