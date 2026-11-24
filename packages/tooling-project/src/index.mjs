@@ -119,3 +119,23 @@ export function orderDependencies(graph,{sections=['dependencies','optionalDepen
  }
  return {order,blocked:[...pending.keys()].sort(),acyclic:pending.size===0};
 }
+
+/** Return declared transitive dependencies and affected dependents, including shortest distances. */
+export function inspectDependencyImpact(graph,target,{sections=['dependencies','optionalDependencies','peerDependencies','devDependencies']}={}){
+ const names=new Set(graph.nodes.map(n=>n.name));
+ if(names.size!==graph.nodes.length||!names.has(target))throw Error('INVALID_GRAPH_TARGET');
+ const forward=new Map([...names].map(n=>[n,new Set()])),reverse=new Map([...names].map(n=>[n,new Set()]));
+ for(const e of graph.edges){
+  if(!names.has(e.from)||!names.has(e.to))throw Error('UNKNOWN_GRAPH_NODE');
+  if(sections.includes(e.section)){forward.get(e.from).add(e.to);reverse.get(e.to).add(e.from);}
+ }
+ function walk(adjacency){
+  const distances=new Map([[target,0]]),queue=[target];
+  for(let i=0;i<queue.length;i++){
+   const name=queue[i];
+   for(const next of [...adjacency.get(name)].sort())if(!distances.has(next)){distances.set(next,distances.get(name)+1);queue.push(next);}
+  }
+  return [...distances].filter(([name])=>name!==target).map(([name,distance])=>({name,distance})).sort((a,b)=>a.distance-b.distance||a.name.localeCompare(b.name,'en'));
+ }
+ return {target,dependencies:walk(forward),dependents:walk(reverse),resolutionVerified:false};
+}
