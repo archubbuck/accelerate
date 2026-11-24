@@ -121,3 +121,26 @@ export function rewriteImportModule(fileName,source,from,to){
  }
  return {status:edits.length?'success':'no-op',edits,source:transformSource(fileName,source,edits),complete:false};
 }
+
+/** Remove an unused named binding, retaining module evaluation as a side-effect import. */
+export function planUnusedImportRemoval(fileName,source,{moduleSpecifier,local}){
+ const {ast,diagnostics}=parseSource(fileName,source);
+ if(diagnostics.length)throw new Error('SOURCE_PARSE_ERROR');
+ const matches=[];
+ for(const statement of ast.statements){
+  if(!ts.isImportDeclaration(statement)||!ts.isStringLiteral(statement.moduleSpecifier)||statement.moduleSpecifier.text!==moduleSpecifier)continue;
+  const clause=statement.importClause;
+  if(!clause||clause.isTypeOnly||!clause.namedBindings||!ts.isNamedImports(clause.namedBindings))continue;
+  for(const element of clause.namedBindings.elements)if(!element.isTypeOnly&&element.name.text===local)matches.push({statement,clause,element});
+ }
+ if(!matches.length)return {status:'no-op',edits:[],source,complete:false};
+ if(matches.length!==1)throw new Error('AMBIGUOUS_IMPORT');
+ const {statement,clause,element}=matches[0];
+ if(findNodes(ast,n=>ts.isIdentifier(n)&&n.text===local&&n!==element.name).length)throw new Error('IMPORT_POTENTIALLY_USED');
+ // Restrict to single named imports without default bindings or import attributes.
+ if(clause.name||clause.namedBindings.elements.length!==1||statement.attributes||statement.assertClause)throw new Error('UNSUPPORTED_IMPORT_SHAPE');
+ const start=statement.getStart(ast),end=statement.end,expected=source.slice(start,end);
+ if(/\/\*|\/\//.test(expected))throw new Error('IMPORT_COMMENTS_REQUIRE_REVIEW');
+ const edits=[{start,end,expected,text:'import '+statement.moduleSpecifier.getText(ast)+';'}];
+ return {status:'success',edits,source:transformSource(fileName,source,edits),complete:false};
+}
