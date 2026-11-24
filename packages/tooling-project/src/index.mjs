@@ -203,3 +203,23 @@ export async function discoverSourceFiles(root,{roots=['src'],maxFiles=10000,max
  }
  return {files,diagnostics,complete:diagnostics.length===0,compilerCoverageVerified:false};
 }
+
+/** Inspect installed package capability declarations without importing executable modules. */
+export async function inspectInstalledCapabilities(root){
+ const base=await realpath(root),project=await inspectProject(base),packages=[],diagnostics=[];
+ for(const pkg of project.installed){
+  try{
+   const file=path.join(base,'node_modules',pkg.name,'package.json');
+   const manifest=JSON.parse(await readFile(file,'utf8'));
+   if(manifest.name!==pkg.name||manifest.version!==pkg.version)throw Error('PACKAGE_CHANGED');
+   const declaration=manifest.accelerate?.operations;
+   if(declaration===undefined){packages.push({...pkg,status:'not-declared'});continue;}
+   if(typeof declaration!=='string'||!declaration.startsWith('./')||!declaration.slice(2).split('/').every(s=>/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(s)))throw Error('INVALID_DECLARATION');
+   const packageRoot=await realpath(path.dirname(file)),target=path.join(packageRoot,declaration);
+   const stat=await lstat(target);
+   if(await realpath(target)!==target||!stat.isFile()||stat.size>1048576)throw Error('UNSAFE_DECLARATION');
+   packages.push({...pkg,status:'declared',manifestPath:declaration});
+  }catch{diagnostics.push({package:pkg.name,code:'CAPABILITY_DECLARATION_UNREADABLE_OR_INVALID'});packages.push({...pkg,status:'invalid'});}
+ }
+ return {packages,diagnostics,handlersLoaded:false,compatibilityVerified:false};
+}
