@@ -23,3 +23,20 @@ export async function planFlagUpdate(root,{target,key,enabled}){
  });
  return {status:!found?'unsupported':change?'success':'no-op',data:{key,enabled,found,runtimeWiringVerified:false},changes:change?[change]:[],diagnostics:!found?[{code:'FLAG_NOT_FOUND',severity:'error'}]:[]};
 }
+
+export async function describeFlag(root,{target,key}){
+ const flags=parse((await snapshotFile(root,target)).content);
+ const flag=flags.find(f=>f.key===key);
+ return flag?{status:'success',data:{flag,runtimeWiringVerified:false}}:{status:'unsupported',data:{key},diagnostics:[{code:'FLAG_NOT_FOUND',severity:'error'}]};
+}
+export async function validateFlags(root,{target}){
+ try{
+  const flags=parse((await snapshotFile(root,target)).content);
+  const issues=[];
+  for(const flag of flags){
+   if(!flag.key.trim())issues.push({code:'EMPTY_FLAG_KEY',severity:'error'});
+   if(flag.rules!==undefined&&(!Array.isArray(flag.rules)||flag.rules.some(r=>!r||typeof r.attribute!=='string'||typeof r.equals!=='string'||typeof r.enabled!=='boolean')))issues.push({code:'INVALID_FLAG_RULES',severity:'error',key:flag.key});
+  }
+  return {status:issues.length?'failed':'success',data:{count:flags.length,valid:!issues.length,runtimeWiringVerified:false},diagnostics:issues};
+ }catch{return {status:'failed',data:{valid:false,runtimeWiringVerified:false},diagnostics:[{code:'INVALID_OR_UNREADABLE_REGISTRY',severity:'error'}]};}
+}
