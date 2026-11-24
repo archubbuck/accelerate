@@ -42,3 +42,22 @@ test('registration and update apply through journaled executor',async t=>{
  assert.deepEqual(JSON.parse(await readFile(file,'utf8')),[{key:'dashboard',enabled:true}]);
  await assert.rejects(readFile(path.join(root,'.accelerate-operation-journal.json')),{code:'ENOENT'});
 });
+
+test('project operations expose read-only inspection through the engine',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-project-operations-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ await writeFile(path.join(root,'package.json'),'{"name":"example"}');
+ await writeFile(path.join(root,'tsconfig.json'),'{"compilerOptions":{"strict":true}}');
+ const registry=await createBuiltinRegistry(root);
+ for(const id of ['workspace','classify','source-layout','capabilities','config-inheritance','source-files']){
+  const manifest=registry.list().find(x=>x.id==='project.'+id);
+  assert.ok(manifest);
+  assert.equal(manifest.mutatesProject,false);
+  assert.ok(!manifest.modes.includes('apply'));
+ }
+ const request={schemaVersion:'1.0',operation:'project.config-inheritance',operationVersion:'1.0.0',input:{}};
+ const result=await executeBuiltin(root,request);
+ assert.equal(result.status,'success');
+ assert.equal(result.data.declaredCompilerOptions.strict,true);
+ assert.equal((await executeBuiltin(root,{...request,input:{configPath:'../outside.json'}})).status,'partial');
+});
