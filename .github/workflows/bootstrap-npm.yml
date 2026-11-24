@@ -11,11 +11,18 @@ concurrency:
   cancel-in-progress: false
 jobs:
   bootstrap:
-    if: ${{ inputs.confirm == 'BOOTSTRAP' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
+      - name: Validate bootstrap confirmation
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          if [ "$CONFIRM" != BOOTSTRAP ]; then
+            echo '::error::Enter BOOTSTRAP exactly in the confirmation field.'
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
