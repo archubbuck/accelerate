@@ -46,3 +46,12 @@ test('failure diagnostics survive strict success payload schema',async()=>{
  assert.equal(result.status,'blocked');
  assert.equal(result.diagnostics[0].code,'REVIEW_REQUIRED');
 });
+
+test('apply invokes preview handler and validates output before delegating',async()=>{
+ const registry=new OperationRegistry();let calls=0;
+ registry.register({...manifest,mutatesProject:true,modes:['preview','apply']},r=>{
+  assert.equal(r.options.mode,'preview');return {status:'success',data:{flags:[]},changes:[{kind:'replace'}]};
+ });
+ const result=await executeOperation(registry,{...request,options:{mode:'apply'}},{validateSchema:validator,applyChanges:changes=>{calls++;assert.equal(changes.length,1);return {status:'conflict',diagnostics:[{code:'STALE_PATCH'}]};}});
+ assert.equal(calls,1);assert.equal(result.status,'conflict');assert.equal(result.diagnostics[0].code,'STALE_PATCH');
+});
