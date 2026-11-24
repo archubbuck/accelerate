@@ -19,7 +19,7 @@ export async function planRecovery(root){
    const {change:c,before}=entry;
    if(!c||!['create','replace','delete','rename'].includes(c.kind)||typeof c.path!=='string')throw new Error('INVALID_ENTRY');
    const targets=c.kind==='rename'?[c.path,c.destination]:[c.path];
-   for(const target of targets){if(typeof target!=='string'||seen.has(target)||[journalName,'.accelerate-operation.lock'].includes(target))throw new Error('INVALID_TARGET');seen.add(target);}
+   for(const target of targets){if(typeof target!=='string'||seen.has(target)||[journalName,'.accelerate-operation.lock','.accelerate-lock-recovery'].includes(target))throw new Error('INVALID_TARGET');seen.add(target);}
    if(c.kind!=='create'&&(!Number.isInteger(entry.mode)||entry.mode<0||entry.mode>511||!before||before.path!==c.path||typeof before.content!=='string'||hashContent(before.content)!==c.beforeHash||before.hash!==c.beforeHash))throw new Error('INVALID_SNAPSHOT');
    if(['create','replace'].includes(c.kind)&&(typeof c.content!=='string'||hashContent(c.content)!==c.afterHash))throw new Error('INVALID_CONTENT');
    if(c.kind==='rename'&&c.beforeHash!==c.afterHash)throw new Error('INVALID_RENAME');
