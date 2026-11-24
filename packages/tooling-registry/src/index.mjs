@@ -1,3 +1,5 @@
+import {lstat,realpath,readFile} from 'node:fs/promises';
+import path from 'node:path';
 import {validateManifest} from '@accelerate/tooling-core';
 const record=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
 const version=/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
@@ -21,4 +23,51 @@ export function validatePackageOperations(document,identity){
   if(typeof entry.exportName!=='string'||!/^[$A-Z_a-z][$\w]*$/.test(entry.exportName))errors.push('Invalid handler export');
  }
  return errors;
+}
+
+async function readLocalJson(base,relative){
+ if(typeof relative!=='string'||!relative.split('/').every(s=>/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(s)))throw Error('UNSAFE_MANIFEST_PATH');
+ const file=path.join(base,relative),stat=await lstat(file);
+ if(!stat.isFile()||stat.size>1048576||await realpath(file)!==file)throw Error('UNSAFE_MANIFEST_FILE');
+ return JSON.parse(await readFile(file,'utf8'));
+}
+/** Read package-owned metadata only; the package directory may be a package-manager symlink. */
+export async function discoverPackageOperations(root,names){
+ if(!Array.isArray(names)||names.length>1000||names.some(n=>typeof n!=='string'||!owner.test(n)))throw Error('INVALID_PACKAGE_SCOPE');
+ const base=await realpath(root),packages=[],diagnostics=[];
+ for(const name of [...new Set(names)].sort()){
+  try{
+   const packageRoot=await realpath(path.join(base,'node_modules',name));
+   const metadata=await readLocalJson(packageRoot,'package.json');
+   if(metadata.name!==name||typeof metadata.version!=='string'||!version.test(metadata.version))throw Error('PACKAGE_IDENTITY_MISMATCH');
+   const declaration=metadata.accelerate?.operations;
+   if(declaration===undefined){packages.push({name,version:metadata.version,status:'not-declared',operations:[]});continue;}
+   if(typeof declaration!=='string'||!declaration.startsWith('./'))throw Error('INVALID_DECLARATION');
+   const document=await readLocalJson(packageRoot,declaration.slice(2));
+   const errors=validatePackageOperations(document,metadata);
+   if(errors.length){diagnostics.push({package:name,code:'INVALID_OPERATION_MANIFEST',errors});continue;}
+   packages.push({name,version:metadata.version,status:'declared',operations:document.operations});
+  }catch{diagnostics.push({package:name,code:'PACKAGE_METADATA_UNREADABLE_OR_INVALID'});}
+ }
+ return {packages,diagnostics,handlersLoaded:false,trustVerified:false};
+}
+/** Search validated metadata; reject ambiguous operation identities across packages. */
+export function indexOperations(packages){
+ const entries=new Map(),conflicts=new Set();
+ for(const pkg of packages){
+  if(pkg.status!=='declared')continue;
+  const errors=validatePackageOperations({schemaVersion:'1.0',package:pkg.name,packageVersion:pkg.version,operations:pkg.operations},pkg);
+  if(errors.length)throw Error('INVALID_INDEX_INPUT');
+  for(const entry of pkg.operations){
+   const key=entry.manifest.id+'@'+entry.manifest.version;
+   if(entries.has(key))conflicts.add(key);
+   else entries.set(key,{...structuredClone(entry),packageVersion:pkg.version});
+  }
+ }
+ for(const key of conflicts)entries.delete(key);
+ return {operations:[...entries.values()].sort((a,b)=>(a.manifest.id+'@'+a.manifest.version).localeCompare(b.manifest.id+'@'+b.manifest.version,'en')),conflicts:[...conflicts].sort()};
+}
+export function searchOperations(index,{query='',packageName,mode}={}){
+ const terms=query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+ return index.operations.filter(({manifest:m})=>(!packageName||m.package===packageName)&&(!mode||m.modes.includes(mode))&&terms.every(term=>(m.id+' '+m.description+' '+m.package).toLowerCase().includes(term))).map(e=>structuredClone(e));
 }
