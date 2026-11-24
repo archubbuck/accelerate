@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {executeBuiltin} from '../operations/builtins.mjs';
+test('creation previews registration and conditional source integration',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-create-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const source='async function render(){ await legacy(); }';
+ await writeFile(path.join(root,'flags.json'),'[]');
+ await writeFile(path.join(root,'app.ts'),source);
+ const request={schemaVersion:'1.0',operation:'feature-flags.create',operationVersion:'1.0.0',input:{target:'flags.json',file:'app.ts',key:'dashboard',enabled:false,receiver:'flags',enabledCall:'modern',disabledCall:'legacy'}};
+ const result=await executeBuiltin(root,request);
+ assert.equal(result.status,'success');
+ assert.deepEqual(JSON.parse(result.changes[0].content),[{key:'dashboard',enabled:false}]);
+ assert.equal(result.changes[1].content,'async function render(){ if (await flags.enabled("dashboard")) { await modern(); } else { await legacy(); } }');
+ assert.equal(result.data.applySupported,false);
+ assert.equal(await readFile(path.join(root,'app.ts'),'utf8'),source);
+ await writeFile(path.join(root,'app.ts'),'async function render(){ await legacy(); await legacy(); }');
+ assert.equal((await executeBuiltin(root,request)).status,'blocked');
+});
