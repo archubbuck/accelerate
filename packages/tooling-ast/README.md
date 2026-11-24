@@ -1,3 +1,11 @@
 # @accelerate/tooling-ast
 
-Experimental deterministic source-editing primitives. `applyTextEdits` validates original spans and preserves unrelated text. Symbol resolution and parser-backed transformations are not yet implemented.
+Experimental deterministic TypeScript/JavaScript source transformations.
+
+- `parseSource`: compiler AST and syntax diagnostics.
+- `findNodes`: predicate-based traversal.
+- `applyTextEdits`: validated original spans.
+- `transformSource`: syntax checks before and after edits.
+- `ensureNamedImport`: conservative, idempotent named value import insertion; rejects identifier collisions.
+
+Semantic symbol resolution and cross-file transformations are not yet implemented.
