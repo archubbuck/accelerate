@@ -46,7 +46,7 @@ export async function applyMixedPlan(root,changes,{apply=false,verify}={}){
     }else{
      const destination=await resolveAbsentFile(base,c.destination);
      await link(await check(base,c.path,c.beforeHash),destination);
-     undo.push(async()=>{await unlink(await check(base,c.destination,c.afterHash));});
+     undo.push(async()=>{const dest=await resolveProjectFile(base,c.destination);const a=await lstat(target),b=await lstat(dest);if(a.dev!==b.dev||a.ino!==b.ino||(await snapshotFile(base,c.destination)).hash!==c.afterHash)throw new Error('ROLLBACK_CONFLICT');await unlink(dest);});
      await unlink(target);
      undo.pop();
      undo.push(async()=>{await write(base,c.path,before.content,mode);await unlink(await check(base,c.destination,c.afterHash));});
