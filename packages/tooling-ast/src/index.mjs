@@ -59,16 +59,7 @@ export function ensureNamedImport(fileName,source,{moduleSpecifier,imported,loca
 
 /** Resolve references within an explicitly supplied virtual TypeScript project. */
 export function findSymbolReferences(files,fileName,position){
- const normalize=n=>n.replace(/\\/g,'/');
- const sources=new Map(Object.entries(files).map(([n,s])=>[normalize(n),s]));
- const options={noLib:true,noResolve:false,target:ts.ScriptTarget.Latest,module:ts.ModuleKind.ESNext,moduleResolution:ts.ModuleResolutionKind.Bundler};
- const host={
-  getSourceFile(n){const s=sources.get(normalize(n));return s===undefined?undefined:ts.createSourceFile(n,s,options.target,true);},
-  getDefaultLibFileName:()=>'',writeFile(){},getCurrentDirectory:()=>'/',
-  directoryExists:n=>n==='/'||[...sources.keys()].some(f=>f.startsWith(normalize(n).replace(/\/$/,'')+'/')),getDirectories:()=>[],fileExists:n=>sources.has(normalize(n)),readFile:n=>sources.get(normalize(n)),
-  getCanonicalFileName:normalize,useCaseSensitiveFileNames:()=>true,getNewLine:()=>'\n'
- };
- const program=ts.createProgram([...sources.keys()],options,host),checker=program.getTypeChecker();
+ const program=createVirtualProgram(files),checker=program.getTypeChecker();
  const source=program.getSourceFile(fileName);
  if(!source||!Number.isInteger(position)||position<0||position>=source.text.length)throw new Error('INVALID_SYMBOL_POSITION');
  const identifier=findNodes(source,n=>ts.isIdentifier(n)&&n.getStart(source)<=position&&position<n.end)[0];
@@ -157,4 +148,30 @@ export function planSourceTransforms(files,changes){
   if(before!==after)plans.push({fileName,before,after});
  }
  return {status:plans.length?'success':'no-op',plans,verification:{syntax:true,semantic:false}};
+}
+
+function createVirtualProgram(files){
+ const normalize=n=>n.replace(/\\/g,'/');
+ const sources=new Map(Object.entries(files).map(([n,s])=>[normalize(n),s]));
+ const options={noLib:true,noResolve:false,target:ts.ScriptTarget.Latest,module:ts.ModuleKind.ESNext,moduleResolution:ts.ModuleResolutionKind.Bundler};
+ const host={
+  getSourceFile(n){const s=sources.get(normalize(n));return s===undefined?undefined:ts.createSourceFile(n,s,options.target,true);},
+  getDefaultLibFileName:()=>'',writeFile(){},getCurrentDirectory:()=>'/',
+  directoryExists:n=>n==='/'||[...sources.keys()].some(f=>f.startsWith(normalize(n).replace(/\/$/,'')+'/')),getDirectories:()=>[],fileExists:n=>sources.has(normalize(n)),readFile:n=>sources.get(normalize(n)),
+  getCanonicalFileName:normalize,useCaseSensitiveFileNames:()=>true,getNewLine:()=>'\n'
+ };
+ const program=ts.createProgram([...sources.keys()],options,host);
+ return program;
+}
+
+export function inspectSemanticDiagnostics(files){
+ const program=createVirtualProgram(files);
+ return program.getSemanticDiagnostics().map(d=>({fileName:d.file?.fileName??null,code:d.code,start:d.start??0,length:d.length??0,message:ts.flattenDiagnosticMessageText(d.messageText,'\n')}));
+}
+export function compareSemanticDiagnostics(before,after){
+ const baseline=inspectSemanticDiagnostics(before),current=inspectSemanticDiagnostics(after);
+ const counts=new Map(),key=d=>JSON.stringify([d.fileName,d.code,d.message]);
+ for(const d of baseline)counts.set(key(d),(counts.get(key(d))??0)+1);
+ const introduced=current.filter(d=>{const k=key(d),n=counts.get(k)??0;if(n){counts.set(k,n-1);return false;}return true;});
+ return {baseline,current,introduced,passed:introduced.length===0,complete:false};
 }
