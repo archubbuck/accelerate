@@ -4,6 +4,7 @@ import path from 'node:path';
 import {snapshotFile,resolveProjectFile,hashContent} from './patches.mjs';
 import {resolveAbsentFile} from './file-plans.mjs';
 import {verifyMixedPlan} from './preflight.mjs';
+import {prepareJournal,inspectJournal,clearJournal} from './journal.mjs';
 async function write(root,file,content,mode,expected){
  const target=expected===undefined?await resolveAbsentFile(root,file):await resolveProjectFile(root,file);
  const temp=path.join(path.dirname(target),'.accelerate-'+randomUUID()+'.tmp');
@@ -25,10 +26,13 @@ export async function applyMixedPlan(root,changes,{apply=false,verify}={}){
  let lock;
  try{lock=await open(lockPath,'wx',0o600);}catch{return {status:'blocked',diagnostics:[{code:'PROJECT_LOCK_UNAVAILABLE'}]};}
  const undo=[],diagnostics=[];
+ let journalPrepared=false;
  try{
+  if((await inspectJournal(base)).status!=='absent')return {status:'blocked',diagnostics:[{code:'RECOVERY_REQUIRED'}]};
   const invalid=await verifyMixedPlan(base,changes);
   if(invalid.length)return {status:'conflict',diagnostics:invalid};
   if(!changes.length)return {status:'no-op',diagnostics:[]};
+  await prepareJournal(base,changes);journalPrepared=true;
   for(const c of changes){
    if(c.kind==='create'){
     await write(base,c.path,c.content,0o644);
@@ -58,10 +62,12 @@ export async function applyMixedPlan(root,changes,{apply=false,verify}={}){
    if(c.kind!=='delete')await check(base,c.kind==='rename'?c.destination:c.path,c.afterHash);
   }
   if(verify&&!await verify())throw new Error('VERIFICATION_FAILED');
+  await clearJournal(base);journalPrepared=false;
   return {status:'success',diagnostics:[],verification:[{code:'CONTENT_HASH_VERIFIED',passed:true}]};
  }catch{
   diagnostics.push({code:'APPLY_FAILED'});
   for(const revert of undo.reverse())try{await revert();}catch{diagnostics.push({code:'ROLLBACK_CONFLICT'});}
+  if(journalPrepared&&diagnostics.length===1){try{await clearJournal(base);}catch{diagnostics.push({code:'JOURNAL_CLEANUP_FAILED'});}}
   return {status:diagnostics.length>1?'partial':'failed',diagnostics};
  }finally{await lock.close();await unlink(lockPath);}
 }
