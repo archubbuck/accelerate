@@ -29,14 +29,17 @@ export async function planReplacement(root,relative,transform){
   return {kind:'replace',path:relative,beforeHash:before.hash,afterHash:hashContent(after),content:after};
 }
 export async function verifyPlan(root,changes){
+  if(!Array.isArray(changes)) return [{code:'INVALID_PATCH_LIST',severity:'error'}];
   const seen=new Set();
   const diagnostics=[];
   for(const change of changes){
-    if(change?.kind!=='replace'||typeof change.path!=='string'||typeof change.content!=='string'||hashContent(change.content)!==change.afterHash||seen.has(change.path)){
+    if(change?.kind!=='replace'||typeof change.path!=='string'||typeof change.content!=='string'||typeof change.beforeHash!=='string'||!(/^[a-f0-9]{64}$/).test(change.beforeHash)||hashContent(change.content)!==change.afterHash||seen.has(change.path)){
       diagnostics.push({code:'INVALID_PATCH',severity:'error',path:change?.path});continue;
     }
     seen.add(change.path);
     try{
+      const target=await resolveProjectFile(root,change.path);
+      if((await lstat(target)).nlink!==1){diagnostics.push({code:'UNSAFE_HARDLINK',severity:'error',path:change.path});continue;}
       const current=await snapshotFile(root,change.path);
       if(current.hash!==change.beforeHash) diagnostics.push({code:'STALE_PATCH',severity:'error',path:change.path});
     }catch{diagnostics.push({code:'UNSAFE_OR_MISSING_PATH',severity:'error',path:change.path});}
