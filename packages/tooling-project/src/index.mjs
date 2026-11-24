@@ -59,3 +59,21 @@ export async function discoverPackages(root,{maxDepth=5,maxDirectories=2000}={})
  if(queue.length)diagnostics.push({path:'.',code:'DIRECTORY_LIMIT'});
  return {packages,diagnostics,visited,complete:diagnostics.length===0,workspaceMembershipVerified:false};
 }
+
+/** Resolve a deliberately limited subset of package.json workspace patterns. */
+export async function inspectWorkspace(root,options={}){
+ const base=await realpath(root),manifest=await readManifest(base),discovery=await discoverPackages(base,options);
+ const patterns=Array.isArray(manifest.workspaces)?manifest.workspaces:manifest.workspaces?.packages;
+ const diagnostics=[...discovery.diagnostics];
+ let pnpm=false;
+ try{await lstat(path.join(base,'pnpm-workspace.yaml'));pnpm=true;}catch(e){if(e.code!=='ENOENT')throw e;}
+ if(pnpm||!Array.isArray(patterns)||patterns.some(p=>typeof p!=='string'||!p.split('/').every(s=>s==='*'||/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(s)))){
+  diagnostics.push({path:'.',code:pnpm?'PNPM_WORKSPACE_UNSUPPORTED':'WORKSPACE_PATTERNS_UNSUPPORTED'});
+  return {...discovery,diagnostics,members:[],workspaceMembershipVerified:false};
+ }
+ const members=discovery.packages.filter(p=>p.path!=='.'&&patterns.some(pattern=>{
+  const a=pattern.split('/'),b=p.path.split('/');
+  return a.length===b.length&&a.every((part,i)=>part==='*'||part===b[i]);
+ }));
+ return {...discovery,members,diagnostics,workspaceMembershipVerified:discovery.complete};
+}
