@@ -12,14 +12,26 @@ export async function planIntegration(root,{file,key,receiver,enabledCall,disabl
   const ast=ts.createSourceFile(file,source,ts.ScriptTarget.Latest,true);
   if(ast.parseDiagnostics.length){issue='SOURCE_PARSE_ERROR';return source;}
   const matches=[];
+  let alreadyIntegrated=false;
   function visit(node){
    if(ts.isExpressionStatement(node)&&ts.isAwaitExpression(node.expression)){
     const call=node.expression.expression;
-    if(ts.isCallExpression(call)&&ts.isIdentifier(call.expression)&&call.expression.text===disabledCall&&call.arguments.length===0)matches.push(node);
+    if(ts.isCallExpression(call)&&ts.isIdentifier(call.expression)&&call.expression.text===disabledCall&&call.arguments.length===0){
+     matches.push(node);
+     const block=node.parent,conditional=block.parent;
+     if(ts.isBlock(block)&&ts.isIfStatement(conditional)&&conditional.elseStatement===block){
+      const condition=conditional.expression;
+      if(ts.isAwaitExpression(condition)&&ts.isCallExpression(condition.expression)){
+       const check=condition.expression,method=check.expression,arg=check.arguments[0];
+       if(ts.isPropertyAccessExpression(method)&&ts.isIdentifier(method.expression)&&method.expression.text===receiver&&method.name.text==='enabled'&&check.arguments.length===1&&arg&&ts.isStringLiteral(arg)&&arg.text===key)alreadyIntegrated=true;
+      }
+     }
+    }
    }
    ts.forEachChild(node,visit);
   }
   visit(ast);
+  if(alreadyIntegrated){issue='EXISTING_FLAG_INTEGRATION';return source;}
   if(matches.length!==1){issue='AMBIGUOUS_INTEGRATION_TARGET';return source;}
   const node=matches[0];
   let parent=node.parent;
