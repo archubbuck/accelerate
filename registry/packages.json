@@ -1907,12 +1907,19 @@
       "id": "tooling-core",
       "name": "@accelerate/tooling-core",
       "category": "agent-tooling",
-      "lifecycle": "planned",
+      "lifecycle": "in-progress",
       "priority": "P0",
       "wave": 6,
       "dependencies": [],
       "publication": {
         "status": "unknown"
+      },
+      "path": "packages/tooling-core",
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
       }
     }
   ]
