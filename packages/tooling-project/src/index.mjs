@@ -175,3 +175,31 @@ export async function inspectSourceLayout(root){
  }
  return {roots,configs,diagnostics,configurationResolved:false,sourceCoverageVerified:false};
 }
+
+/** Enumerate candidate source files within explicit project-relative directories. */
+export async function discoverSourceFiles(root,{roots=['src'],maxFiles=10000,maxDirectories=2000}={}){
+ if(!Array.isArray(roots)||roots.some(p=>typeof p!=='string'||!p.split('/').every(s=>/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(s)))||![maxFiles,maxDirectories].every(n=>Number.isInteger(n)&&n>0&&n<=100000))throw Error('INVALID_SOURCE_SCOPE');
+ const base=await realpath(root),queue=[...new Set(roots)].sort(),seen=new Set(),files=[],diagnostics=[];
+ const excluded=new Set(['node_modules','dist','build','coverage','vendor']);
+ while(queue.length){
+  const relative=queue.shift();
+  if(seen.has(relative))continue;
+  if(seen.size>=maxDirectories){diagnostics.push({path:relative,code:'DIRECTORY_LIMIT'});break;}
+  seen.add(relative);
+  const dir=path.join(base,relative);
+  try{
+   if(await realpath(dir)!==dir||!(await lstat(dir)).isDirectory())throw Error('UNSAFE_SOURCE_ROOT');
+   const entries=await readdir(dir,{withFileTypes:true});
+   for(const e of entries.sort((a,b)=>a.name.localeCompare(b.name,'en'))){
+    if(e.name.startsWith('.')||excluded.has(e.name))continue;
+    const child=relative+'/'+e.name;
+    if(e.isDirectory())queue.push(child);
+    else if(e.isFile()&&/\.(?:[cm]?[jt]s|[jt]sx)$/.test(e.name)){
+     if(files.length>=maxFiles)return {files,diagnostics:[...diagnostics,{path:child,code:'FILE_LIMIT'}],complete:false,compilerCoverageVerified:false};
+     files.push(child);
+    }
+   }
+  }catch{diagnostics.push({path:relative,code:'SOURCE_DIRECTORY_UNREADABLE'});}
+ }
+ return {files,diagnostics,complete:diagnostics.length===0,compilerCoverageVerified:false};
+}
