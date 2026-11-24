@@ -71,3 +71,14 @@ export function searchOperations(index,{query='',packageName,mode}={}){
  const terms=query.toLowerCase().trim().split(/\s+/).filter(Boolean);
  return index.operations.filter(({manifest:m})=>(!packageName||m.package===packageName)&&(!mode||m.modes.includes(mode))&&terms.every(term=>(m.id+' '+m.description+' '+m.package).toLowerCase().includes(term))).map(e=>structuredClone(e));
 }
+
+/** Resolve exact operation and installed package versions; never silently select another version. */
+export function resolveOperation(index,{id,operationVersion,packageName,packageVersion}){
+ if(typeof id!=='string'||typeof operationVersion!=='string'||!version.test(operationVersion)||typeof packageName!=='string'||!owner.test(packageName)||typeof packageVersion!=='string'||!version.test(packageVersion))throw Error('INVALID_RESOLUTION_REQUEST');
+ const key=id+'@'+operationVersion;
+ if(index.conflicts.includes(key))return {status:'conflict'};
+ const entry=index.operations.find(e=>e.manifest.id===id&&e.manifest.version===operationVersion);
+ if(!entry)return {status:'not-found'};
+ if(entry.manifest.package!==packageName||entry.packageVersion!==packageVersion)return {status:'incompatible'};
+ return {status:'resolved',entry:structuredClone(entry)};
+}
