@@ -17,7 +17,7 @@
   "scripts": {
     "build": "node build.mjs",
     "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --moduleResolution nodenext src/index.d.mts",
-    "test": "node --test ../../tools/registry/operation-project.test.mjs"
+    "test": "node --test ../../tools/registry/operation-project.test.mjs ../../tools/registry/operation-project-discovery.test.mjs"
   },
   "repository": {
     "type": "git",
