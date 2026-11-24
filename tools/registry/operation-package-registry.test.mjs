@@ -10,3 +10,26 @@ test('package operation manifests enforce identity and safe handler declarations
  assert.ok(validatePackageOperations({...doc,operations:[{...entry,handler:'./../outside.mjs'}]},identity).length);
  assert.ok(validatePackageOperations(doc,{...identity,version:'2.0.0'}).length);
 });
+
+import {discoverPackageOperations,indexOperations,searchOperations} from '../../packages/tooling-registry/src/index.mjs';
+import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+test('discovery indexes metadata without importing handlers',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-registry-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const name='@accelerate/example',dir=path.join(root,'node_modules',name);
+ await mkdir(dir,{recursive:true});
+ const entry={manifest:{id:'example.inspect',version:'1.0.0',package:name,description:'Inspect configuration',mutatesProject:false,modes:['inspect'],inputSchema:{type:'object'},outputSchema:{type:'object'}},handler:'./missing.mjs',exportName:'inspect'};
+ await writeFile(path.join(dir,'package.json'),JSON.stringify({name,version:'1.0.0',accelerate:{operations:'./operations.json'}}));
+ await writeFile(path.join(dir,'operations.json'),JSON.stringify({schemaVersion:'1.0',package:name,packageVersion:'1.0.0',operations:[entry]}));
+ const result=await discoverPackageOperations(root,[name]);
+ assert.equal(result.handlersLoaded,false);
+ assert.deepEqual(result.diagnostics,[]);
+ const index=indexOperations(result.packages);
+ assert.equal(searchOperations(index,{query:'configuration',mode:'inspect'}).length,1);
+ assert.equal(searchOperations(index,{mode:'apply'}).length,0);
+ assert.deepEqual(indexOperations([...result.packages,...result.packages]).conflicts,['example.inspect@1.0.0']);
+ await writeFile(path.join(dir,'package.json'),JSON.stringify({name,version:'1.0.0',accelerate:{operations:'./../outside.json'}}));
+ assert.equal((await discoverPackageOperations(root,[name])).diagnostics.length,1);
+});
