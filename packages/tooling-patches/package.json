@@ -17,7 +17,7 @@
   "scripts": {
     "build": "node build.mjs",
     "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --moduleResolution nodenext src/index.d.mts",
-    "test": "node --test ../../tools/registry/operation-patches.test.mjs ../../tools/registry/operation-apply.test.mjs ../../tools/registry/operation-file-plans.test.mjs ../../tools/registry/operation-mixed-preflight.test.mjs ../../tools/registry/operation-mixed-apply.test.mjs"
+    "test": "node --test ../../tools/registry/operation-patches.test.mjs ../../tools/registry/operation-apply.test.mjs ../../tools/registry/operation-file-plans.test.mjs ../../tools/registry/operation-mixed-preflight.test.mjs ../../tools/registry/operation-mixed-apply.test.mjs ../../tools/registry/operation-journal.test.mjs"
   },
   "repository": {
     "type": "git",
