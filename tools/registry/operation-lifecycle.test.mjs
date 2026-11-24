@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {executeBuiltin} from '../operations/builtins.mjs';
+test('flag inventory and update preserve rules and handle missing flags',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-lifecycle-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const flags=[{key:'z',enabled:false,rules:[{attribute:'role',equals:'admin',enabled:true}]},{key:'a',enabled:true}];
+ await writeFile(path.join(root,'flags.json'),JSON.stringify(flags));
+ const run=(operation,input)=>executeBuiltin(root,{schemaVersion:'1.0',operation,operationVersion:'1.0.0',input:{target:'flags.json',...input}});
+ assert.deepEqual((await run('feature-flags.list',{})).data.flags.map(x=>x.key),['a','z']);
+ const result=await run('feature-flags.update',{key:'z',enabled:true});
+ assert.equal(result.status,'success');
+ assert.deepEqual(JSON.parse(result.changes[0].content),[{...flags[0],enabled:true},flags[1]]);
+ assert.deepEqual(JSON.parse(await readFile(path.join(root,'flags.json'),'utf8')),flags);
+ assert.equal((await run('feature-flags.update',{key:'z',enabled:false})).status,'no-op');
+ assert.equal((await run('feature-flags.update',{key:'missing',enabled:false})).status,'unsupported');
+});
