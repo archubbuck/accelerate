@@ -155,3 +155,19 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  assert.equal(result.result.status,'success');
  assert.equal(result.result.data.enabled,true);
 });
+
+import {syncOperationManifest} from '../operations/sync-manifest.mjs';
+import {readFile} from 'node:fs/promises';
+test('manifest synchronization checks drift and preserves operation versions',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-sync-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const name='@accelerate/example',file=path.join(root,'operations.json');
+ await writeFile(path.join(root,'package.json'),JSON.stringify({name,version:'2.0.0',accelerate:{operations:'./operations.json'}}));
+ const doc={schemaVersion:'1.0',package:name,packageVersion:'1.0.0',operations:[{manifest:{package:name,version:'1.0.0'}}]};
+ await writeFile(file,JSON.stringify(doc));
+ await assert.rejects(syncOperationManifest(root,{check:true}),/STALE_OPERATION_MANIFEST_VERSION/);
+ assert.deepEqual(JSON.parse(await readFile(file,'utf8')),doc);
+ assert.equal((await syncOperationManifest(root)).status,'updated');
+ assert.deepEqual(JSON.parse(await readFile(file,'utf8')),{...doc,packageVersion:'2.0.0'});
+ assert.equal((await syncOperationManifest(root,{check:true})).status,'no-op');
+});
