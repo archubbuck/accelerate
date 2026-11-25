@@ -471,6 +471,153 @@
       },
       "handler": "./dist/operations/configure.mjs",
       "exportName": "migrate"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.integrate",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview feature flag integrate",
+        "mutatesProject": true,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "file",
+            "key",
+            "receiver",
+            "enabledCall",
+            "disabledCall"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "file": {
+              "type": "string",
+              "minLength": 1
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "receiver": {
+              "type": "string",
+              "minLength": 1
+            },
+            "enabledCall": {
+              "type": "string",
+              "minLength": 1
+            },
+            "disabledCall": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/integration.mjs",
+      "exportName": "integrate"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.create",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview feature flag create",
+        "mutatesProject": true,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "file",
+            "key",
+            "receiver",
+            "enabledCall",
+            "disabledCall",
+            "target",
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "file": {
+              "type": "string",
+              "minLength": 1
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "receiver": {
+              "type": "string",
+              "minLength": 1
+            },
+            "enabledCall": {
+              "type": "string",
+              "minLength": 1
+            },
+            "disabledCall": {
+              "type": "string",
+              "minLength": 1
+            },
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "enabled": {
+              "type": "boolean"
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/integration.mjs",
+      "exportName": "create"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.generate-tests",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview feature flag generate-tests",
+        "mutatesProject": false,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "key"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/integration.mjs",
+      "exportName": "generateTests"
     }
   ]
 }
