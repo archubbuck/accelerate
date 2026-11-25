@@ -192,6 +192,146 @@
       },
       "handler": "./dist/operations/inspect.mjs",
       "exportName": "validate"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.find-usages",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Find candidate usages flags within explicit source scope",
+        "mutatesProject": false,
+        "modes": [
+          "inspect",
+          "preview"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "files",
+            "receivers"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "receivers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/analyze.mjs",
+      "exportName": "findUsages"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.find-unused",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Find candidate unused flags within explicit source scope",
+        "mutatesProject": false,
+        "modes": [
+          "inspect",
+          "preview"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "files",
+            "receivers"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "receivers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/analyze.mjs",
+      "exportName": "findUnused"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.find-unregistered",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Find candidate unregistered flags within explicit source scope",
+        "mutatesProject": false,
+        "modes": [
+          "inspect",
+          "preview"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "files",
+            "receivers"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "receivers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/analyze.mjs",
+      "exportName": "findUnregistered"
     }
   ]
 }
