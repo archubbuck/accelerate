@@ -17,9 +17,10 @@
     "operations/package-manifest.json"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "node ../../tools/operations/sync-manifest.mjs --check && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "operations:sync": "node ../../tools/operations/sync-manifest.mjs"
   },
   "repository": {
     "type": "git",
