@@ -1,7 +1,7 @@
 import {createHash} from 'node:crypto';
 import {lstat,realpath,readFile} from 'node:fs/promises';
 import path from 'node:path';
-import {validateManifest} from '@accelerate/tooling-core';
+import {validateManifest,OperationRegistry,executeOperation,validateSchema} from '@accelerate/tooling-core';
 const record=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
 const version=/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 const owner=/^@accelerate\/[a-z0-9-]+$/;
@@ -124,4 +124,26 @@ export async function loadApprovedHandler(root,request,approval){
   if(typeof handler!=='function')return {status:'blocked',code:'HANDLER_EXPORT_INVALID'};
   return {status:'loaded',manifest:evidence.entry.manifest,handler,isolated:false};
  }catch{return {status:'blocked',code:'HANDLER_LOAD_FAILED'};}
+}
+
+/** Execute an explicitly approved installed operation through the shared engine.
+ * Apply remains disabled until installed handlers have a separately authorized patch policy.
+ */
+export async function executeApprovedOperation(root,request,approval){
+ if(!request||request.options?.mode==='apply')return {status:'blocked',code:'INSTALLED_APPLY_DISABLED'};
+ const identity={id:request.operation,operationVersion:request.operationVersion,packageName:approval?.packageName,packageVersion:approval?.packageVersion};
+ if(!approval||approval.allowExecution!==true||approval.id!==identity.id||approval.operationVersion!==identity.operationVersion)return {status:'blocked',code:'HANDLER_NOT_AUTHORIZED'};
+ try{
+  // Validate the request against discovered metadata before importing any executable code.
+  const evidence=await inspectHandlerIntegrity(root,identity);
+  if(!authorizeHandler(evidence,approval))return {status:'blocked',code:'HANDLER_NOT_AUTHORIZED'};
+  const manifest=evidence.entry.manifest,mode=request.options?.mode??'preview';
+  if(request.schemaVersion!=='1.0'||!manifest.modes.includes(mode)||!validateSchema(manifest.inputSchema,request.input))return {status:'blocked',code:'INVALID_OPERATION_REQUEST'};
+  const loaded=await loadApprovedHandler(root,identity,approval);
+  if(loaded.status!=='loaded')return loaded;
+  if(JSON.stringify(loaded.manifest)!==JSON.stringify(manifest))return {status:'blocked',code:'MANIFEST_CHANGED'};
+  const registry=new OperationRegistry();
+  registry.register(loaded.manifest,loaded.handler);
+  return {status:'executed',result:await executeOperation(registry,request,{validateSchema})};
+ }catch{return {status:'blocked',code:'INSTALLED_EXECUTION_FAILED'};}
 }
