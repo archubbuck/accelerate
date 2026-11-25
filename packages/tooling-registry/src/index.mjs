@@ -133,7 +133,7 @@ export async function executeApprovedOperation(root,request,approval){
  if(!request||request.options?.mode==='apply')return {status:'blocked',code:'INSTALLED_APPLY_DISABLED'};
  const normalized=normalizeRequest(request);
  if(!normalized.ok)return {status:'blocked',code:'INVALID_OPERATION_REQUEST'};
- request=normalized.request;
+ request={...normalized.request,context:{...normalized.request.context,projectRoot:await realpath(root)}};
  const identity={id:request.operation,operationVersion:request.operationVersion,packageName:approval?.packageName,packageVersion:approval?.packageVersion};
  if(!approval||approval.allowExecution!==true||approval.id!==identity.id||approval.operationVersion!==identity.operationVersion)return {status:'blocked',code:'HANDLER_NOT_AUTHORIZED'};
  try{
