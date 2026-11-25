@@ -87,3 +87,25 @@ test('lazy loader requires approval and loads verified standalone bytes',async t
  await writeFile(path.join(dir,'handler.mjs'),"throw Error('unapproved');");
  assert.equal((await loadApprovedHandler(root,request,approval)).status,'blocked');
 });
+
+import {executeApprovedOperation} from '../../packages/tooling-registry/src/index.mjs';
+test('approved installed operations execute through core and reject apply',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-execute-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const name='@accelerate/example',dir=path.join(root,'node_modules',name);
+ await mkdir(dir,{recursive:true});
+ const identity={id:'example.inspect',operationVersion:'1.0.0',packageName:name,packageVersion:'1.0.0'};
+ const entry={manifest:{id:identity.id,version:identity.operationVersion,package:name,description:'Inspect',mutatesProject:false,modes:['inspect'],inputSchema:{type:'object',additionalProperties:false},outputSchema:{type:'object'}},handler:'./handler.mjs',exportName:'inspect'};
+ await writeFile(path.join(dir,'package.json'),JSON.stringify({name,version:'1.0.0',accelerate:{operations:'./operations.json'}}));
+ await writeFile(path.join(dir,'operations.json'),JSON.stringify({schemaVersion:'1.0',package:name,packageVersion:'1.0.0',operations:[entry]}));
+ await writeFile(path.join(dir,'handler.mjs'),'export function inspect(){return {status:"success",data:{ok:true}}}');
+ const evidence=await inspectHandlerIntegrity(root,identity);
+ const approval={...identity,handler:entry.handler,exportName:entry.exportName,sha256:evidence.sha256,allowExecution:true};
+ const request={schemaVersion:'1.0',operation:identity.id,operationVersion:identity.operationVersion,input:{},options:{mode:'inspect'}};
+ const result=await executeApprovedOperation(root,request,approval);
+ assert.equal(result.status,'executed');
+ assert.equal(result.result.status,'success');
+ assert.deepEqual(result.result.data,{ok:true});
+ assert.equal((await executeApprovedOperation(root,{...request,input:{extra:true}},approval)).code,'INVALID_OPERATION_REQUEST');
+ assert.equal((await executeApprovedOperation(root,{...request,options:{mode:'apply'}},approval)).code,'INSTALLED_APPLY_DISABLED');
+});
