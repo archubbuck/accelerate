@@ -120,9 +120,10 @@ test('real feature flag package exposes an executable installed capability',asyn
  const name='@accelerate/feature-flags-core',dir=path.join(root,'node_modules',name);
  const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
  await bundleOperation(source,'operations/evaluate.mjs','dist/operations/evaluate.mjs');
+ await bundleOperation(source,'operations/inspect.mjs','dist/operations/inspect.mjs');
  await mkdir(path.join(dir,'operations'),{recursive:true});
  await mkdir(path.join(dir,'dist/operations'),{recursive:true});
- for(const file of ['package.json','operations/package-manifest.json','dist/operations/evaluate.mjs'])await cp(path.join(source,file),path.join(dir,file));
+ for(const file of ['package.json','operations/package-manifest.json','dist/operations/evaluate.mjs','dist/operations/inspect.mjs'])await cp(path.join(source,file),path.join(dir,file));
  const identity={id:'feature-flags.evaluate',operationVersion:'1.0.0',packageName:name,packageVersion:'0.1.0'};
  const evidence=await inspectHandlerIntegrity(root,identity);
  assert.equal(evidence.status,'inspected');
@@ -139,6 +140,7 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  t.after(()=>rm(root,{recursive:true,force:true}));
  const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
  await bundleOperation(source,'operations/evaluate.mjs','dist/operations/evaluate.mjs');
+ await bundleOperation(source,'operations/inspect.mjs','dist/operations/inspect.mjs');
  const packed=JSON.parse(execFileSync('npm',['pack','--ignore-scripts','--json','--pack-destination',root],{cwd:source,encoding:'utf8'}))[0];
  const files=new Set(packed.files.map(f=>f.path));
  assert.ok(files.has('operations/package-manifest.json'));
@@ -158,6 +160,16 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  assert.equal(result.status,'executed');
  assert.equal(result.result.status,'success');
  assert.equal(result.result.data.enabled,true);
+ await writeFile(path.join(root,'flags.json'),JSON.stringify([{key:'dashboard',enabled:true}]));
+ for(const [id,input,mode] of [['list',{target:'flags.json'},'inspect'],['describe',{target:'flags.json',key:'dashboard'},'inspect'],['validate',{target:'flags.json'},'verify']]){
+  const requestIdentity={...identity,id:'feature-flags.'+id};
+  const e=await inspectHandlerIntegrity(root,requestIdentity);
+  assert.equal(e.status,'inspected');
+  const a={...requestIdentity,handler:e.entry.handler,exportName:e.entry.exportName,sha256:e.sha256,manifestSha256:e.manifestSha256,allowExecution:true};
+  const response=await executeApprovedOperation(root,{schemaVersion:'1.0',operation:requestIdentity.id,operationVersion:'1.0.0',input,context:{projectRoot:'/not-the-authorized-root'},options:{mode}},a);
+  assert.equal(response.status,'executed');
+  assert.equal(response.result.status,'success');
+ }
 });
 
 import {syncOperationManifest} from '../operations/sync-manifest.mjs';
