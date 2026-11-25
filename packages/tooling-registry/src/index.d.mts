@@ -10,3 +10,4 @@ export interface ResolutionRequest {id:string;operationVersion:string;packageNam
 export type HandlerEvidence={status:'inspected';entry:CapabilityIndex['operations'][number];sha256:string;handlersLoaded:false;trustVerified:false}|{status:'blocked'|'conflict'|'not-found'|'incompatible';diagnostics:{package:string;code:string;errors?:string[]}[]};
 export function inspectHandlerIntegrity(root:string,request:ResolutionRequest):Promise<HandlerEvidence>;
 export function authorizeHandler(evidence:HandlerEvidence,approval:ResolutionRequest&{allowExecution:boolean;handler:string;exportName:string;sha256:string}):boolean;
+export function loadApprovedHandler(root:string,request:ResolutionRequest,approval:Parameters<typeof authorizeHandler>[1]):Promise<{status:'blocked';code:string}|{status:'loaded';manifest:OperationEntry['manifest'];handler:(...args:unknown[])=>unknown;isolated:false}>;
