@@ -47,6 +47,7 @@ export async function planIntegration(root,{file,key,receiver,enabledCall,disabl
 export async function planCreation(root,input){
  if(input.target===input.file)return {status:'blocked',data:{applySupported:false},diagnostics:[{code:'OVERLAPPING_TARGETS',severity:'error'}]};
  const registration=await planFlagRegistration(root,input);
+ if(!['success','no-op'].includes(registration.status))return registration;
  const integration=await planIntegration(root,input);
  if(!['success','no-op'].includes(integration.status))return integration;
  return {status:'success',data:{key:input.key,applySupported:false,runtimeWiringVerified:false},changes:[...registration.changes,...integration.changes],diagnostics:[...registration.diagnostics,...integration.diagnostics]};
