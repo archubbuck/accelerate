@@ -13,11 +13,10 @@
   },
   "files": [
     "dist",
-    "operations/evaluate.mjs",
     "operations/package-manifest.json"
   ],
   "scripts": {
-    "build": "node ../../tools/operations/sync-manifest.mjs --check && tsc -p tsconfig.json",
+    "build": "node ../../tools/operations/sync-manifest.mjs --check && tsc -p tsconfig.json && node ../../tools/operations/bundle.mjs operations/evaluate.mjs dist/operations/evaluate.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "operations:sync": "node ../../tools/operations/sync-manifest.mjs"
