@@ -618,6 +618,226 @@
       },
       "handler": "./dist/operations/integration.mjs",
       "exportName": "generateTests"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.rename",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview scoped feature flag rename",
+        "mutatesProject": true,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "files",
+            "receivers",
+            "key",
+            "newKey"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "receivers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "newKey": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/manage.mjs",
+      "exportName": "rename"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.preview-usage-rename",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview scoped feature flag preview-usage-rename",
+        "mutatesProject": true,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "files",
+            "receivers",
+            "key",
+            "newKey"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "receivers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "newKey": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/manage.mjs",
+      "exportName": "previewUsageRename"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.remove",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview scoped feature flag remove",
+        "mutatesProject": true,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "files",
+            "receivers",
+            "key"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "receivers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/manage.mjs",
+      "exportName": "remove"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.retire",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview scoped feature flag retire",
+        "mutatesProject": true,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "files",
+            "receivers",
+            "key",
+            "retainBehavior"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "receivers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "retainBehavior": {
+              "enum": [
+                "enabled",
+                "disabled"
+              ]
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/manage.mjs",
+      "exportName": "retire"
     }
   ]
 }
