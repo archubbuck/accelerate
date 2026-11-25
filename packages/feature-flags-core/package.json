@@ -16,7 +16,7 @@
     "operations/package-manifest.json"
   ],
   "scripts": {
-    "build": "node ../../tools/operations/sync-manifest.mjs --check && tsc -p tsconfig.json && node ../../tools/operations/bundle.mjs operations/evaluate.mjs dist/operations/evaluate.mjs && node ../../tools/operations/bundle.mjs operations/inspect.mjs dist/operations/inspect.mjs && node ../../tools/operations/bundle.mjs operations/analyze.mjs dist/operations/analyze.mjs && node ../../tools/operations/bundle.mjs operations/configure.mjs dist/operations/configure.mjs",
+    "build": "node ../../tools/operations/sync-manifest.mjs --check && tsc -p tsconfig.json && node ../../tools/operations/bundle.mjs operations/evaluate.mjs dist/operations/evaluate.mjs && node ../../tools/operations/bundle.mjs operations/inspect.mjs dist/operations/inspect.mjs && node ../../tools/operations/bundle.mjs operations/analyze.mjs dist/operations/analyze.mjs && node ../../tools/operations/bundle.mjs operations/configure.mjs dist/operations/configure.mjs && node ../../tools/operations/bundle.mjs operations/integration.mjs dist/operations/integration.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "operations:sync": "node ../../tools/operations/sync-manifest.mjs"
