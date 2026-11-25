@@ -12,7 +12,9 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "operations/evaluate.mjs",
+    "operations/package-manifest.json"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -27,5 +29,8 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "accelerate": {
+    "operations": "./operations/package-manifest.json"
   }
 }
