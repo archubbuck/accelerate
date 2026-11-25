@@ -112,14 +112,17 @@ test('approved installed operations execute through core and reject apply',async
 });
 
 import {cp} from 'node:fs/promises';
+import {bundleOperation} from '../operations/bundle.mjs';
 import {fileURLToPath} from 'node:url';
 test('real feature flag package exposes an executable installed capability',async t=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-flags-installed-'));
  t.after(()=>rm(root,{recursive:true,force:true}));
  const name='@accelerate/feature-flags-core',dir=path.join(root,'node_modules',name);
  const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
+ await bundleOperation(source,'operations/evaluate.mjs','dist/operations/evaluate.mjs');
  await mkdir(path.join(dir,'operations'),{recursive:true});
- for(const file of ['package.json','operations/package-manifest.json','operations/evaluate.mjs'])await cp(path.join(source,file),path.join(dir,file));
+ await mkdir(path.join(dir,'dist/operations'),{recursive:true});
+ for(const file of ['package.json','operations/package-manifest.json','dist/operations/evaluate.mjs'])await cp(path.join(source,file),path.join(dir,file));
  const identity={id:'feature-flags.evaluate',operationVersion:'1.0.0',packageName:name,packageVersion:'0.1.0'};
  const evidence=await inspectHandlerIntegrity(root,identity);
  assert.equal(evidence.status,'inspected');
@@ -135,10 +138,11 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-pack-'));
  t.after(()=>rm(root,{recursive:true,force:true}));
  const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
+ await bundleOperation(source,'operations/evaluate.mjs','dist/operations/evaluate.mjs');
  const packed=JSON.parse(execFileSync('npm',['pack','--ignore-scripts','--json','--pack-destination',root],{cwd:source,encoding:'utf8'}))[0];
  const files=new Set(packed.files.map(f=>f.path));
  assert.ok(files.has('operations/package-manifest.json'));
- assert.ok(files.has('operations/evaluate.mjs'));
+ assert.ok(files.has('dist/operations/evaluate.mjs'));
  const dir=path.join(root,'node_modules','@accelerate','feature-flags-core');
  await mkdir(dir,{recursive:true});
  execFileSync('tar',['-xzf',path.join(root,packed.filename),'--strip-components=1','-C',dir]);
