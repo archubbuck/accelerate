@@ -124,9 +124,10 @@ test('real feature flag package exposes an executable installed capability',asyn
  await bundleOperation(source,'operations/analyze.mjs','dist/operations/analyze.mjs');
  await bundleOperation(source,'operations/configure.mjs','dist/operations/configure.mjs');
  await bundleOperation(source,'operations/integration.mjs','dist/operations/integration.mjs');
+ await bundleOperation(source,'operations/manage.mjs','dist/operations/manage.mjs');
  await mkdir(path.join(dir,'operations'),{recursive:true});
  await mkdir(path.join(dir,'dist/operations'),{recursive:true});
- for(const file of ['package.json','operations/package-manifest.json','dist/operations/evaluate.mjs','dist/operations/inspect.mjs','dist/operations/analyze.mjs','dist/operations/configure.mjs','dist/operations/integration.mjs'])await cp(path.join(source,file),path.join(dir,file));
+ for(const file of ['package.json','operations/package-manifest.json','dist/operations/evaluate.mjs','dist/operations/inspect.mjs','dist/operations/analyze.mjs','dist/operations/configure.mjs','dist/operations/integration.mjs','dist/operations/manage.mjs'])await cp(path.join(source,file),path.join(dir,file));
  const identity={id:'feature-flags.evaluate',operationVersion:'1.0.0',packageName:name,packageVersion:'0.1.0'};
  const evidence=await inspectHandlerIntegrity(root,identity);
  assert.equal(evidence.status,'inspected');
@@ -147,6 +148,7 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  await bundleOperation(source,'operations/analyze.mjs','dist/operations/analyze.mjs');
  await bundleOperation(source,'operations/configure.mjs','dist/operations/configure.mjs');
  await bundleOperation(source,'operations/integration.mjs','dist/operations/integration.mjs');
+ await bundleOperation(source,'operations/manage.mjs','dist/operations/manage.mjs');
  const packed=JSON.parse(execFileSync('npm',['pack','--ignore-scripts','--json','--pack-destination',root],{cwd:source,encoding:'utf8'}))[0];
  const files=new Set(packed.files.map(f=>f.path));
  assert.ok(files.has('operations/package-manifest.json'));
@@ -154,12 +156,14 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  assert.ok(files.has('dist/operations/analyze.mjs'));
  assert.ok(files.has('dist/operations/configure.mjs'));
  assert.ok(files.has('dist/operations/integration.mjs'));
+ assert.ok(files.has('dist/operations/manage.mjs'));
  const dir=path.join(root,'node_modules','@accelerate','feature-flags-core');
  await mkdir(dir,{recursive:true});
  execFileSync('tar',['-xzf',path.join(root,packed.filename),'--strip-components=1','-C',dir]);
  const discovery=await discoverPackageOperations(root,['@accelerate/feature-flags-core']);
  assert.deepEqual(discovery.diagnostics,[]);
  const index=indexOperations(discovery.packages);
+ assert.equal(index.operations.length,17);
  assert.equal(searchOperations(index,{query:'feature-flags.evaluate'}).length,1);
  const identity={id:'feature-flags.evaluate',operationVersion:'1.0.0',packageName:'@accelerate/feature-flags-core',packageVersion:discovery.packages[0].version};
  const evidence=await inspectHandlerIntegrity(root,identity);
@@ -172,13 +176,15 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  await writeFile(path.join(root,'flags.json'),JSON.stringify([{key:'dashboard',enabled:true}]));
  await writeFile(path.join(root,'app.ts'),'flags.enabled("dashboard"); flags.enabled("missing");');
  const scope={files:['app.ts'],receivers:['flags']};
+ await writeFile(path.join(root,'retire.ts'),'async function run(){ if(await flags.enabled("dashboard")){ await yes(); } else { await no(); } }');
+ await writeFile(path.join(root,'empty.ts'),'export {};');
  const integrationSource='async function run(){ await oldBehavior(); }';
  await writeFile(path.join(root,'integration.ts'),integrationSource);
  const integration={file:'integration.ts',key:'dashboard',receiver:'flags',enabledCall:'newBehavior',disabledCall:'oldBehavior'};
  await writeFile(path.join(root,'legacy.json'),JSON.stringify({dashboard:true}));
  const before=await readFile(path.join(root,'flags.json'),'utf8');
  const legacyBefore=await readFile(path.join(root,'legacy.json'),'utf8');
- for(const [id,input,mode] of [['integrate',integration,'preview'],['create',{...integration,key:'new',target:'flags.json',enabled:false},'preview'],['generate-tests',{target:'flags.json',key:'dashboard'},'plan'],['register',{target:'flags.json',key:'new',enabled:false},'preview'],['update',{target:'flags.json',key:'dashboard',enabled:false},'preview'],['migrate',{target:'legacy.json',from:'boolean-map'},'plan'],['find-usages',scope,'inspect'],['find-unused',{...scope,target:'flags.json'},'inspect'],['find-unregistered',{...scope,target:'flags.json'},'inspect'],['list',{target:'flags.json'},'inspect'],['describe',{target:'flags.json',key:'dashboard'},'inspect'],['validate',{target:'flags.json'},'verify']]){
+ for(const [id,input,mode] of [['rename',{...scope,target:'flags.json',key:'dashboard',newKey:'renamed'},'preview'],['preview-usage-rename',{...scope,key:'dashboard',newKey:'renamed'},'preview'],['remove',{target:'flags.json',key:'dashboard',files:['empty.ts'],receivers:['flags']},'preview'],['retire',{target:'flags.json',key:'dashboard',files:['retire.ts'],receivers:['flags'],retainBehavior:'enabled'},'preview'],['integrate',integration,'preview'],['create',{...integration,key:'new',target:'flags.json',enabled:false},'preview'],['generate-tests',{target:'flags.json',key:'dashboard'},'plan'],['register',{target:'flags.json',key:'new',enabled:false},'preview'],['update',{target:'flags.json',key:'dashboard',enabled:false},'preview'],['migrate',{target:'legacy.json',from:'boolean-map'},'plan'],['find-usages',scope,'inspect'],['find-unused',{...scope,target:'flags.json'},'inspect'],['find-unregistered',{...scope,target:'flags.json'},'inspect'],['list',{target:'flags.json'},'inspect'],['describe',{target:'flags.json',key:'dashboard'},'inspect'],['validate',{target:'flags.json'},'verify']]){
   const requestIdentity={...identity,id:'feature-flags.'+id};
   const e=await inspectHandlerIntegrity(root,requestIdentity);
   assert.equal(e.status,'inspected');
@@ -186,6 +192,8 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
   const response=await executeApprovedOperation(root,{schemaVersion:'1.0',operation:requestIdentity.id,operationVersion:'1.0.0',input,context:{projectRoot:'/not-the-authorized-root'},options:{mode}},a);
   assert.equal(response.status,'executed');
   assert.equal(response.result.status,'success');
+  if(id==='rename'||id==='retire')assert.equal(response.result.changes.length,2);
+  if(id==='preview-usage-rename'||id==='remove')assert.equal(response.result.changes.length,1);
   if(id==='integrate')assert.equal(response.result.changes.length,1);
   if(id==='create')assert.equal(response.result.changes.length,2);
   if(id==='generate-tests')assert.match(response.result.data.source,/node:test/);
