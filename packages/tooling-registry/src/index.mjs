@@ -1,3 +1,4 @@
+import {createHash} from 'node:crypto';
 import {lstat,realpath,readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {validateManifest} from '@accelerate/tooling-core';
@@ -81,4 +82,26 @@ export function resolveOperation(index,{id,operationVersion,packageName,packageV
  if(!entry)return {status:'not-found'};
  if(entry.manifest.package!==packageName||entry.packageVersion!==packageVersion)return {status:'incompatible'};
  return {status:'resolved',entry:structuredClone(entry)};
+}
+
+/** Inspect a handler's bytes without executing it. A digest is evidence, not a sandbox. */
+export async function inspectHandlerIntegrity(root,request){
+ const discovery=await discoverPackageOperations(root,[request.packageName]);
+ const resolved=resolveOperation(indexOperations(discovery.packages),request);
+ if(resolved.status!=='resolved')return {status:resolved.status,diagnostics:discovery.diagnostics};
+ try{
+  const base=await realpath(path.join(await realpath(root),'node_modules',request.packageName));
+  const file=path.join(base,resolved.entry.handler.slice(2));
+  const stat=await lstat(file);
+  if(!stat.isFile()||stat.size>4194304||await realpath(file)!==file)throw Error('UNSAFE_HANDLER');
+  const bytes=await readFile(file);
+  if(bytes.length>4194304)throw Error('HANDLER_LIMIT');
+  return {status:'inspected',entry:resolved.entry,sha256:createHash('sha256').update(bytes).digest('hex'),handlersLoaded:false,trustVerified:false};
+ }catch{return {status:'blocked',diagnostics:[{package:request.packageName,code:'HANDLER_UNREADABLE_OR_UNSAFE'}]};}
+}
+/** Require an explicit, exact identity and digest allowlist before considering execution. */
+export function authorizeHandler(evidence,approval){
+ if(evidence?.status!=='inspected'||!approval||approval.allowExecution!==true)return false;
+ const m=evidence.entry.manifest;
+ return approval.packageName===m.package&&approval.packageVersion===evidence.entry.packageVersion&&approval.id===m.id&&approval.operationVersion===m.version&&approval.handler===evidence.entry.handler&&approval.exportName===evidence.entry.exportName&&typeof approval.sha256==='string'&&/^[a-f0-9]{64}$/.test(approval.sha256)&&approval.sha256===evidence.sha256;
 }
