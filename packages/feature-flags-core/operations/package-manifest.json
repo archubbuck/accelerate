@@ -93,6 +93,105 @@
       },
       "handler": "./dist/operations/evaluate.mjs",
       "exportName": "evaluate"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.list",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Inspect explicit JSON flag registry",
+        "mutatesProject": false,
+        "modes": [
+          "inspect",
+          "preview"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/inspect.mjs",
+      "exportName": "list"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.describe",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Describe an existing flag definition",
+        "mutatesProject": false,
+        "modes": [
+          "inspect",
+          "preview"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "key"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/inspect.mjs",
+      "exportName": "describe"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.validate",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Validate explicit JSON flag definitions",
+        "mutatesProject": false,
+        "modes": [
+          "inspect",
+          "preview",
+          "verify"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/inspect.mjs",
+      "exportName": "validate"
     }
   ]
 }
