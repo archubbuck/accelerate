@@ -1,7 +1,7 @@
 import {createHash} from 'node:crypto';
 import {lstat,realpath,readFile} from 'node:fs/promises';
 import path from 'node:path';
-import {validateManifest,OperationRegistry,executeOperation,validateSchema} from '@accelerate/tooling-core';
+import {validateManifest,OperationRegistry,executeOperation,validateSchema,normalizeRequest} from '@accelerate/tooling-core';
 const record=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
 const version=/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 const owner=/^@accelerate\/[a-z0-9-]+$/;
@@ -96,14 +96,14 @@ export async function inspectHandlerIntegrity(root,request){
   if(!stat.isFile()||stat.size>4194304||await realpath(file)!==file)throw Error('UNSAFE_HANDLER');
   const bytes=await readFile(file);
   if(bytes.length>4194304)throw Error('HANDLER_LIMIT');
-  return {status:'inspected',entry:resolved.entry,sha256:createHash('sha256').update(bytes).digest('hex'),handlersLoaded:false,trustVerified:false};
+  return {status:'inspected',entry:resolved.entry,manifestSha256:createHash('sha256').update(JSON.stringify(resolved.entry.manifest)).digest('hex'),sha256:createHash('sha256').update(bytes).digest('hex'),handlersLoaded:false,trustVerified:false};
  }catch{return {status:'blocked',diagnostics:[{package:request.packageName,code:'HANDLER_UNREADABLE_OR_UNSAFE'}]};}
 }
 /** Require an explicit, exact identity and digest allowlist before considering execution. */
 export function authorizeHandler(evidence,approval){
  if(evidence?.status!=='inspected'||!approval||approval.allowExecution!==true)return false;
  const m=evidence.entry.manifest;
- return approval.packageName===m.package&&approval.packageVersion===evidence.entry.packageVersion&&approval.id===m.id&&approval.operationVersion===m.version&&approval.handler===evidence.entry.handler&&approval.exportName===evidence.entry.exportName&&typeof approval.sha256==='string'&&/^[a-f0-9]{64}$/.test(approval.sha256)&&approval.sha256===evidence.sha256;
+ return approval.packageName===m.package&&approval.packageVersion===evidence.entry.packageVersion&&approval.id===m.id&&approval.operationVersion===m.version&&approval.handler===evidence.entry.handler&&approval.exportName===evidence.entry.exportName&&typeof approval.sha256==='string'&&/^[a-f0-9]{64}$/.test(approval.sha256)&&approval.sha256===evidence.sha256&&typeof approval.manifestSha256==='string'&&approval.manifestSha256===evidence.manifestSha256;
 }
 
 /** Load explicitly approved standalone modules from the exact inspected bytes.
@@ -131,6 +131,9 @@ export async function loadApprovedHandler(root,request,approval){
  */
 export async function executeApprovedOperation(root,request,approval){
  if(!request||request.options?.mode==='apply')return {status:'blocked',code:'INSTALLED_APPLY_DISABLED'};
+ const normalized=normalizeRequest(request);
+ if(!normalized.ok)return {status:'blocked',code:'INVALID_OPERATION_REQUEST'};
+ request=normalized.request;
  const identity={id:request.operation,operationVersion:request.operationVersion,packageName:approval?.packageName,packageVersion:approval?.packageVersion};
  if(!approval||approval.allowExecution!==true||approval.id!==identity.id||approval.operationVersion!==identity.operationVersion)return {status:'blocked',code:'HANDLER_NOT_AUTHORIZED'};
  try{
