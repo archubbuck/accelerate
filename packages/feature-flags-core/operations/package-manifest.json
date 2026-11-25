@@ -91,7 +91,7 @@
           }
         }
       },
-      "handler": "./operations/evaluate.mjs",
+      "handler": "./dist/operations/evaluate.mjs",
       "exportName": "evaluate"
     }
   ]
