@@ -129,3 +129,29 @@ test('real feature flag package exposes an executable installed capability',asyn
  assert.equal(result.result.status,'success');
  assert.deepEqual(result.result.data,{enabled:true,runtimeWiringVerified:false});
 });
+
+import {execFileSync} from 'node:child_process';
+test('feature flag npm archive includes discoverable operation artifacts',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-pack-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
+ const packed=JSON.parse(execFileSync('npm',['pack','--ignore-scripts','--json','--pack-destination',root],{cwd:source,encoding:'utf8'}))[0];
+ const files=new Set(packed.files.map(f=>f.path));
+ assert.ok(files.has('operations/package-manifest.json'));
+ assert.ok(files.has('operations/evaluate.mjs'));
+ const dir=path.join(root,'node_modules','@accelerate','feature-flags-core');
+ await mkdir(dir,{recursive:true});
+ execFileSync('tar',['-xzf',path.join(root,packed.filename),'--strip-components=1','-C',dir]);
+ const discovery=await discoverPackageOperations(root,['@accelerate/feature-flags-core']);
+ assert.deepEqual(discovery.diagnostics,[]);
+ const index=indexOperations(discovery.packages);
+ assert.equal(searchOperations(index,{query:'feature-flags.evaluate'}).length,1);
+ const identity={id:'feature-flags.evaluate',operationVersion:'1.0.0',packageName:'@accelerate/feature-flags-core',packageVersion:discovery.packages[0].version};
+ const evidence=await inspectHandlerIntegrity(root,identity);
+ assert.equal(evidence.status,'inspected');
+ const approval={...identity,handler:evidence.entry.handler,exportName:evidence.entry.exportName,sha256:evidence.sha256,manifestSha256:evidence.manifestSha256,allowExecution:true};
+ const result=await executeApprovedOperation(root,{schemaVersion:'1.0',operation:identity.id,operationVersion:identity.operationVersion,input:{flag:{key:'example',enabled:true}},options:{mode:'inspect'}},approval);
+ assert.equal(result.status,'executed');
+ assert.equal(result.result.status,'success');
+ assert.equal(result.result.data.enabled,true);
+});
