@@ -332,6 +332,145 @@
       },
       "handler": "./dist/operations/analyze.mjs",
       "exportName": "findUnregistered"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.register",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview registration in an existing JSON array consumed by a FlagStore",
+        "mutatesProject": true,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "key",
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "enabled": {
+              "type": "boolean"
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "required": [
+            "key",
+            "enabled",
+            "outcome",
+            "registrationVerified"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outcome": {
+              "enum": [
+                "created",
+                "existing"
+              ]
+            },
+            "registrationVerified": {
+              "const": false
+            }
+          }
+        }
+      },
+      "handler": "./dist/operations/configure.mjs",
+      "exportName": "register"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.update",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview change to existing flag default",
+        "mutatesProject": true,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "key",
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "enabled": {
+              "type": "boolean"
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/configure.mjs",
+      "exportName": "update"
+    },
+    {
+      "manifest": {
+        "id": "feature-flags.migrate",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Preview boolean-map to flag-array migration",
+        "mutatesProject": true,
+        "modes": [
+          "preview",
+          "plan"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "target",
+            "from"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "from": {
+              "const": "boolean-map"
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      "handler": "./dist/operations/configure.mjs",
+      "exportName": "migrate"
     }
   ]
 }
