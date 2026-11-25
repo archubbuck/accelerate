@@ -44,3 +44,25 @@ test('exact resolution rejects incompatible installed versions and conflicts',()
  assert.equal(resolveOperation(index,{...request,operationVersion:'2.0.0'}).status,'not-found');
  assert.equal(resolveOperation({...index,conflicts:['example.inspect@1.0.0']},request).status,'conflict');
 });
+
+import {inspectHandlerIntegrity,authorizeHandler} from '../../packages/tooling-registry/src/index.mjs';
+test('handler inspection requires exact digest approval without executing code',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-integrity-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const name='@accelerate/example',dir=path.join(root,'node_modules',name);
+ await mkdir(dir,{recursive:true});
+ const request={id:'example.inspect',operationVersion:'1.0.0',packageName:name,packageVersion:'1.0.0'};
+ const entry={manifest:{id:request.id,version:request.operationVersion,package:name,description:'Inspect',mutatesProject:false,modes:['inspect'],inputSchema:{type:'object'},outputSchema:{type:'object'}},handler:'./handler.mjs',exportName:'inspect'};
+ await writeFile(path.join(dir,'package.json'),JSON.stringify({name,version:'1.0.0',accelerate:{operations:'./operations.json'}}));
+ await writeFile(path.join(dir,'operations.json'),JSON.stringify({schemaVersion:'1.0',package:name,packageVersion:'1.0.0',operations:[entry]}));
+ assert.equal((await inspectHandlerIntegrity(root,request)).status,'blocked');
+ await writeFile(path.join(dir,'handler.mjs'),"throw Error('must not execute');");
+ const evidence=await inspectHandlerIntegrity(root,request);
+ assert.equal(evidence.status,'inspected');
+ const approval={...request,handler:entry.handler,exportName:entry.exportName,sha256:evidence.sha256,allowExecution:true};
+ assert.equal(authorizeHandler(evidence,approval),true);
+ assert.equal(authorizeHandler(evidence,{...approval,allowExecution:false}),false);
+ assert.equal(authorizeHandler(evidence,{...approval,exportName:'other'}),false);
+ await writeFile(path.join(dir,'handler.mjs'),'export function inspect() {}');
+ assert.equal(authorizeHandler(await inspectHandlerIntegrity(root,request),approval),false);
+});
