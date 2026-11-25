@@ -59,8 +59,9 @@ test('handler inspection requires exact digest approval without executing code',
  await writeFile(path.join(dir,'handler.mjs'),"throw Error('must not execute');");
  const evidence=await inspectHandlerIntegrity(root,request);
  assert.equal(evidence.status,'inspected');
- const approval={...request,handler:entry.handler,exportName:entry.exportName,sha256:evidence.sha256,allowExecution:true};
+ const approval={...request,handler:entry.handler,exportName:entry.exportName,sha256:evidence.sha256,manifestSha256:evidence.manifestSha256,allowExecution:true};
  assert.equal(authorizeHandler(evidence,approval),true);
+ assert.equal(authorizeHandler(evidence,{...approval,manifestSha256:'0'.repeat(64)}),false);
  assert.equal(authorizeHandler(evidence,{...approval,allowExecution:false}),false);
  assert.equal(authorizeHandler(evidence,{...approval,exportName:'other'}),false);
  await writeFile(path.join(dir,'handler.mjs'),'export function inspect() {}');
@@ -79,7 +80,7 @@ test('lazy loader requires approval and loads verified standalone bytes',async t
  await writeFile(path.join(dir,'operations.json'),JSON.stringify({schemaVersion:'1.0',package:name,packageVersion:'1.0.0',operations:[entry]}));
  await writeFile(path.join(dir,'handler.mjs'),'export function inspect(){return {status:"success",data:{ok:true}}}');
  const evidence=await inspectHandlerIntegrity(root,request);
- const approval={...request,handler:entry.handler,exportName:entry.exportName,sha256:evidence.sha256,allowExecution:true};
+ const approval={...request,handler:entry.handler,exportName:entry.exportName,sha256:evidence.sha256,manifestSha256:evidence.manifestSha256,allowExecution:true};
  assert.equal((await loadApprovedHandler(root,request,{...approval,allowExecution:false})).status,'blocked');
  const loaded=await loadApprovedHandler(root,request,approval);
  assert.equal(loaded.status,'loaded');
@@ -100,7 +101,7 @@ test('approved installed operations execute through core and reject apply',async
  await writeFile(path.join(dir,'operations.json'),JSON.stringify({schemaVersion:'1.0',package:name,packageVersion:'1.0.0',operations:[entry]}));
  await writeFile(path.join(dir,'handler.mjs'),'export function inspect(){return {status:"success",data:{ok:true}}}');
  const evidence=await inspectHandlerIntegrity(root,identity);
- const approval={...identity,handler:entry.handler,exportName:entry.exportName,sha256:evidence.sha256,allowExecution:true};
+ const approval={...identity,handler:entry.handler,exportName:entry.exportName,sha256:evidence.sha256,manifestSha256:evidence.manifestSha256,allowExecution:true};
  const request={schemaVersion:'1.0',operation:identity.id,operationVersion:identity.operationVersion,input:{},options:{mode:'inspect'}};
  const result=await executeApprovedOperation(root,request,approval);
  assert.equal(result.status,'executed');
