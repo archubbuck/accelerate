@@ -66,3 +66,24 @@ test('handler inspection requires exact digest approval without executing code',
  await writeFile(path.join(dir,'handler.mjs'),'export function inspect() {}');
  assert.equal(authorizeHandler(await inspectHandlerIntegrity(root,request),approval),false);
 });
+
+import {loadApprovedHandler} from '../../packages/tooling-registry/src/index.mjs';
+test('lazy loader requires approval and loads verified standalone bytes',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-loader-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const name='@accelerate/example',dir=path.join(root,'node_modules',name);
+ await mkdir(dir,{recursive:true});
+ const request={id:'example.inspect',operationVersion:'1.0.0',packageName:name,packageVersion:'1.0.0'};
+ const entry={manifest:{id:request.id,version:request.operationVersion,package:name,description:'Inspect',mutatesProject:false,modes:['inspect'],inputSchema:{type:'object'},outputSchema:{type:'object'}},handler:'./handler.mjs',exportName:'inspect'};
+ await writeFile(path.join(dir,'package.json'),JSON.stringify({name,version:'1.0.0',accelerate:{operations:'./operations.json'}}));
+ await writeFile(path.join(dir,'operations.json'),JSON.stringify({schemaVersion:'1.0',package:name,packageVersion:'1.0.0',operations:[entry]}));
+ await writeFile(path.join(dir,'handler.mjs'),'export function inspect(){return {status:"success",data:{ok:true}}}');
+ const evidence=await inspectHandlerIntegrity(root,request);
+ const approval={...request,handler:entry.handler,exportName:entry.exportName,sha256:evidence.sha256,allowExecution:true};
+ assert.equal((await loadApprovedHandler(root,request,{...approval,allowExecution:false})).status,'blocked');
+ const loaded=await loadApprovedHandler(root,request,approval);
+ assert.equal(loaded.status,'loaded');
+ assert.deepEqual(loaded.handler(),{status:'success',data:{ok:true}});
+ await writeFile(path.join(dir,'handler.mjs'),"throw Error('unapproved');");
+ assert.equal((await loadApprovedHandler(root,request,approval)).status,'blocked');
+});
