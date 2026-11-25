@@ -11,3 +11,4 @@ export type HandlerEvidence={status:'inspected';entry:CapabilityIndex['operation
 export function inspectHandlerIntegrity(root:string,request:ResolutionRequest):Promise<HandlerEvidence>;
 export function authorizeHandler(evidence:HandlerEvidence,approval:ResolutionRequest&{allowExecution:boolean;handler:string;exportName:string;sha256:string}):boolean;
 export function loadApprovedHandler(root:string,request:ResolutionRequest,approval:Parameters<typeof authorizeHandler>[1]):Promise<{status:'blocked';code:string}|{status:'loaded';manifest:OperationEntry['manifest'];handler:(...args:unknown[])=>unknown;isolated:false}>;
+export function executeApprovedOperation(root:string,request:unknown,approval:Parameters<typeof authorizeHandler>[1]):Promise<{status:'blocked';code:string}|{status:'executed';result:unknown}>;
