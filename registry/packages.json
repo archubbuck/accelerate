@@ -1987,7 +1987,7 @@
       "priority": "P0",
       "wave": 6,
       "dependencies": [
-        "@accelerate/tooling-core"
+        "tooling-core"
       ],
       "publication": {
         "status": "unknown"
