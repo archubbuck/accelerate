@@ -110,3 +110,22 @@ test('approved installed operations execute through core and reject apply',async
  assert.equal((await executeApprovedOperation(root,{...request,input:{extra:true}},approval)).code,'INVALID_OPERATION_REQUEST');
  assert.equal((await executeApprovedOperation(root,{...request,options:{mode:'apply'}},approval)).code,'INSTALLED_APPLY_DISABLED');
 });
+
+import {cp} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+test('real feature flag package exposes an executable installed capability',async t=>{
+ const root=await mkdtemp(path.join(tmpdir(),'accelerate-flags-installed-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ const name='@accelerate/feature-flags-core',dir=path.join(root,'node_modules',name);
+ const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
+ await mkdir(path.join(dir,'operations'),{recursive:true});
+ for(const file of ['package.json','operations/package-manifest.json','operations/evaluate.mjs'])await cp(path.join(source,file),path.join(dir,file));
+ const identity={id:'feature-flags.evaluate',operationVersion:'1.0.0',packageName:name,packageVersion:'0.1.0'};
+ const evidence=await inspectHandlerIntegrity(root,identity);
+ assert.equal(evidence.status,'inspected');
+ const approval={...identity,handler:evidence.entry.handler,exportName:evidence.entry.exportName,sha256:evidence.sha256,manifestSha256:evidence.manifestSha256,allowExecution:true};
+ const result=await executeApprovedOperation(root,{schemaVersion:'1.0',operation:identity.id,operationVersion:identity.operationVersion,input:{flag:{key:'dashboard',enabled:false,rules:[{attribute:'role',equals:'admin',enabled:true}]},context:{attributes:{role:'admin'}}},options:{mode:'inspect'}},approval);
+ assert.equal(result.status,'executed');
+ assert.equal(result.result.status,'success');
+ assert.deepEqual(result.result.data,{enabled:true,runtimeWiringVerified:false});
+});
