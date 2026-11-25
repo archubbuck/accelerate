@@ -105,3 +105,23 @@ export function authorizeHandler(evidence,approval){
  const m=evidence.entry.manifest;
  return approval.packageName===m.package&&approval.packageVersion===evidence.entry.packageVersion&&approval.id===m.id&&approval.operationVersion===m.version&&approval.handler===evidence.entry.handler&&approval.exportName===evidence.entry.exportName&&typeof approval.sha256==='string'&&/^[a-f0-9]{64}$/.test(approval.sha256)&&approval.sha256===evidence.sha256;
 }
+
+/** Load explicitly approved standalone modules from the exact inspected bytes.
+ * Only trusted code is eligible: this is not a sandbox.
+ */
+export async function loadApprovedHandler(root,request,approval){
+ const evidence=await inspectHandlerIntegrity(root,request);
+ if(!authorizeHandler(evidence,approval))return {status:'blocked',code:'HANDLER_NOT_AUTHORIZED'};
+ try{
+  const base=await realpath(path.join(await realpath(root),'node_modules',request.packageName));
+  const file=path.join(base,evidence.entry.handler.slice(2)),stat=await lstat(file);
+  if(!stat.isFile()||stat.size>4194304||await realpath(file)!==file)throw Error('UNSAFE_HANDLER');
+  const bytes=await readFile(file);
+  if(bytes.length>4194304||createHash('sha256').update(bytes).digest('hex')!==approval.sha256)return {status:'blocked',code:'HANDLER_CHANGED'};
+  // A data URL binds the imported entry module to the verified bytes, rather than reopening its path.
+  const module=await import('data:text/javascript;base64,'+bytes.toString('base64'));
+  const handler=module[evidence.entry.exportName];
+  if(typeof handler!=='function')return {status:'blocked',code:'HANDLER_EXPORT_INVALID'};
+  return {status:'loaded',manifest:evidence.entry.manifest,handler,isolated:false};
+ }catch{return {status:'blocked',code:'HANDLER_LOAD_FAILED'};}
+}
