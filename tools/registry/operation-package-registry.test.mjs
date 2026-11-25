@@ -112,19 +112,12 @@ test('approved installed operations execute through core and reject apply',async
 });
 
 import {cp} from 'node:fs/promises';
-import {bundleOperation} from '../operations/bundle.mjs';
 import {fileURLToPath} from 'node:url';
 test('real feature flag package exposes an executable installed capability',async t=>{
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-flags-installed-'));
  t.after(()=>rm(root,{recursive:true,force:true}));
  const name='@accelerate/feature-flags-core',dir=path.join(root,'node_modules',name);
  const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
- await bundleOperation(source,'operations/evaluate.mjs','dist/operations/evaluate.mjs');
- await bundleOperation(source,'operations/inspect.mjs','dist/operations/inspect.mjs');
- await bundleOperation(source,'operations/analyze.mjs','dist/operations/analyze.mjs');
- await bundleOperation(source,'operations/configure.mjs','dist/operations/configure.mjs');
- await bundleOperation(source,'operations/integration.mjs','dist/operations/integration.mjs');
- await bundleOperation(source,'operations/manage.mjs','dist/operations/manage.mjs');
  await mkdir(path.join(dir,'operations'),{recursive:true});
  await mkdir(path.join(dir,'dist/operations'),{recursive:true});
  for(const file of ['package.json','operations/package-manifest.json','dist/operations/evaluate.mjs','dist/operations/inspect.mjs','dist/operations/analyze.mjs','dist/operations/configure.mjs','dist/operations/integration.mjs','dist/operations/manage.mjs'])await cp(path.join(source,file),path.join(dir,file));
@@ -143,12 +136,6 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  const root=await mkdtemp(path.join(tmpdir(),'accelerate-pack-'));
  t.after(()=>rm(root,{recursive:true,force:true}));
  const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
- await bundleOperation(source,'operations/evaluate.mjs','dist/operations/evaluate.mjs');
- await bundleOperation(source,'operations/inspect.mjs','dist/operations/inspect.mjs');
- await bundleOperation(source,'operations/analyze.mjs','dist/operations/analyze.mjs');
- await bundleOperation(source,'operations/configure.mjs','dist/operations/configure.mjs');
- await bundleOperation(source,'operations/integration.mjs','dist/operations/integration.mjs');
- await bundleOperation(source,'operations/manage.mjs','dist/operations/manage.mjs');
  const packed=JSON.parse(execFileSync('npm',['pack','--ignore-scripts','--json','--pack-destination',root],{cwd:source,encoding:'utf8'}))[0];
  const files=new Set(packed.files.map(f=>f.path));
  assert.ok(files.has('operations/package-manifest.json'));
