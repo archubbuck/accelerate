@@ -5,7 +5,7 @@ on:
       - 'tools/operations/**'
       - 'packages/tooling-*/**'
       - 'tools/registry/operation-*.test.mjs'
-      - 'packages/feature-flags-core/operations/**'
+      - 'packages/feature-flags-core/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - '.github/workflows/agent-operations.yml'
@@ -25,4 +25,9 @@ jobs:
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm --filter '@accelerate/tooling-*' run typecheck
       - run: pnpm --filter '@accelerate/tooling-*' run build
+      - name: Build distributable feature flag package
+        run: pnpm --filter @accelerate/feature-flags-core run build
+      - name: Inspect npm archive
+        run: npm pack --dry-run --json --ignore-scripts
+        working-directory: packages/feature-flags-core
       - run: node --test tools/registry/operation-*.test.mjs
