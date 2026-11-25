@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "1.0",
+  "package": "@accelerate/feature-flags-core",
+  "packageVersion": "0.1.0",
+  "operations": [
+    {
+      "manifest": {
+        "id": "feature-flags.evaluate",
+        "version": "1.0.0",
+        "package": "@accelerate/feature-flags-core",
+        "description": "Evaluate an explicit flag definition against supplied context without runtime access",
+        "mutatesProject": false,
+        "modes": [
+          "inspect",
+          "preview"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "flag"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "flag": {
+              "type": "object",
+              "required": [
+                "key",
+                "enabled"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "rules": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "attribute",
+                      "equals",
+                      "enabled"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "attribute": {
+                        "type": "string"
+                      },
+                      "equals": {
+                        "type": "string"
+                      },
+                      "enabled": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "context": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "subject": {
+                  "type": "string"
+                },
+                "attributes": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "required": [
+            "enabled",
+            "runtimeWiringVerified"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "runtimeWiringVerified": {
+              "const": false
+            }
+          }
+        }
+      },
+      "handler": "./operations/evaluate.mjs",
+      "exportName": "evaluate"
+    }
+  ]
+}
