@@ -121,9 +121,10 @@ test('real feature flag package exposes an executable installed capability',asyn
  const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
  await bundleOperation(source,'operations/evaluate.mjs','dist/operations/evaluate.mjs');
  await bundleOperation(source,'operations/inspect.mjs','dist/operations/inspect.mjs');
+ await bundleOperation(source,'operations/analyze.mjs','dist/operations/analyze.mjs');
  await mkdir(path.join(dir,'operations'),{recursive:true});
  await mkdir(path.join(dir,'dist/operations'),{recursive:true});
- for(const file of ['package.json','operations/package-manifest.json','dist/operations/evaluate.mjs','dist/operations/inspect.mjs'])await cp(path.join(source,file),path.join(dir,file));
+ for(const file of ['package.json','operations/package-manifest.json','dist/operations/evaluate.mjs','dist/operations/inspect.mjs','dist/operations/analyze.mjs'])await cp(path.join(source,file),path.join(dir,file));
  const identity={id:'feature-flags.evaluate',operationVersion:'1.0.0',packageName:name,packageVersion:'0.1.0'};
  const evidence=await inspectHandlerIntegrity(root,identity);
  assert.equal(evidence.status,'inspected');
@@ -141,10 +142,12 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  const source=fileURLToPath(new URL('../../packages/feature-flags-core/',import.meta.url));
  await bundleOperation(source,'operations/evaluate.mjs','dist/operations/evaluate.mjs');
  await bundleOperation(source,'operations/inspect.mjs','dist/operations/inspect.mjs');
+ await bundleOperation(source,'operations/analyze.mjs','dist/operations/analyze.mjs');
  const packed=JSON.parse(execFileSync('npm',['pack','--ignore-scripts','--json','--pack-destination',root],{cwd:source,encoding:'utf8'}))[0];
  const files=new Set(packed.files.map(f=>f.path));
  assert.ok(files.has('operations/package-manifest.json'));
  assert.ok(files.has('dist/operations/evaluate.mjs'));
+ assert.ok(files.has('dist/operations/analyze.mjs'));
  const dir=path.join(root,'node_modules','@accelerate','feature-flags-core');
  await mkdir(dir,{recursive:true});
  execFileSync('tar',['-xzf',path.join(root,packed.filename),'--strip-components=1','-C',dir]);
@@ -161,7 +164,9 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
  assert.equal(result.result.status,'success');
  assert.equal(result.result.data.enabled,true);
  await writeFile(path.join(root,'flags.json'),JSON.stringify([{key:'dashboard',enabled:true}]));
- for(const [id,input,mode] of [['list',{target:'flags.json'},'inspect'],['describe',{target:'flags.json',key:'dashboard'},'inspect'],['validate',{target:'flags.json'},'verify']]){
+ await writeFile(path.join(root,'app.ts'),'flags.enabled("dashboard"); flags.enabled("missing");');
+ const scope={files:['app.ts'],receivers:['flags']};
+ for(const [id,input,mode] of [['find-usages',scope,'inspect'],['find-unused',{...scope,target:'flags.json'},'inspect'],['find-unregistered',{...scope,target:'flags.json'},'inspect'],['list',{target:'flags.json'},'inspect'],['describe',{target:'flags.json',key:'dashboard'},'inspect'],['validate',{target:'flags.json'},'verify']]){
   const requestIdentity={...identity,id:'feature-flags.'+id};
   const e=await inspectHandlerIntegrity(root,requestIdentity);
   assert.equal(e.status,'inspected');
@@ -169,6 +174,9 @@ test('feature flag npm archive includes discoverable operation artifacts',async 
   const response=await executeApprovedOperation(root,{schemaVersion:'1.0',operation:requestIdentity.id,operationVersion:'1.0.0',input,context:{projectRoot:'/not-the-authorized-root'},options:{mode}},a);
   assert.equal(response.status,'executed');
   assert.equal(response.result.status,'success');
+  if(id==='find-usages')assert.equal(response.result.data.usages.length,2);
+  if(id==='find-unused')assert.deepEqual(response.result.data.candidates,[]);
+  if(id==='find-unregistered')assert.deepEqual(response.result.data.candidates,['missing']);
  }
 });
 
