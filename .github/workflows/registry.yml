@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: 22
       - run: pnpm install --no-frozen-lockfile
-      - run: pnpm --filter @accelerate/feature-flags-core build
+      - run: pnpm --filter @accelerate/feature-flags-core --filter @accelerate/tooling-registry... build
       - run: node --test tools/registry/*.test.mjs
       - run: node tools/registry/cli.mjs sync --check
       - run: node tools/registry/cli.mjs validate
