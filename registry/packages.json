@@ -2239,6 +2239,58 @@
         "optional": []
       },
       "description": "Durable PostgreSQL claims, outcome replay and compare-and-set reconciliation."
+    },
+    {
+      "id": "outbox-core",
+      "name": "@accelerate/outbox-core",
+      "category": "events",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 8,
+      "path": "packages/outbox-core",
+      "dependencies": [
+        "events-core"
+      ],
+      "description": "Transaction outbox event contracts and at-least-once publisher.",
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/events-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "outbox-postgres",
+      "name": "@accelerate/outbox-postgres",
+      "category": "events",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 8,
+      "path": "packages/outbox-postgres",
+      "dependencies": [
+        "data-core",
+        "migrations-core",
+        "outbox-core"
+      ],
+      "description": "PostgreSQL transactional outbox, publisher leases and consumer receipts.",
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/migrations-core",
+          "@accelerate/outbox-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
     }
   ]
 }
