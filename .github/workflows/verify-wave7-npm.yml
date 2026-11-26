@@ -1,0 +1,42 @@
+name: Verify published Wave 7 packages
+on:
+  push:
+    branches: [verify/wave-7-npm-0.1.0]
+permissions:
+  contents: read
+jobs:
+  consumer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Install and import 15 published versions outside the workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$(mktemp -d)"
+          npm init -y >/dev/null
+          packages=()
+          for name in time-core decimal-core migrations-{core,postgres} locking-{core,memory,postgres} idempotency-{core,memory,postgres} tooling-{core,patches,ast,project,registry}; do
+            packages+=("@accelerate/$name@0.1.0")
+          done
+          npm install --save-exact --ignore-scripts "${packages[@]}"
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {readFileSync} from 'node:fs';
+          const names = Object.keys(JSON.parse(readFileSync('package.json')).dependencies);
+          const entries = JSON.parse(readFileSync('package-lock.json')).packages;
+          assert.equal(names.length, 15);
+          for (const name of names) {
+            const entry = entries['node_modules/' + name];
+            assert.equal(entry.version, '0.1.0');
+            assert.equal(new URL(entry.resolved).hostname, 'registry.npmjs.org');
+            await import(name);
+            console.log(name, entry.version);
+          }
+          const {amount, allocate} = await import('@accelerate/decimal-core');
+          assert.equal(allocate(amount('1.01','USD',2,'halfEven'),[1n,1n])[0].value,'0.51');
+          JS
