@@ -53,7 +53,9 @@ export function createPostgresDatabase(pool: Pool): Database {
         if (options.readOnly) await client.query("SET TRANSACTION READ ONLY");
         const value = await operation(scope());
         active = false;
-        await client.query("COMMIT"); begun = false;
+        const completion = await client.query("COMMIT");
+        begun = false;
+        if (completion.command === "ROLLBACK") throw new DatabaseError("PostgreSQL rolled back the aborted transaction");
         return value;
       } catch (cause) {
         active = false;

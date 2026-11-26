@@ -29,6 +29,15 @@ describe.skipIf(!databaseUrl)("transaction composition on PostgreSQL", () => {
     });
     expect((await database.query("SELECT id FROM composition ORDER BY id")).rows).toEqual([{id:1},{id:3}]);
   });
+  it("reports rollback when a caught SQL error leaves the transaction aborted", async () => {
+    const outcomes: string[] = [];
+    await expect(composeTransaction(database, async context => {
+      context.afterCommit(() => { outcomes.push("commit"); });
+      context.afterRollback(() => { outcomes.push("rollback"); });
+      await expect(context.executor.query("SELECT 1 / 0")).rejects.toThrow();
+    })).rejects.toThrow("rolled back");
+    expect(outcomes).toEqual(["rollback"]);
+  });
   it("applies requested isolation and read-only options", async () => {
     await database.transaction(async tx => {
       expect((await tx.query("SHOW transaction_isolation")).rows[0]).toEqual({transaction_isolation:"serializable"});
