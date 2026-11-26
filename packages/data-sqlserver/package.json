@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/data-sqlserver",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
@@ -29,6 +29,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@accelerate/data-core": "0.1.0"
+    "@accelerate/data-core": "^0.1.1"
   }
 }
