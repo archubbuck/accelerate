@@ -2001,6 +2001,234 @@
         "peer": [],
         "optional": []
       }
+    },
+    {
+      "id": "time-core",
+      "name": "@accelerate/time-core",
+      "category": "time",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/time-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "decimal-core",
+      "name": "@accelerate/decimal-core",
+      "category": "decimal",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/decimal-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "migrations-core",
+      "name": "@accelerate/migrations-core",
+      "category": "migrations",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/migrations-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "migrations-postgres",
+      "name": "@accelerate/migrations-postgres",
+      "category": "migrations",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/migrations-postgres",
+      "dependencies": [
+        "data-core",
+        "migrations-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/migrations-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "locking-core",
+      "name": "@accelerate/locking-core",
+      "category": "locking",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/locking-core",
+      "dependencies": [
+        "time-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/time-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "locking-memory",
+      "name": "@accelerate/locking-memory",
+      "category": "locking",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/locking-memory",
+      "dependencies": [
+        "locking-core",
+        "time-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/locking-core",
+          "@accelerate/time-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "locking-postgres",
+      "name": "@accelerate/locking-postgres",
+      "category": "locking",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/locking-postgres",
+      "dependencies": [
+        "data-core",
+        "locking-core",
+        "migrations-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/locking-core",
+          "@accelerate/migrations-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "idempotency-core",
+      "name": "@accelerate/idempotency-core",
+      "category": "idempotency",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/idempotency-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "idempotency-memory",
+      "name": "@accelerate/idempotency-memory",
+      "category": "idempotency",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/idempotency-memory",
+      "dependencies": [
+        "idempotency-core",
+        "time-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/idempotency-core",
+          "@accelerate/time-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "idempotency-postgres",
+      "name": "@accelerate/idempotency-postgres",
+      "category": "idempotency",
+      "lifecycle": "in-progress",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/idempotency-postgres",
+      "dependencies": [
+        "data-core",
+        "idempotency-core",
+        "migrations-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/idempotency-core",
+          "@accelerate/migrations-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
     }
   ]
 }
