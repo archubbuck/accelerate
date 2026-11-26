@@ -1,5 +1,6 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import semver from 'semver';
 import { readWorkspace } from './sync.mjs';
 
 /** Validate workspace metadata and compiled entrypoints before npm pack/publish. */
@@ -40,7 +41,14 @@ export function auditWorkspace(root, workspace = readWorkspace(root)) {
       if (!name.startsWith('@accelerate/')) continue;
       const dependency = byName.get(name);
       if (!dependency) errors.push(id + ': internal dependency missing from workspace: ' + name);
-      else if (typeof range !== 'string' || !(range === 'workspace:*' || range === 'workspace:^' || range === 'workspace:~' || range === 'workspace:' + dependency.version || range === dependency.version || range === '^' + dependency.version || range === '~' + dependency.version)) errors.push(id + ': internal dependency range does not match workspace: ' + name + '@' + range);
+      else {
+        const workspaceRange = typeof range === 'string' && range.startsWith('workspace:');
+        const spec = workspaceRange ? range.slice('workspace:'.length) : range;
+        const shorthand = workspaceRange && ['*', '^', '~'].includes(spec);
+        if (!shorthand && !(typeof spec === 'string' && spec.trim() && semver.satisfies(dependency.version, spec))) {
+          errors.push(id + ': internal dependency range does not match workspace: ' + name + '@' + range);
+        }
+      }
     }
   }
   return errors;

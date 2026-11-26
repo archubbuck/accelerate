@@ -37,7 +37,7 @@ test('audit verifies Angular package distribution exports', () => {
     assert.ok(auditWorkspace(root, workspace).some(x => x.includes('missing compiled entrypoint')));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
-test('audit detects incompatible internal dependency versions', () => {
+test('audit checks internal dependency ranges using npm version semantics', () => {
   const root = mkdtempSync(join(tmpdir(), 'accelerate-dependency-audit-'));
   try {
     const workspace = ['core', 'adapter'].map(id => {
@@ -51,6 +51,12 @@ test('audit detects incompatible internal dependency versions', () => {
       writeFileSync(join(dir, 'dist/index.d.ts'), 'export {};');
       return { id, path: 'packages/' + id, pkg };
     });
+    assert.ok(auditWorkspace(root, workspace).some(x => x.includes('internal dependency range')));
+    workspace[0].pkg.version = '0.1.2';
+    writeFileSync(join(root, workspace[0].path, 'package.json'), JSON.stringify(workspace[0].pkg));
+    workspace[1].pkg.dependencies['@accelerate/core'] = '^0.1.1';
+    assert.deepEqual(auditWorkspace(root, workspace), []);
+    workspace[1].pkg.dependencies['@accelerate/core'] = '^0.2.0';
     assert.ok(auditWorkspace(root, workspace).some(x => x.includes('internal dependency range')));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
