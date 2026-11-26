@@ -45,9 +45,10 @@ jobs:
           node tools/registry/cli.mjs sync --check
           node tools/registry/cli.mjs validate
           node tools/registry/cli.mjs docs --check
-          node --test tools/registry/*.test.mjs
       - name: Build
         run: pnpm build
+      - name: Test registry and packaged operations
+        run: pnpm registry:test
       - name: Typecheck
         run: pnpm typecheck
       - name: Test

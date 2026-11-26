@@ -29,6 +29,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@accelerate/tooling-core": "workspace:^"
+    "@accelerate/tooling-core": "^0.1.0"
   }
 }
