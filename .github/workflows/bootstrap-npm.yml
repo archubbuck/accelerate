@@ -39,8 +39,9 @@ jobs:
           node tools/registry/cli.mjs sync --check
           node tools/registry/cli.mjs validate
           node tools/registry/cli.mjs docs --check
-          node --test tools/registry/*.test.mjs
       - run: pnpm build
+      - name: Test registry and packaged operations
+        run: pnpm registry:test
       - run: pnpm typecheck
       - run: pnpm test
       - name: Audit package artifacts
