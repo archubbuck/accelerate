@@ -31,6 +31,7 @@ describe.skipIf(!databaseUrl)("PostgreSQL migration execution", () => {
       migrate(database, manifests),
     ]);
     expect(runs.map((x) => x.length).sort()).toEqual([0, 2]);
+    expect(await migrate(database, manifests, { dryRun: true })).toEqual([]);
     await expect(
       migrate(database, [{ ...one, statements: ["SELECT 1"] }]),
     ).rejects.toThrow("Changed");

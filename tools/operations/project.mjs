@@ -1,1 +1,9 @@
-export {inspectProject} from '../../packages/tooling-project/src/index.mjs';
+export {
+  classifyPackage,
+  discoverSourceFiles,
+  inspectConfigInheritance,
+  inspectInstalledCapabilities,
+  inspectProject,
+  inspectSourceLayout,
+  inspectWorkspace,
+} from '../../packages/tooling-project/src/index.mjs';

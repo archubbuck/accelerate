@@ -2006,7 +2006,7 @@
       "id": "time-core",
       "name": "@accelerate/time-core",
       "category": "time",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/time-core",
@@ -2019,13 +2019,14 @@
         "runtime": [],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Injectable wall and monotonic clocks, UTC timestamps, durations and abortable delays."
     },
     {
       "id": "decimal-core",
       "name": "@accelerate/decimal-core",
       "category": "decimal",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/decimal-core",
@@ -2038,13 +2039,14 @@
         "runtime": [],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Exact scaled decimal arithmetic, currency validation and deterministic allocation."
     },
     {
       "id": "migrations-core",
       "name": "@accelerate/migrations-core",
       "category": "migrations",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/migrations-core",
@@ -2057,13 +2059,14 @@
         "runtime": [],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Versioned SQL manifests, SHA-256 history validation and dependency ordering."
     },
     {
       "id": "migrations-postgres",
       "name": "@accelerate/migrations-postgres",
       "category": "migrations",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/migrations-postgres",
@@ -2082,13 +2085,14 @@
         ],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Transactional PostgreSQL migrations with dry-run, history and crash recovery."
     },
     {
       "id": "locking-core",
       "name": "@accelerate/locking-core",
       "category": "locking",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/locking-core",
@@ -2105,13 +2109,14 @@
         ],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Lease ownership, fencing tokens, bounded contention waits and cancellation."
     },
     {
       "id": "locking-memory",
       "name": "@accelerate/locking-memory",
       "category": "locking",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/locking-memory",
@@ -2130,13 +2135,14 @@
         ],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Process-local leases with injected time and monotonically increasing fencing tokens."
     },
     {
       "id": "locking-postgres",
       "name": "@accelerate/locking-postgres",
       "category": "locking",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/locking-postgres",
@@ -2157,13 +2163,14 @@
         ],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Atomic PostgreSQL lease acquisition, renewal, release and expiry recovery."
     },
     {
       "id": "idempotency-core",
       "name": "@accelerate/idempotency-core",
       "category": "idempotency",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/idempotency-core",
@@ -2176,13 +2183,14 @@
         "runtime": [],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Operation fingerprints, atomic claim decisions, replay and reconciliation contracts."
     },
     {
       "id": "idempotency-memory",
       "name": "@accelerate/idempotency-memory",
       "category": "idempotency",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/idempotency-memory",
@@ -2201,13 +2209,14 @@
         ],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Process-local atomic claims, replay, expiry and explicit reconciliation."
     },
     {
       "id": "idempotency-postgres",
       "name": "@accelerate/idempotency-postgres",
       "category": "idempotency",
-      "lifecycle": "in-progress",
+      "lifecycle": "implemented",
       "priority": "P0",
       "wave": 7,
       "path": "packages/idempotency-postgres",
@@ -2228,7 +2237,8 @@
         ],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Durable PostgreSQL claims, outcome replay and compare-and-set reconciliation."
     }
   ]
 }

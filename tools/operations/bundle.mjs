@@ -16,7 +16,7 @@ export async function bundleOperation(root,entry,output){
   if(await realpath(parent)!==parent||!(await lstat(parent)).isDirectory())throw Error('UNSAFE_OUTPUT_DIRECTORY');
  }
  try{const stat=await lstat(target);if(!stat.isFile()||stat.nlink!==1)throw Error('UNSAFE_OUTPUT');}catch(e){if(e.code!=='ENOENT')throw e;}
- const result=await build({absWorkingDir:base,entryPoints:[source],outfile:target,bundle:true,platform:'node',format:'esm',target:'node22',metafile:true,minify:true,legalComments:'inline',banner:{js:"import {createRequire as __accelerateCreateRequire} from 'node:module'; const require = __accelerateCreateRequire(process.execPath);"},write:false});
+ const result=await build({absWorkingDir:base,entryPoints:[source],outfile:target,bundle:true,platform:'node',format:'esm',target:'node22',metafile:true,minify:true,legalComments:'inline',banner:{js:"import {createRequire as __accelerateCreateRequire} from 'node:module'; const __filename = process.execPath; const require = __accelerateCreateRequire(__filename);"},write:false});
  const outputs=Object.values(result.metafile.outputs);
  if(outputs.some(o=>o.imports.some(i=>i.external&&!i.path.startsWith('node:')&&!builtinModules.includes(i.path))))throw Error('EXTERNAL_PACKAGE_IMPORT');
  if(result.outputFiles.length!==1||result.outputFiles[0].contents.length>4194304)throw Error('INVALID_BUNDLE_SIZE');
