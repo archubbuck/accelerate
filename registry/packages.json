@@ -422,7 +422,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [],
         "peer": [],
@@ -445,7 +445,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/data-core"
@@ -470,7 +470,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/data-core"
@@ -493,7 +493,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/data-core"
@@ -866,7 +866,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "testsComplete": false,
       "documentationComplete": false,
       "workspaceDependencies": {
@@ -916,7 +916,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "testsComplete": false,
       "documentationComplete": false,
       "workspaceDependencies": {
@@ -2077,7 +2077,7 @@
       "publication": {
         "status": "unknown"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/data-core",
@@ -2154,7 +2154,7 @@
       "publication": {
         "status": "unknown"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/data-core",
@@ -2228,7 +2228,7 @@
       "publication": {
         "status": "unknown"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/data-core",

@@ -75,3 +75,20 @@ describe("PostgreSQL database adapter", () => {
     expect(client.release).toHaveBeenCalledOnce();
   });
 });
+
+it("suspends parent access during savepoints and closes escaped executors", async () => {
+  const { db, client } = fixture();
+  let escaped: import("@accelerate/data-core").Transaction;
+  await db.transaction(async tx => {
+    escaped = tx;
+    await tx.savepoint!(async child => {
+      await expect(tx.query("SELECT 1")).rejects.toThrow("suspended");
+      await child.query("SELECT 2");
+    });
+    await tx.query("SELECT 3");
+  });
+  await expect(escaped!.query("SELECT 4")).rejects.toThrow("closed");
+  expect(client.query.mock.calls.map(c => c[0])).toEqual([
+    "BEGIN", "SAVEPOINT accelerate_sp_1", "SELECT 2", "RELEASE SAVEPOINT accelerate_sp_1", "SELECT 3", "COMMIT"
+  ]);
+});

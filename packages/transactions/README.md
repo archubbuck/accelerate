@@ -28,4 +28,10 @@ The context closes when the operation settles. Await all repository work inside 
 
 Lifecycle callbacks run in registration order after the runner settles. Every registered callback is attempted even when an earlier one fails. A TransactionCallbackError with outcome "committed" means the transaction succeeded and a subsequent callback failed. Retrying the database operation in response can duplicate effects. Callbacks run in process and may be lost if the process exits. Durable delivery requires an outbox.
 
-This composition API provides the first part of issue #8. PostgreSQL savepoints and transaction-bound executor lifetime enforcement remain pending.
+PostgreSQL executors expose an optional savepoint callback. Pass the child executor to repositories inside that callback. Parent access is suspended while a child savepoint runs. Nested child savepoints are supported. Await each savepoint before using its parent again. Executors reject new queries after their callback ends.
+
+```ts
+await context.executor.savepoint(async child => {
+  await createOrderRepository(child).insert(order);
+});
+```

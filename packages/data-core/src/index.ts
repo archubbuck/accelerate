@@ -2,7 +2,7 @@
 export type QueryParameters = readonly unknown[];
 export interface QueryResult<Row> { readonly rows: readonly Row[]; readonly rowCount: number; }
 export interface QueryExecutor { query<Row = Record<string, unknown>>(sql: string, parameters?: QueryParameters): Promise<QueryResult<Row>>; }
-export interface Transaction extends QueryExecutor { readonly isolationLevel?: IsolationLevel; }
+export interface Transaction extends QueryExecutor { readonly isolationLevel?: IsolationLevel; readonly readOnly?: boolean; savepoint?<T>(operation: (transaction: Transaction) => Promise<T>): Promise<T>; }
 export type IsolationLevel = "read committed" | "repeatable read" | "serializable";
 export interface Database extends QueryExecutor { transaction<T>(operation: (transaction: Transaction) => Promise<T>, options?: TransactionOptions): Promise<T>; close(): Promise<void>; }
 export interface TransactionOptions { readonly isolationLevel?: IsolationLevel; readonly readOnly?: boolean; }
