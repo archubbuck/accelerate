@@ -55,3 +55,9 @@ jobs:
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm --filter @accelerate/authorization-core build
       - run: pnpm --filter @accelerate/authorization-postgres test
+      - name: Build Wave 7 integration dependencies
+        run: pnpm --filter @accelerate/data-postgres... --filter @accelerate/migrations-postgres... --filter @accelerate/locking-postgres... --filter @accelerate/idempotency-postgres... build
+      - name: Verify Wave 7 PostgreSQL contracts
+        env:
+          WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
+        run: pnpm --filter @accelerate/decimal-core --filter @accelerate/migrations-postgres --filter @accelerate/locking-postgres --filter @accelerate/idempotency-postgres test

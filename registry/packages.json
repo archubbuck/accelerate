@@ -2001,6 +2001,244 @@
         "peer": [],
         "optional": []
       }
+    },
+    {
+      "id": "time-core",
+      "name": "@accelerate/time-core",
+      "category": "time",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/time-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Injectable wall and monotonic clocks, UTC timestamps, durations and abortable delays."
+    },
+    {
+      "id": "decimal-core",
+      "name": "@accelerate/decimal-core",
+      "category": "decimal",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/decimal-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Exact scaled decimal arithmetic, currency validation and deterministic allocation."
+    },
+    {
+      "id": "migrations-core",
+      "name": "@accelerate/migrations-core",
+      "category": "migrations",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/migrations-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Versioned SQL manifests, SHA-256 history validation and dependency ordering."
+    },
+    {
+      "id": "migrations-postgres",
+      "name": "@accelerate/migrations-postgres",
+      "category": "migrations",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/migrations-postgres",
+      "dependencies": [
+        "data-core",
+        "migrations-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/migrations-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Transactional PostgreSQL migrations with dry-run, history and crash recovery."
+    },
+    {
+      "id": "locking-core",
+      "name": "@accelerate/locking-core",
+      "category": "locking",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/locking-core",
+      "dependencies": [
+        "time-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/time-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Lease ownership, fencing tokens, bounded contention waits and cancellation."
+    },
+    {
+      "id": "locking-memory",
+      "name": "@accelerate/locking-memory",
+      "category": "locking",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/locking-memory",
+      "dependencies": [
+        "locking-core",
+        "time-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/locking-core",
+          "@accelerate/time-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Process-local leases with injected time and monotonically increasing fencing tokens."
+    },
+    {
+      "id": "locking-postgres",
+      "name": "@accelerate/locking-postgres",
+      "category": "locking",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/locking-postgres",
+      "dependencies": [
+        "data-core",
+        "locking-core",
+        "migrations-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/locking-core",
+          "@accelerate/migrations-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Atomic PostgreSQL lease acquisition, renewal, release and expiry recovery."
+    },
+    {
+      "id": "idempotency-core",
+      "name": "@accelerate/idempotency-core",
+      "category": "idempotency",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/idempotency-core",
+      "dependencies": [],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Operation fingerprints, atomic claim decisions, replay and reconciliation contracts."
+    },
+    {
+      "id": "idempotency-memory",
+      "name": "@accelerate/idempotency-memory",
+      "category": "idempotency",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/idempotency-memory",
+      "dependencies": [
+        "idempotency-core",
+        "time-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/idempotency-core",
+          "@accelerate/time-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Process-local atomic claims, replay, expiry and explicit reconciliation."
+    },
+    {
+      "id": "idempotency-postgres",
+      "name": "@accelerate/idempotency-postgres",
+      "category": "idempotency",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 7,
+      "path": "packages/idempotency-postgres",
+      "dependencies": [
+        "data-core",
+        "idempotency-core",
+        "migrations-core"
+      ],
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/idempotency-core",
+          "@accelerate/migrations-core"
+        ],
+        "peer": [],
+        "optional": []
+      },
+      "description": "Durable PostgreSQL claims, outcome replay and compare-and-set reconciliation."
     }
   ]
 }

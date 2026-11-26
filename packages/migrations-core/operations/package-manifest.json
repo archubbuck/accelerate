@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "1.0",
+  "package": "@accelerate/migrations-core",
+  "packageVersion": "0.1.0",
+  "operations": [
+    {
+      "manifest": {
+        "id": "migrations.plan",
+        "version": "1.0.0",
+        "package": "@accelerate/migrations-core",
+        "description": "Preview pending migration IDs and checksums from an explicit manifest and applied history",
+        "mutatesProject": false,
+        "modes": [
+          "inspect",
+          "preview"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "manifest": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "requires": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "statements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "statements"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "history": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "checksum": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "checksum"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "manifest"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "pending": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "checksum": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "checksum"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "pending"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "handler": "./dist/operations/plan.mjs",
+      "exportName": "plan"
+    }
+  ]
+}

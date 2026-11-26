@@ -1,0 +1,37 @@
+{
+  "name": "@accelerate/migrations-core",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "operations/package-manifest.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node ../../tools/operations/bundle.mjs operations/plan.mjs dist/operations/plan.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/migrations-core"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "description": "Versioned SQL manifests, SHA-256 history validation and dependency ordering.",
+  "accelerate": {
+    "operations": "./operations/package-manifest.json"
+  }
+}
