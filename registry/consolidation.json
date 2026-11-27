@@ -24,7 +24,8 @@
     },
     "@accelerate/messaging": {
       "description": "Events, jobs, workflows, scheduling and transactional outbox.",
-      "status": "stable"
+      "status": "stable",
+      "version": "0.2.0"
     },
     "@accelerate/observability": {
       "description": "Logging, metrics, tracing, diagnostics and health checks.",
@@ -51,7 +52,7 @@
     "@accelerate/ai": {
       "description": "Model gateways, prompts, structured output, agents and evaluation.",
       "status": "stable",
-      "version": "0.3.0"
+      "version": "0.4.0"
     },
     "@accelerate/testing": {
       "description": "Fixtures, transport helpers, contract and architecture tests.",
@@ -66,7 +67,10 @@
   "migrations": {
     "@accelerate/agents-core": {
       "family": "@accelerate/ai",
-      "entry": "./agents"
+      "entry": "./agents",
+      "exports": {
+        "./durable": "./agents/durable"
+      }
     },
     "@accelerate/ai-core": {
       "family": "@accelerate/ai",

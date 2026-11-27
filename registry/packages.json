@@ -1909,7 +1909,8 @@
       "path": "packages/agents-core",
       "dependencies": [
         "ai-core",
-        "ai-tools"
+        "ai-tools",
+        "workflows-core"
       ],
       "publication": {
         "status": "unpublished"
@@ -1918,7 +1919,8 @@
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/ai-core",
-          "@accelerate/ai-tools"
+          "@accelerate/ai-tools",
+          "@accelerate/workflows-core"
         ],
         "peer": [],
         "optional": []
@@ -2619,7 +2621,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0",
+      "version": "0.2.0",
       "dependencies": [
         "data"
       ],
@@ -2767,10 +2769,11 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.3.0",
+      "version": "0.4.0",
       "dependencies": [
         "core",
         "data",
+        "messaging",
         "testing"
       ],
       "description": "Accelerate — Model gateways, prompts, structured output, agents and evaluation.",
@@ -2781,6 +2784,7 @@
         "runtime": [
           "@accelerate/core",
           "@accelerate/data",
+          "@accelerate/messaging",
           "@accelerate/testing"
         ],
         "peer": [],

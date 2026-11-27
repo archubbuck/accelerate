@@ -287,7 +287,15 @@ export class DurableWorkflowRunner {
             const value = read(s, node.source);
             if (value === undefined) continue;
             p.input = value;
-            if (step.kind === "wait") {
+            const condition = "when" in step ? step.when : undefined;
+            if (condition && (value === null || typeof value !== "object"
+              || !Object.hasOwn(value, condition.field)
+              || JSON.stringify(snapshot((value as Record<string, Json>)[condition.field]))
+                 !== JSON.stringify(snapshot(condition.equals)))) {
+              p.phase = "skipped";
+              p.output = value;
+              event("step-skipped", node.path);
+            } else if (step.kind === "wait") {
               p.phase = "waiting";
               p.at = now + step.delayMs;
               event("wait-started", node.path);
@@ -298,18 +306,6 @@ export class DurableWorkflowRunner {
               p.phase = "done";
               p.output = value;
               event("child-completed", node.path);
-            } else if (
-              step.when &&
-              (value === null ||
-                typeof value !== "object" ||
-                !Object.hasOwn(value, step.when.field) ||
-                JSON.stringify(
-                  snapshot((value as Record<string, Json>)[step.when.field]),
-                ) !== JSON.stringify(snapshot(step.when.equals)))
-            ) {
-              p.phase = "skipped";
-              p.output = value;
-              event("step-skipped", node.path);
             } else {
               p.phase = "ready";
               p.at = now;

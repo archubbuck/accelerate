@@ -1,5 +1,6 @@
 import type { Json } from "@accelerate/idempotency-core";
 export type { Json } from "@accelerate/idempotency-core";
+type Condition = { field: string; equals: Json };
 export type Step = { id: string } & (
   | {
       kind: "task";
@@ -8,10 +9,10 @@ export type Step = { id: string } & (
       attempts?: number;
       retryMs?: number;
       timeoutMs?: number;
-      when?: { field: string; equals: Json };
+      when?: Condition;
     }
   | { kind: "wait"; delayMs: number }
-  | { kind: "approval" }
+  | { kind: "approval"; when?: Condition }
   | { kind: "child"; definition: string; version: number }
 );
 export interface WorkflowDefinition {
@@ -132,9 +133,9 @@ export function compile(
             count(step.attempts ?? 3, 1);
             count(step.timeoutMs ?? 30000, 1);
             count(step.retryMs ?? 0, 0);
-            if (step.when) checkId(step.when.field);
           } else if (step.kind === "wait") count(step.delayMs, 0);
           else if (step.kind !== "approval") throw Error("Unknown step kind");
+          if ("when" in step && step.when) checkId(step.when.field);
           nodes.push({ path, source, step });
         }
         outputs.push([step.id, path]);
