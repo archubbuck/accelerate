@@ -11,3 +11,5 @@ export function composeMiddleware(transport: HttpTransport, middleware: readonly
   }};
 }
 export function normalizeHeaders(headers: Headers): HttpHeaders { return (() => { const result: Record<string,string> = {}; headers.forEach((value,key) => { result[key] = value; }); return result; })(); }
+
+export * from "./middleware.js";

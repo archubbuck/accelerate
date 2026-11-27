@@ -34,3 +34,37 @@ describe("createNodeHttpHandler", () => {
   });
  });
 });
+
+it("flushes a streamed response before the producer closes it", async () => {
+ let controller!: ReadableStreamDefaultController<Uint8Array>;
+ const body = new ReadableStream<Uint8Array>({ start(value) { controller = value; } });
+ controller.enqueue(new TextEncoder().encode("first"));
+ await withServer(createNodeHttpHandler(async () => ({ status: 200, headers: {}, body })), async url => {
+  const response = await fetch(url);
+  const reader = response.body!.getReader();
+  expect(new TextDecoder().decode((await reader.read()).value)).toBe("first");
+  controller.close();
+  expect((await reader.read()).done).toBe(true);
+ });
+});
+
+it("bounds streamed request bodies and sends a safe 413 envelope", async () => {
+ const handler = createNodeHttpHandler(async request => {
+  const body = await new Response(request.body as ReadableStream).text();
+  return { status: 200, headers: {}, body };
+ }, { requestBody: "stream", maxBodyBytes: 3 });
+ await withServer(handler, async url => {
+  const send = (text: string) => {
+   const body = new ReadableStream<Uint8Array>({ start(controller) {
+    controller.enqueue(new TextEncoder().encode(text));
+    controller.close();
+   } });
+   const init: RequestInit & { duplex: "half" } = { method: "POST", body, duplex: "half" };
+   return fetch(url, init);
+  };
+  expect(await (await send("ok")).text()).toBe("ok");
+  const large = await send("overflow");
+  expect(large.status).toBe(413);
+  expect(await large.json()).toMatchObject({ error: { code: "PAYLOAD_TOO_LARGE" } });
+ });
+});

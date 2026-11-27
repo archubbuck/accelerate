@@ -1,25 +1,61 @@
-import { normalizeHeaders, type HttpRequest, type HttpResponse, type HttpTransport } from "@accelerate/http-core";
-export interface FetchClientOptions { fetch?: typeof fetch; baseUrl?: string; timeoutMs?: number; }
-export class HttpStatusError extends Error {
- constructor(readonly response: HttpResponse) { super(`HTTP request failed with status ${response.status}`); this.name = "HttpStatusError"; }
+import {
+  assertHttpBodyLimit,
+  assertHttpTimeout,
+  limitHttpBody,
+  normalizeHeaders,
+  type HttpRequest,
+  type HttpResponse,
+  type HttpTransport,
+} from "@accelerate/http-core";
+
+export interface FetchClientOptions {
+  fetch?: typeof fetch;
+  baseUrl?: string;
+  timeoutMs?: number;
+  responseBody?: "buffered" | "stream";
+  maxResponseBytes?: number;
 }
-export function createHttpClient(options: FetchClientOptions = {}): HttpTransport {
- const fetcher = options.fetch ?? globalThis.fetch;
- if (!fetcher) throw new Error("fetch is not available");
- if (options.timeoutMs !== undefined && (!Number.isFinite(options.timeoutMs) || options.timeoutMs < 0)) throw new RangeError("Invalid timeoutMs");
- return { async send<T>(request: HttpRequest): Promise<HttpResponse<T>> {
-  const url = options.baseUrl ? new URL(request.url, options.baseUrl).toString() : request.url;
-  const headers = new Headers(request.headers);
-  let body: BodyInit | undefined;
-  if (request.body !== undefined) {
-   if (typeof request.body === "string" || request.body instanceof Blob || request.body instanceof FormData || request.body instanceof URLSearchParams || request.body instanceof ArrayBuffer) body = request.body;
-   else { body = JSON.stringify(request.body); if (!headers.has("content-type")) headers.set("content-type","application/json"); }
+
+export class HttpStatusError extends Error {
+  constructor(readonly response: HttpResponse) {
+    super(`HTTP request failed with status ${response.status}`);
+    this.name = "HttpStatusError";
   }
-  const signal = options.timeoutMs === undefined ? request.signal : AbortSignal.any([...(request.signal ? [request.signal] : []), AbortSignal.timeout(options.timeoutMs)]);
-  const response = await fetcher(url,{method:request.method,headers,body,signal});
-  const raw = response.status === 204 || response.status === 205 || request.method.toUpperCase() === "HEAD" ? "" : await response.text();
-  const contentType = response.headers.get("content-type") ?? "";
-  const parsed: unknown = raw && (contentType.toLowerCase().includes("application/json") || contentType.toLowerCase().includes("+json")) ? JSON.parse(raw) : raw || undefined;
-  return {status:response.status,headers:normalizeHeaders(response.headers),body:parsed as T};
- }};
+}
+
+function encodeBody(value: unknown, headers: Headers): BodyInit | undefined {
+  if (value === undefined || typeof value === "string" || value instanceof Blob
+    || value instanceof FormData || value instanceof URLSearchParams
+    || value instanceof ArrayBuffer || value instanceof ReadableStream) return value;
+  if (!headers.has("content-type")) headers.set("content-type", "application/json");
+  return JSON.stringify(value);
+}
+
+export function createHttpClient(options: FetchClientOptions = {}): HttpTransport {
+  const fetcher = options.fetch ?? globalThis.fetch;
+  if (!fetcher) throw new Error("fetch is not available");
+  if (options.timeoutMs !== undefined) assertHttpTimeout(options.timeoutMs);
+  if (options.maxResponseBytes !== undefined) assertHttpBodyLimit(options.maxResponseBytes);
+  return {
+    async send<T>(request: HttpRequest): Promise<HttpResponse<T>> {
+      const url = options.baseUrl ? new URL(request.url, options.baseUrl).toString() : request.url;
+      const headers = new Headers(request.headers);
+      const body = encodeBody(request.body, headers);
+      const deadline = options.timeoutMs === undefined ? undefined : AbortSignal.timeout(options.timeoutMs);
+      const signal = deadline && request.signal ? AbortSignal.any([request.signal, deadline]) : deadline ?? request.signal;
+      const init: RequestInit & { duplex?: "half" } = { method: request.method, headers, body, signal };
+      if (body instanceof ReadableStream) init.duplex = "half";
+      const response = await fetcher(url, init);
+      const responseHeaders = normalizeHeaders(response.headers);
+      const result = (value: unknown): HttpResponse<T> => ({ status: response.status, headers: responseHeaders, body: value as T });
+      if (response.status === 204 || response.status === 205 || request.method.toUpperCase() === "HEAD") return result(undefined);
+      const stream = response.body && options.maxResponseBytes !== undefined
+        ? limitHttpBody(response.body, options.maxResponseBytes) : response.body;
+      if (options.responseBody === "stream") return result(stream ?? undefined);
+      const raw = stream === response.body ? await response.text() : await new Response(stream).text();
+      const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
+      return result(raw && (contentType.includes("application/json") || contentType.includes("+json"))
+        ? JSON.parse(raw) : raw || undefined);
+    },
+  };
 }
