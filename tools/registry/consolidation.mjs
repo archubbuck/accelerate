@@ -57,7 +57,14 @@ export function loadConsolidation() {
         target.family + destinationExport(target, subpath).slice(1);
     }
   }
-  return { ...catalog, imports };
+  const entrypoints = Object.fromEntries(Object.entries(catalog.families).map(([name, { description }]) => {
+    const manifest = familyManifest(name, description, catalog, readManifest);
+    return [name, {
+      version: manifest.version,
+      imports: Object.keys(manifest.exports).map(path => name + path.slice(1)).sort(),
+    }];
+  }));
+  return { ...catalog, imports, entrypoints };
 }
 
 const guidance = {
@@ -80,6 +87,7 @@ const guidance = {
 function renderReadme(catalog, name, description) {
   const sdk = name === "@accelerate/sdk";
   const id = packageId(name);
+  const migrationTargets = new Set(Object.values(catalog.imports));
   return [
     "# Accelerate " +
       (sdk ? "SDK" : id === "ui" ? "UI" : id[0].toUpperCase() + id.slice(1)),
@@ -93,12 +101,21 @@ function renderReadme(catalog, name, description) {
     ...(guidance[id] ? [guidance[id], ""] : []),
     ...(sdk
       ? [
-          "| Package | Capability |",
-          "| --- | --- |",
+          "| Package | Version | Capability |",
+          "| --- | --- | --- |",
           ...Object.entries(catalog.families).map(
             ([family, details]) =>
-              `| [${family}](https://www.npmjs.com/package/${family}) | ${details.description} |`,
+              `| [${family}](https://www.npmjs.com/package/${family}) | ${catalog.entrypoints[family].version} | ${details.description} |`,
           ),
+          "",
+          "## Additional canonical entry points",
+          "",
+          ...Object.entries(catalog.entrypoints).flatMap(([family, entry]) => {
+            const added = entry.imports.filter(path => path !== family && !migrationTargets.has(path));
+            return added.length ? [`- \`${family}\` — ` + added.map(path => `\`${path}\``).join(", ")] : [];
+          }),
+          "",
+          "Import `catalog` from `@accelerate/sdk` for versioned package and entry-point metadata. Optional provider entry points may require their corresponding peer dependencies.",
           "",
         ]
       : []),
@@ -321,7 +338,7 @@ function main(mode, id) {
   );
   write(
     join(dist, "index.d.ts"),
-    'export declare const catalog: { families: Record<string, { description: string; status: "stable" }>; migrations: Record<string, { family: string; entry: string }>; imports: Record<string, string> };\n',
+    'export declare const catalog: { families: Record<string, { description: string; status: "stable" }>; migrations: Record<string, { family: string; entry: string }>; imports: Record<string, string>; entrypoints: Record<string, { version: string; imports: string[] }> };\n',
   );
 }
 

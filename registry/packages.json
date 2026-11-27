@@ -2533,7 +2533,7 @@
       "priority": "P1",
       "wave": 9,
       "path": "packages/sdk",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "dependencies": [],
       "description": "Accelerate — Find Accelerate packages, install examples and migration guides.",
       "publication": {

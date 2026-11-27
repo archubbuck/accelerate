@@ -4,22 +4,34 @@ Find Accelerate packages, install examples and migration guides.
 
 Choose the package you need. For the HTTP family, run `npm install @accelerate/http`.
 
-| Package | Capability |
-| --- | --- |
-| [@accelerate/sdk](https://www.npmjs.com/package/@accelerate/sdk) | Find Accelerate packages, install examples and migration guides. |
-| [@accelerate/core](https://www.npmjs.com/package/@accelerate/core) | Time, decimal arithmetic, validation and shared errors. |
-| [@accelerate/identity](https://www.npmjs.com/package/@accelerate/identity) | Authentication, authorization, API keys and auditing. |
-| [@accelerate/http](https://www.npmjs.com/package/@accelerate/http) | HTTP clients, Node adapters, resilience, rate limiting and OpenAPI. |
-| [@accelerate/data](https://www.npmjs.com/package/@accelerate/data) | Database adapters, transactions, caches, migrations and coordination. |
-| [@accelerate/messaging](https://www.npmjs.com/package/@accelerate/messaging) | Events, jobs, workflows, scheduling and transactional outbox. |
-| [@accelerate/observability](https://www.npmjs.com/package/@accelerate/observability) | Logging, metrics, tracing, diagnostics and health checks. |
-| [@accelerate/config](https://www.npmjs.com/package/@accelerate/config) | Configuration, secrets and feature flags. |
-| [@accelerate/ui](https://www.npmjs.com/package/@accelerate/ui) | Framework-neutral state, forms, notifications and tables. |
-| [@accelerate/react](https://www.npmjs.com/package/@accelerate/react) | React bindings for Accelerate. |
-| [@accelerate/angular](https://www.npmjs.com/package/@accelerate/angular) | Angular bindings for Accelerate. |
-| [@accelerate/ai](https://www.npmjs.com/package/@accelerate/ai) | Model gateways, prompts, structured output, agents and evaluation. |
-| [@accelerate/testing](https://www.npmjs.com/package/@accelerate/testing) | Fixtures, transport helpers, contract and architecture tests. |
-| [@accelerate/tooling](https://www.npmjs.com/package/@accelerate/tooling) | Scaffolding, agent operations, AST tools and developer presets. |
+| Package | Version | Capability |
+| --- | --- | --- |
+| [@accelerate/sdk](https://www.npmjs.com/package/@accelerate/sdk) | 0.2.0 | Find Accelerate packages, install examples and migration guides. |
+| [@accelerate/core](https://www.npmjs.com/package/@accelerate/core) | 0.2.0 | Time, decimal arithmetic, validation and shared errors. |
+| [@accelerate/identity](https://www.npmjs.com/package/@accelerate/identity) | 0.5.8 | Authentication, authorization, API keys and auditing. |
+| [@accelerate/http](https://www.npmjs.com/package/@accelerate/http) | 0.3.8 | HTTP clients, Node adapters, resilience, rate limiting and OpenAPI. |
+| [@accelerate/data](https://www.npmjs.com/package/@accelerate/data) | 0.8.0 | Database adapters, transactions, caches, migrations and coordination. |
+| [@accelerate/messaging](https://www.npmjs.com/package/@accelerate/messaging) | 0.3.0 | Events, jobs, workflows, scheduling and transactional outbox. |
+| [@accelerate/observability](https://www.npmjs.com/package/@accelerate/observability) | 0.1.0 | Logging, metrics, tracing, diagnostics and health checks. |
+| [@accelerate/config](https://www.npmjs.com/package/@accelerate/config) | 0.1.0 | Configuration, secrets and feature flags. |
+| [@accelerate/ui](https://www.npmjs.com/package/@accelerate/ui) | 0.1.0 | Framework-neutral state, forms, notifications and tables. |
+| [@accelerate/react](https://www.npmjs.com/package/@accelerate/react) | 0.1.14 | React bindings for Accelerate. |
+| [@accelerate/angular](https://www.npmjs.com/package/@accelerate/angular) | 0.1.14 | Angular bindings for Accelerate. |
+| [@accelerate/ai](https://www.npmjs.com/package/@accelerate/ai) | 0.4.9 | Model gateways, prompts, structured output, agents and evaluation. |
+| [@accelerate/testing](https://www.npmjs.com/package/@accelerate/testing) | 0.1.10 | Fixtures, transport helpers, contract and architecture tests. |
+| [@accelerate/tooling](https://www.npmjs.com/package/@accelerate/tooling) | 0.1.0 | Scaffolding, agent operations, AST tools and developer presets. |
+
+## Additional canonical entry points
+
+- `@accelerate/sdk` — `@accelerate/sdk/catalog.json`
+- `@accelerate/core` — `@accelerate/core/state-machine`
+- `@accelerate/identity` — `@accelerate/identity/api-keys/postgres`, `@accelerate/identity/api-keys/service`, `@accelerate/identity/audit/integrity`, `@accelerate/identity/audit/postgres/integrity`, `@accelerate/identity/authentication/oauth`, `@accelerate/identity/authentication/oidc`, `@accelerate/identity/authentication/postgres/external`, `@accelerate/identity/authorization/postgres/scoped`, `@accelerate/identity/authorization/scoped`
+- `@accelerate/http` — `@accelerate/http/streaming`, `@accelerate/http/streaming/memory`, `@accelerate/http/streaming/websocket`
+- `@accelerate/data` — `@accelerate/data/document-ingestion`, `@accelerate/data/document-ingestion/postgres`, `@accelerate/data/experiments`, `@accelerate/data/experiments/postgres`, `@accelerate/data/ledger`, `@accelerate/data/ledger/memory`, `@accelerate/data/ledger/postgres`, `@accelerate/data/provenance`, `@accelerate/data/provenance/postgres`, `@accelerate/data/search`, `@accelerate/data/search/memory`, `@accelerate/data/search/postgres`, `@accelerate/data/storage`, `@accelerate/data/storage/memory`, `@accelerate/data/storage/s3`, `@accelerate/data/time-series`, `@accelerate/data/time-series/postgres`
+- `@accelerate/messaging` — `@accelerate/messaging/notifications`, `@accelerate/messaging/notifications/email`, `@accelerate/messaging/notifications/postgres`, `@accelerate/messaging/notifications/webhook`
+- `@accelerate/ai` — `@accelerate/ai/agents/durable`, `@accelerate/ai/usage/budgets`, `@accelerate/ai/usage/postgres`
+
+Import `catalog` from `@accelerate/sdk` for versioned package and entry-point metadata. Optional provider entry points may require their corresponding peer dependencies.
 
 ## Import migration
 
