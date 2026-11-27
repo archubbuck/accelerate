@@ -6,6 +6,8 @@ import { randomUUID } from "node:crypto";
 import { createAuthorization, definePermissions } from "@accelerate/authorization-core";
 import { PostgresAuthorizationStore } from "./index.js";
 import { PostgresAuthorizationAdmin } from "./admin.js";
+import { createScopedAuthorization } from "@accelerate/authorization-core/scoped";
+import { createPostgresScopedGrantStore, scopedAuthorizationSchema } from "./scoped.js";
 
 const url = process.env.AUTHORIZATION_TEST_DATABASE_URL;
 const suite = url ? describe : describe.skip;
@@ -21,6 +23,7 @@ suite("PostgreSQL end-to-end authorization", () => {
     pool = new Pool({ connectionString: url, options: `-c search_path=${schema}` });
     await pool.query(readFileSync(resolve(import.meta.dirname, "../schema.sql"), "utf8"));
     await pool.query(readFileSync(resolve(import.meta.dirname, "../admin.sql"), "utf8"));
+    for (const statement of scopedAuthorizationSchema) await pool.query(statement);
   });
   afterAll(async () => {
     if (pool) await pool.end();
@@ -28,6 +31,27 @@ suite("PostgreSQL end-to-end authorization", () => {
     try { await admin.query(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`); }
     finally { await admin.end(); }
   });
+  it("isolates resource grants and records one audit event per concurrent change", async () => {
+    const roles = new PostgresAuthorizationStore(pool);
+    await roles.createRole({ id: "scoped", key: "scoped", name: "Scoped", active: true });
+    await roles.grant("scoped", "documents.read");
+    const authorization = createScopedAuthorization({
+      permissions, store: createPostgresScopedGrantStore(pool), authorizeAssignment: async () => true,
+    });
+    const scope = { kind: "resource", tenantId: "tenant-one", resourceType: "document", resourceId: "one" } as const;
+    const subject = { id: "scoped user", tenantId: "tenant-one" };
+    const assignment = { userId: subject.id, roleId: "scoped", scope };
+    const actor = { id: "operator", tenantId: "tenant-one" };
+    expect((await Promise.all([authorization.changeRole(actor, "assign", assignment), authorization.changeRole(actor, "assign", assignment)])).filter(Boolean)).toHaveLength(1);
+    expect(await authorization.can({ subject, scope }, "documents.read")).toBe(true);
+    expect(await authorization.can({ subject, scope: { ...scope, resourceId: "other" } }, "documents.read")).toBe(false);
+    expect(await authorization.can({ subject, scope: { ...scope, tenantId: "tenant-two" } }, "documents.read")).toBe(false);
+    expect(await authorization.changeRole(actor, "revoke", assignment)).toBe(true);
+    expect(await authorization.can({ subject, scope }, "documents.read")).toBe(false);
+    const audit = await pool.query("SELECT actor_id, action FROM authorization_scoped_assignment_audit ORDER BY id");
+    expect(audit.rows).toEqual([{ actor_id: "operator", action: "assign" }, { actor_id: "operator", action: "revoke" }]);
+  });
+
   it("persists grants and assignments and evaluates permissions", async () => {
     const store = new PostgresAuthorizationStore(pool);
     const auth = createAuthorization({ permissions, store });

@@ -11,7 +11,7 @@
     "@accelerate/identity": {
       "description": "Authentication, authorization, API keys and auditing.",
       "status": "stable",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "@accelerate/http": {
       "description": "HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
@@ -41,12 +41,12 @@
     "@accelerate/react": {
       "description": "React bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.3"
+      "version": "0.1.4"
     },
     "@accelerate/angular": {
       "description": "Angular bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.3"
+      "version": "0.1.4"
     },
     "@accelerate/ai": {
       "description": "Model gateways, prompts, structured output, agents and evaluation.",
@@ -141,11 +141,17 @@
     },
     "@accelerate/authorization-core": {
       "family": "@accelerate/identity",
-      "entry": "./authorization"
+      "entry": "./authorization",
+      "exports": {
+        "./scoped": "./authorization/scoped"
+      }
     },
     "@accelerate/authorization-postgres": {
       "family": "@accelerate/identity",
-      "entry": "./authorization/postgres"
+      "entry": "./authorization/postgres",
+      "exports": {
+        "./scoped": "./authorization/postgres/scoped"
+      }
     },
     "@accelerate/authorization-react": {
       "family": "@accelerate/react",
