@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/messaging",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Accelerate — Events, jobs, workflows, scheduling and transactional outbox.",
   "keywords": [
     "accelerate",
@@ -96,7 +96,7 @@
     "tag": "latest"
   },
   "dependencies": {
-    "@accelerate/data": "0.7.0",
+    "@accelerate/data": "0.8.0",
     "cronosjs": "1.7.1",
     "@js-temporal/polyfill": "^0.5.1"
   },

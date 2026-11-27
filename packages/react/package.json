@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/react",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Accelerate — React bindings for Accelerate.",
   "keywords": [
     "accelerate",
@@ -69,10 +69,10 @@
     "tag": "latest"
   },
   "dependencies": {
-    "@accelerate/identity": "0.5.7",
+    "@accelerate/identity": "0.5.8",
     "@accelerate/config": "0.1.0",
     "@accelerate/ui": "0.1.0",
-    "@accelerate/http": "0.3.7",
+    "@accelerate/http": "0.3.8",
     "@accelerate/observability": "0.1.0"
   },
   "devDependencies": {
