@@ -9,6 +9,14 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./budgets": {
+      "types": "./dist/budgets.d.ts",
+      "default": "./dist/budgets.js"
+    },
+    "./postgres": {
+      "types": "./dist/postgres.d.ts",
+      "default": "./dist/postgres.js"
     }
   },
   "files": [
@@ -29,6 +37,11 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@accelerate/ai-core": "0.1.0"
+    "@accelerate/ai-core": "0.1.0",
+    "@accelerate/data-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@accelerate/data-postgres": "workspace:*",
+    "@types/pg": "^8.11.0"
   }
 }

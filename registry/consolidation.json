@@ -51,7 +51,7 @@
     "@accelerate/ai": {
       "description": "Model gateways, prompts, structured output, agents and evaluation.",
       "status": "stable",
-      "version": "0.1.2"
+      "version": "0.2.0"
     },
     "@accelerate/testing": {
       "description": "Fixtures, transport helpers, contract and architecture tests.",
@@ -94,7 +94,11 @@
     },
     "@accelerate/ai-usage": {
       "family": "@accelerate/ai",
-      "entry": "./usage"
+      "entry": "./usage",
+      "exports": {
+        "./budgets": "./usage/budgets",
+        "./postgres": "./usage/postgres"
+      }
     },
     "@accelerate/api-keys": {
       "family": "@accelerate/identity",
