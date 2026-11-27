@@ -4,7 +4,7 @@ Model gateways, prompts, structured output, agents and evaluation.
 
 Install with `npm install @accelerate/ai`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
-See [persistent AI usage and budget enforcement](https://github.com/archubbuck/accelerate/blob/main/docs/ai-budgets.md) for guarded gateway and agent calls.
+See [persistent AI usage and budget enforcement](https://github.com/archubbuck/accelerate/blob/main/docs/ai-budgets.md) for guarded gateway and agent calls. See [structured generation and recovery](https://github.com/archubbuck/accelerate/blob/main/docs/structured-output.md) for schema-constrained output.
 
 ## Import migration
 

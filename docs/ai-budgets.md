@@ -23,3 +23,5 @@ Wrap each concrete gateway route separately so primary and fallback attempts hav
 The store locks all applicable budget rows and commits the reservation and holds together. A successful provider result settles against the reserved price version using reported usage. If the provider charges more than the estimate, record the actual amount and reject subsequent attempts once the budget is exhausted. Admission limits reservations based on the configured estimate and provider responses. It cannot cap the provider's invoice.
 
 A failed invocation may still incur a charge. An invocation with no reported usage retains its hold for reconciliation. Call `listExpired` to identify abandoned or uncertain entries. Reconcile them with provider records before using `settle`. Idempotent settlement protects against repeated accounting. Build metrics and dashboards around `report`, which returns held, spent and available balances for the period.
+
+For schema-constrained requests, wrap each route with the budget guard and use `generateStructured` from `@accelerate/ai/structured`. Every corrective generation is a separate attempt and needs its own reservation ID.

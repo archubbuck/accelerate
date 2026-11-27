@@ -2767,7 +2767,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.2.0",
+      "version": "0.3.0",
       "dependencies": [
         "core",
         "data",
