@@ -9,6 +9,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./durable": {
+      "types": "./dist/durable.d.ts",
+      "default": "./dist/durable.js"
     }
   },
   "files": [
@@ -30,6 +34,13 @@
   },
   "dependencies": {
     "@accelerate/ai-core": "0.1.0",
-    "@accelerate/ai-tools": "0.1.0"
+    "@accelerate/ai-tools": "0.1.0",
+    "@accelerate/workflows-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@accelerate/data-postgres": "workspace:*",
+    "@accelerate/workflows-memory": "workspace:*",
+    "@accelerate/workflows-postgres": "workspace:*",
+    "@types/pg": "^8.11.0"
   }
 }
