@@ -15,17 +15,17 @@
     "@accelerate/identity": {
       "description": "Authentication, authorization, API keys and auditing.",
       "status": "stable",
-      "version": "0.5.7"
+      "version": "0.5.8"
     },
     "@accelerate/http": {
       "description": "HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
       "status": "stable",
-      "version": "0.3.7"
+      "version": "0.3.8"
     },
     "@accelerate/data": {
       "description": "Database adapters, transactions, caches, migrations and coordination.",
       "status": "stable",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "sourceExports": {
         "./storage/s3": "storage-s3"
       },
@@ -40,7 +40,7 @@
     "@accelerate/messaging": {
       "description": "Events, jobs, workflows, scheduling and transactional outbox.",
       "status": "stable",
-      "version": "0.2.7"
+      "version": "0.2.8"
     },
     "@accelerate/observability": {
       "description": "Logging, metrics, tracing, diagnostics and health checks.",
@@ -57,22 +57,22 @@
     "@accelerate/react": {
       "description": "React bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.13"
+      "version": "0.1.14"
     },
     "@accelerate/angular": {
       "description": "Angular bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.13"
+      "version": "0.1.14"
     },
     "@accelerate/ai": {
       "description": "Model gateways, prompts, structured output, agents and evaluation.",
       "status": "stable",
-      "version": "0.4.7"
+      "version": "0.4.8"
     },
     "@accelerate/testing": {
       "description": "Fixtures, transport helpers, contract and architecture tests.",
       "status": "stable",
-      "version": "0.1.9"
+      "version": "0.1.10"
     },
     "@accelerate/tooling": {
       "description": "Scaffolding, agent operations, AST tools and developer presets.",
@@ -237,7 +237,9 @@
         "./experiments": "./experiments",
         "./storage": "./storage",
         "./storage-memory": "./storage/memory",
-        "./document-ingestion": "./document-ingestion"
+        "./document-ingestion": "./document-ingestion",
+        "./search": "./search",
+        "./search-memory": "./search/memory"
       }
     },
     "@accelerate/data-postgres": {
@@ -248,7 +250,8 @@
         "./ledger": "./ledger/postgres",
         "./time-series": "./time-series/postgres",
         "./experiments": "./experiments/postgres",
-        "./document-ingestion": "./document-ingestion/postgres"
+        "./document-ingestion": "./document-ingestion/postgres",
+        "./search": "./search/postgres"
       }
     },
     "@accelerate/data-prisma": {

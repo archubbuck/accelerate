@@ -41,6 +41,14 @@
     "./document-ingestion": {
       "types": "./dist/document-ingestion.d.ts",
       "default": "./dist/document-ingestion.js"
+    },
+    "./search": {
+      "types": "./dist/search.d.ts",
+      "default": "./dist/search.js"
+    },
+    "./search-memory": {
+      "types": "./dist/search-memory.d.ts",
+      "default": "./dist/search-memory.js"
     }
   },
   "files": [

@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/http",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Accelerate — HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
   "keywords": [
     "accelerate",
@@ -93,7 +93,7 @@
   },
   "dependencies": {
     "@accelerate/core": "0.2.0",
-    "@accelerate/data": "0.7.0"
+    "@accelerate/data": "0.8.0"
   },
   "devDependencies": {
     "@accelerate/contracts-openapi": "0.1.0",
