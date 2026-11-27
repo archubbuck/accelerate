@@ -17,3 +17,4 @@ jobs:
       - run: node tools/registry/cli.mjs sync --check
       - run: node tools/registry/cli.mjs validate
       - run: node tools/registry/cli.mjs docs --check
+      - run: node tools/registry/consolidation.mjs check

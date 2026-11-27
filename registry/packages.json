@@ -2486,6 +2486,54 @@
         "peer": [],
         "optional": []
       }
+    },
+    {
+      "id": "http",
+      "name": "@accelerate/http",
+      "category": "api",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "path": "packages/http",
+      "version": "0.1.0-next.0",
+      "dependencies": [
+        "data-core",
+        "migrations-core",
+        "time-core"
+      ],
+      "description": "Accelerate — HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/migrations-core",
+          "@accelerate/time-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "sdk",
+      "name": "@accelerate/sdk",
+      "category": "testing-dx",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "path": "packages/sdk",
+      "version": "0.1.0-next.0",
+      "dependencies": [],
+      "description": "Accelerate — Find Accelerate packages, install examples and migration guides.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
     }
   ]
 }

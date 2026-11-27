@@ -1,0 +1,98 @@
+{
+  "name": "@accelerate/http",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate \u2014 HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "http",
+    "middleware",
+    "rate-limiting",
+    "resilience",
+    "openapi"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/modules/http-core/index.d.ts",
+      "default": "./dist/modules/http-core/index.js"
+    },
+    "./client": {
+      "types": "./dist/modules/http-client/index.d.ts",
+      "default": "./dist/modules/http-client/index.js"
+    },
+    "./node": {
+      "types": "./dist/modules/http-node/index.d.ts",
+      "default": "./dist/modules/http-node/index.js"
+    },
+    "./resilience": {
+      "types": "./dist/modules/resilience-core/index.d.ts",
+      "default": "./dist/modules/resilience-core/index.js"
+    },
+    "./openapi": {
+      "types": "./dist/modules/contracts-openapi/index.d.ts",
+      "default": "./dist/modules/contracts-openapi/index.js"
+    },
+    "./rate-limit": {
+      "types": "./dist/modules/rate-limit-core/index.d.ts",
+      "default": "./dist/modules/rate-limit-core/index.js"
+    },
+    "./rate-limit/memory": {
+      "types": "./dist/modules/rate-limit-memory/index.d.ts",
+      "default": "./dist/modules/rate-limit-memory/index.js"
+    },
+    "./rate-limit/postgres": {
+      "types": "./dist/modules/rate-limit-postgres/index.d.ts",
+      "default": "./dist/modules/rate-limit-postgres/index.js"
+    },
+    "./rate-limit/redis": {
+      "types": "./dist/modules/rate-limit-redis/index.d.ts",
+      "default": "./dist/modules/rate-limit-redis/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build http",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/http"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/http/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
+  "dependencies": {
+    "@accelerate/time-core": "0.1.0",
+    "@accelerate/data-core": "0.1.1",
+    "@accelerate/migrations-core": "0.1.0"
+  },
+  "devDependencies": {
+    "@accelerate/http-core": "0.1.0",
+    "@accelerate/http-client": "0.1.0",
+    "@accelerate/http-node": "0.1.0",
+    "@accelerate/resilience-core": "0.2.0",
+    "@accelerate/contracts-openapi": "0.1.0",
+    "@accelerate/rate-limit-core": "0.1.0",
+    "@accelerate/rate-limit-memory": "0.1.0",
+    "@accelerate/rate-limit-postgres": "0.1.0",
+    "@accelerate/rate-limit-redis": "0.1.0"
+  },
+  "accelerate": {
+    "operations": "./dist/operations/package-manifest.json"
+  }
+}

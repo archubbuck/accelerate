@@ -22,6 +22,8 @@ jobs:
         run: pnpm registry:audit
       - name: Verify all npm package archives
         run: node tools/registry/release.mjs pack
+      - name: Verify consolidated npm packages in a clean consumer
+        run: node tools/registry/consolidation-consumer.mjs
       - name: Angular consumer production build
         run: pnpm --filter @accelerate/authorization-angular test:consumer
 

@@ -52,3 +52,9 @@ Use npm CLI 11.15.0 or later and interactive npm authentication with package adm
 7. Once all relationships and releases are verified, restrict token publishing and revoke the bootstrap token when no longer needed. Keep bootstrap available for future new packages.
 
 The trust commands intentionally report existing records for operator review instead of guessing undocumented npm response schemas. See https://docs.npmjs.com/cli/commands/npm-trust/ and https://docs.npmjs.com/trusted-publishers/.
+
+## Consolidated npm packages
+
+`registry/consolidation.json` assigns each existing package to a canonical npm family. Only entries with an explicit export subpath are ready for the preview. The SDK README and machine-readable catalog are generated from the same map. Run `node tools/registry/consolidation.mjs docs` after editing it.
+
+The SDK and HTTP preview archives are built and tested in CI alongside existing packages. The release workflows expose a Preview input to publish the two prereleases under the `next` tag. Verify package access and trusted publisher setup before dispatching a preview release. Existing release dispatches continue to handle stable packages. To promote a family, first verify a clean install of the published preview and its migration paths, then remove its prerelease suffix and preview tag in a release change. Plan later families using the catalog. Add deprecation notices only after compatible replacements have shipped and consumers have had a migration window.

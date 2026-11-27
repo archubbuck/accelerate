@@ -1,6 +1,11 @@
 name: Publish npm packages
 on:
   workflow_dispatch:
+    inputs:
+      preview:
+        description: 'Publish preview packages to npm next'
+        type: boolean
+        default: false
 concurrency:
   group: accelerate-npm-release
   cancel-in-progress: false
@@ -59,5 +64,8 @@ jobs:
         run: pnpm registry:audit
       - name: Verify package archives
         run: node tools/registry/release.mjs pack
+      - name: Verify preview packages in a clean consumer
+        if: inputs.preview
+        run: node tools/registry/consolidation-consumer.mjs
       - name: Publish missing package versions
-        run: node tools/registry/release.mjs publish
+        run: node tools/registry/release.mjs ${{ inputs.preview && 'publish-preview' || 'publish' }}

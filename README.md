@@ -6,6 +6,8 @@ Packages are designed to be consumed independently. The repository also contains
 
 ## Packages
 
+See the [Accelerate SDK catalog](packages/sdk/README.md) for the consolidated package lineup and migration map. The first preview brings the HTTP client, Node adapter, resilience, quotas, and OpenAPI into [one package](packages/http/README.md).
+
 ### Application foundations
 
 The following packages are implemented in source and awaiting independent publication verification:
