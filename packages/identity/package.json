@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/identity",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Accelerate — Authentication, authorization, API keys and auditing.",
   "keywords": [
     "accelerate",
@@ -35,9 +35,17 @@
       "types": "./dist/modules/audit-core/dist/index.d.ts",
       "default": "./dist/modules/audit-core/dist/index.js"
     },
+    "./audit/integrity": {
+      "types": "./dist/modules/audit-core/dist/integrity.d.ts",
+      "default": "./dist/modules/audit-core/dist/integrity.js"
+    },
     "./audit/postgres": {
       "types": "./dist/modules/audit-postgres/dist/index.d.ts",
       "default": "./dist/modules/audit-postgres/dist/index.js"
+    },
+    "./audit/postgres/integrity": {
+      "types": "./dist/modules/audit-postgres/dist/integrity.d.ts",
+      "default": "./dist/modules/audit-postgres/dist/integrity.js"
     },
     "./authentication": {
       "types": "./dist/modules/authentication-core/dist/index.d.ts",

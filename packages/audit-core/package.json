@@ -9,6 +9,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./integrity": {
+      "types": "./dist/integrity.d.ts",
+      "default": "./dist/integrity.js"
     }
   },
   "files": [
