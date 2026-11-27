@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/data",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Accelerate — Database adapters, transactions, caches, migrations and coordination.",
   "keywords": [
     "accelerate",
@@ -39,6 +39,14 @@
       "types": "./dist/modules/data-core/dist/provenance.d.ts",
       "default": "./dist/modules/data-core/dist/provenance.js"
     },
+    "./ledger": {
+      "types": "./dist/modules/data-core/dist/ledger.d.ts",
+      "default": "./dist/modules/data-core/dist/ledger.js"
+    },
+    "./ledger/memory": {
+      "types": "./dist/modules/data-core/dist/ledger-memory.d.ts",
+      "default": "./dist/modules/data-core/dist/ledger-memory.js"
+    },
     "./postgres": {
       "types": "./dist/modules/data-postgres/dist/index.d.ts",
       "default": "./dist/modules/data-postgres/dist/index.js"
@@ -46,6 +54,10 @@
     "./provenance/postgres": {
       "types": "./dist/modules/data-postgres/dist/provenance.d.ts",
       "default": "./dist/modules/data-postgres/dist/provenance.js"
+    },
+    "./ledger/postgres": {
+      "types": "./dist/modules/data-postgres/dist/ledger.d.ts",
+      "default": "./dist/modules/data-postgres/dist/ledger.js"
     },
     "./prisma": {
       "types": "./dist/modules/data-prisma/dist/index.d.ts",
