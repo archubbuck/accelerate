@@ -25,6 +25,10 @@
     "./experiments": {
       "types": "./dist/experiments.d.ts",
       "default": "./dist/experiments.js"
+    },
+    "./document-ingestion": {
+      "types": "./dist/document-ingestion.d.ts",
+      "default": "./dist/document-ingestion.js"
     }
   },
   "files": [

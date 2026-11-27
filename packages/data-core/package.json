@@ -37,6 +37,10 @@
     "./storage-memory": {
       "types": "./dist/storage-memory.d.ts",
       "default": "./dist/storage-memory.js"
+    },
+    "./document-ingestion": {
+      "types": "./dist/document-ingestion.d.ts",
+      "default": "./dist/document-ingestion.js"
     }
   },
   "files": [

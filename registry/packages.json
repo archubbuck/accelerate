@@ -2507,7 +2507,7 @@
       "priority": "P1",
       "wave": 9,
       "path": "packages/http",
-      "version": "0.3.6",
+      "version": "0.3.7",
       "dependencies": [
         "core",
         "data"
@@ -2573,7 +2573,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.5.6",
+      "version": "0.5.7",
       "dependencies": [
         "data"
       ],
@@ -2597,7 +2597,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.6.0",
+      "version": "0.7.0",
       "dependencies": [
         "core"
       ],
@@ -2621,7 +2621,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.2.6",
+      "version": "0.2.7",
       "dependencies": [
         "data"
       ],
@@ -2705,7 +2705,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.12",
+      "version": "0.1.13",
       "dependencies": [
         "config",
         "http",
@@ -2737,7 +2737,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.12",
+      "version": "0.1.13",
       "dependencies": [
         "config",
         "http",
@@ -2769,7 +2769,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.4.6",
+      "version": "0.4.7",
       "dependencies": [
         "core",
         "data",
@@ -2799,7 +2799,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.8",
+      "version": "0.1.9",
       "dependencies": [
         "http"
       ],
