@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/messaging",
-  "version": "0.1.0-next.0",
+  "version": "0.1.0",
   "description": "Accelerate — Events, jobs, workflows, scheduling and transactional outbox.",
   "keywords": [
     "accelerate",
@@ -93,10 +93,10 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",
-    "tag": "next"
+    "tag": "latest"
   },
   "dependencies": {
-    "@accelerate/data": "0.1.0-next.0",
+    "@accelerate/data": "0.1.0",
     "cronosjs": "1.7.1",
     "@js-temporal/polyfill": "^0.5.1"
   },

@@ -2,7 +2,7 @@
 
 React bindings for Accelerate.
 
-Once published, install with `npm install @accelerate/react@next`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
+Install with `npm install @accelerate/react`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
 Use React 18 or newer and matching React declarations for TypeScript projects.
 
@@ -10,7 +10,7 @@ Use React 18 or newer and matching React declarations for TypeScript projects.
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
 
-| Existing import | Preview import |
+| Existing import | Replacement import |
 | --- | --- |
 | `@accelerate/authentication-react` | `@accelerate/react/authentication` |
 | `@accelerate/authorization-react` | `@accelerate/react/authorization` |

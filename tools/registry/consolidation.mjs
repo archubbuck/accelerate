@@ -69,7 +69,7 @@ const guidance = {
   observability:
     "Install the OpenTelemetry API and API Logs peers for the corresponding adapters.",
   tooling:
-    "Run `npx --package @accelerate/tooling@next create-accelerate --help` to use the existing scaffolding CLI. The CLI still accepts existing catalog IDs.",
+    "Run `npx --package @accelerate/tooling create-accelerate --help` to use the existing scaffolding CLI. The CLI still accepts existing catalog IDs.",
 };
 
 function renderReadme(catalog, name, description) {
@@ -82,8 +82,8 @@ function renderReadme(catalog, name, description) {
     description,
     "",
     sdk
-      ? "Once published, install a preview by appending `@next` to the npm package name. For example, run `npm install @accelerate/http@next`."
-      : `Once published, install with \`npm install ${name}@next\`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.`,
+      ? "Choose the package you need. For the HTTP family, run `npm install @accelerate/http`."
+      : `Install with \`npm install ${name}\`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.`,
     "",
     ...(guidance[id] ? [guidance[id], ""] : []),
     ...(sdk
@@ -101,7 +101,7 @@ function renderReadme(catalog, name, description) {
     "",
     "Use the subpaths below. Update related imports together wherever your app shares class or provider identity.",
     "",
-    "| Existing import | Preview import |",
+    "| Existing import | Replacement import |",
     "| --- | --- |",
     ...Object.entries(catalog.imports)
       .filter(([, to]) => sdk || to.startsWith(name + "/"))
@@ -309,7 +309,7 @@ function main(mode, id) {
   );
   write(
     join(dist, "index.d.ts"),
-    'export declare const catalog: { families: Record<string, { description: string; status: "preview" }>; migrations: Record<string, { family: string; entry: string }>; imports: Record<string, string> };\n',
+    'export declare const catalog: { families: Record<string, { description: string; status: "stable" }>; migrations: Record<string, { family: string; entry: string }>; imports: Record<string, string> };\n',
   );
 }
 

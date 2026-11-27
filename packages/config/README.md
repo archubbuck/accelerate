@@ -2,13 +2,13 @@
 
 Configuration, secrets and feature flags.
 
-Once published, install with `npm install @accelerate/config@next`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
+Install with `npm install @accelerate/config`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
 ## Import migration
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
 
-| Existing import | Preview import |
+| Existing import | Replacement import |
 | --- | --- |
 | `@accelerate/config-core` | `@accelerate/config/config` |
 | `@accelerate/config-node` | `@accelerate/config/config/node` |

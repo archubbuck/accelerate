@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/testing",
-  "version": "0.1.0-next.0",
+  "version": "0.1.0",
   "description": "Accelerate — Fixtures, transport helpers, contract and architecture tests.",
   "keywords": [
     "accelerate",
@@ -58,10 +58,10 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",
-    "tag": "next"
+    "tag": "latest"
   },
   "dependencies": {
-    "@accelerate/http": "0.1.0-next.0"
+    "@accelerate/http": "0.1.0"
   },
   "devDependencies": {
     "@accelerate/testing-architecture": "0.1.0",

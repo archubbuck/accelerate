@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/core",
-  "version": "0.1.0-next.0",
+  "version": "0.1.0",
   "description": "Accelerate — Time, decimal arithmetic, validation and shared errors.",
   "keywords": [
     "accelerate",
@@ -50,7 +50,7 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",
-    "tag": "next"
+    "tag": "latest"
   },
   "dependencies": {
     "big.js": "^7.0.1"

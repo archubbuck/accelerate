@@ -6,7 +6,7 @@ Packages are designed to be consumed independently. The repository also contains
 
 ## Packages
 
-See the [Accelerate SDK catalog](packages/sdk/README.md) for the consolidated package lineup and migration map. The preview groups the existing packages into 14 capability families, including the [HTTP suite](packages/http/README.md).
+See the [Accelerate SDK catalog](packages/sdk/README.md) for the consolidated package lineup and migration map. The release groups the existing packages into 14 capability families, including the [HTTP suite](packages/http/README.md).
 
 ### Application foundations
 

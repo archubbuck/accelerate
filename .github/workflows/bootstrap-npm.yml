@@ -2,8 +2,8 @@ name: Bootstrap npm packages (one-time token)
 on:
   workflow_dispatch:
     inputs:
-      preview:
-        description: 'Publish preview packages to npm next'
+      deprecate_legacy:
+        description: 'Deprecate superseded packages after the stable releases are visible'
         type: boolean
         default: false
       confirm:
@@ -52,12 +52,16 @@ jobs:
         run: pnpm registry:audit
       - name: Verify package archives
         run: node tools/registry/release.mjs pack
-      - name: Verify preview packages in a clean consumer
-        if: inputs.preview
+      - name: Verify consolidated packages in a clean consumer
         run: node tools/registry/consolidation-consumer.mjs
       - name: Publish missing package versions
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           test -n "$NODE_AUTH_TOKEN" || { echo "NPM_TOKEN missing"; exit 1; }
-          node tools/registry/release.mjs ${{ inputs.preview && 'publish-preview' || 'publish' }}
+          node tools/registry/release.mjs publish
+      - name: Deprecate superseded packages
+        if: inputs.deprecate_legacy
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: node tools/registry/deprecate-legacy.mjs --apply

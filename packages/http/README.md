@@ -2,10 +2,10 @@
 
 HTTP clients and middleware, Node handlers, resilience policies, rate limiting, and OpenAPI contracts in one package. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for other capability packages.
 
-After the preview is published, install it with:
+Install the HTTP package with:
 
 ```sh
-npm install @accelerate/http@next
+npm install @accelerate/http
 ```
 
 ```ts
@@ -16,7 +16,7 @@ const response = await client.send({ method: 'GET', url: '/products' });
 console.log(response.status);
 ```
 
-| Previous import | Preview import |
+| Previous import | Replacement import |
 | --- | --- |
 | `@accelerate/http-core` | `@accelerate/http/core` |
 | `@accelerate/http-client` | `@accelerate/http/client` |
@@ -28,6 +28,6 @@ console.log(response.status);
 | `@accelerate/rate-limit-redis` | `@accelerate/http/rate-limit/redis` |
 | `@accelerate/contracts-openapi` | `@accelerate/http/openapi` |
 
-The root export includes the framework-neutral HTTP contracts and fetch client. Server and provider imports have separate entry points. PostgreSQL and Redis quota stores accept caller-supplied database and Redis client interfaces. The preview installs without either driver.
+The root export includes the framework-neutral HTTP contracts and fetch client. Server and provider imports have separate entry points. PostgreSQL and Redis quota stores accept caller-supplied database and Redis client interfaces. The package installs without either driver.
 
-When migrating, update imports together wherever code shares a class identity, such as `HttpStatusError`. Both package families can be installed during the transition. Existing method signatures and behavior carry over into the preview. The quota preview operation is discoverable as `http.rate-limit.preview`.
+When migrating, update imports together wherever code shares a class identity, such as `HttpStatusError`. Both package families can be installed during the transition. Existing method signatures and behavior carry over into the consolidated package. The quota preview operation is discoverable as `http.rate-limit.preview`.

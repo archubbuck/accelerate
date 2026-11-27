@@ -2,7 +2,7 @@
 
 Logging, metrics, tracing, diagnostics and health checks.
 
-Once published, install with `npm install @accelerate/observability@next`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
+Install with `npm install @accelerate/observability`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
 Install the OpenTelemetry API and API Logs peers for the corresponding adapters.
 
@@ -10,7 +10,7 @@ Install the OpenTelemetry API and API Logs peers for the corresponding adapters.
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
 
-| Existing import | Preview import |
+| Existing import | Replacement import |
 | --- | --- |
 | `@accelerate/diagnostics-core` | `@accelerate/observability/diagnostics` |
 | `@accelerate/health-core` | `@accelerate/observability/health` |

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-export const version = "0.1.0-next.0";
+export const version = "0.1.0";
 export const packageId = (name) => name.split("/")[1];
 
 export function moduleExports(legacy, manifest) {
@@ -74,7 +74,7 @@ export function familyManifest(name, description, catalog, readManifest) {
     publishConfig: {
       access: "public",
       registry: "https://registry.npmjs.org/",
-      tag: "next",
+      tag: "latest",
     },
   };
   const dependencies = {},
