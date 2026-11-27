@@ -1,0 +1,40 @@
+{
+  "name": "@accelerate/rate-limit-core",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "operations/package-manifest.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node ../../tools/operations/bundle.mjs operations/preview.mjs dist/operations/preview.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@accelerate/time-core": "0.1.0",
+    "@accelerate/http-core": "0.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/rate-limit-core"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "description": "Atomic weighted quotas, expiring concurrency permits and HTTP middleware.",
+  "accelerate": {
+    "operations": "./operations/package-manifest.json"
+  }
+}

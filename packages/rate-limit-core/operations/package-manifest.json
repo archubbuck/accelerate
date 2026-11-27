@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "1.0",
+  "package": "@accelerate/rate-limit-core",
+  "packageVersion": "0.1.0",
+  "operations": [
+    {
+      "manifest": {
+        "id": "rate-limit.preview",
+        "version": "1.0.0",
+        "package": "@accelerate/rate-limit-core",
+        "description": "Preview weighted quota decisions for ordered timestamps starting from an empty partition",
+        "mutatesProject": false,
+        "modes": [
+          "inspect",
+          "preview"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "rules": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "scope": {
+                    "type": "string"
+                  },
+                  "algorithm": {
+                    "type": "string"
+                  },
+                  "limit": {
+                    "type": "number"
+                  },
+                  "periodMs": {
+                    "type": "number"
+                  },
+                  "cost": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "scope",
+                  "algorithm",
+                  "limit",
+                  "periodMs"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "times": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "required": [
+            "rules",
+            "times"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "decisions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "allowed": {
+                    "type": "boolean"
+                  },
+                  "retryAfterMs": {
+                    "type": "number"
+                  },
+                  "quotas": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "scope": {
+                          "type": "string"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "remaining": {
+                          "type": "number"
+                        },
+                        "resetAt": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "limit",
+                        "remaining",
+                        "resetAt"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "allowed",
+                  "retryAfterMs",
+                  "quotas"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "decisions"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "handler": "./dist/operations/preview.mjs",
+      "exportName": "preview"
+    }
+  ]
+}
