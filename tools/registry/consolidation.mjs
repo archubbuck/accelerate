@@ -60,6 +60,7 @@ export function loadConsolidation() {
 }
 
 const guidance = {
+  ai: "See [persistent AI usage and budget enforcement](https://github.com/archubbuck/accelerate/blob/main/docs/ai-budgets.md) for guarded gateway and agent calls.",
   angular:
     "Use Angular 19 or 20 with matching core and common versions, plus RxJS 7.4 or newer within version 7. Authorization and logging retain their compiled Angular entry points.",
   react:

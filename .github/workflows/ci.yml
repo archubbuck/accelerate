@@ -79,6 +79,12 @@ jobs:
         env:
           WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
         run: pnpm --filter @accelerate/audit-postgres test
+      - name: Verify distributed AI budget reservations
+        env:
+          WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
+        run: |
+          pnpm --filter @accelerate/ai-usage... build
+          pnpm --filter @accelerate/ai-usage test
       - name: Verify durable event subscriptions on PostgreSQL and Redis
         env:
           WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}

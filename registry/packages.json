@@ -1858,7 +1858,8 @@
       "wave": 5,
       "path": "packages/ai-usage",
       "dependencies": [
-        "ai-core"
+        "ai-core",
+        "data-core"
       ],
       "publication": {
         "status": "unpublished"
@@ -1866,7 +1867,8 @@
       "version": "0.1.0",
       "workspaceDependencies": {
         "runtime": [
-          "@accelerate/ai-core"
+          "@accelerate/ai-core",
+          "@accelerate/data-core"
         ],
         "peer": [],
         "optional": []
@@ -2765,9 +2767,10 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.2",
+      "version": "0.2.0",
       "dependencies": [
         "core",
+        "data",
         "testing"
       ],
       "description": "Accelerate — Model gateways, prompts, structured output, agents and evaluation.",
@@ -2777,6 +2780,7 @@
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/core",
+          "@accelerate/data",
           "@accelerate/testing"
         ],
         "peer": [],

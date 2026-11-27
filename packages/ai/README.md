@@ -4,6 +4,8 @@ Model gateways, prompts, structured output, agents and evaluation.
 
 Install with `npm install @accelerate/ai`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
+See [persistent AI usage and budget enforcement](https://github.com/archubbuck/accelerate/blob/main/docs/ai-budgets.md) for guarded gateway and agent calls.
+
 ## Import migration
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
