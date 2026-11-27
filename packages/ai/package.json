@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/ai",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Accelerate — Model gateways, prompts, structured output, agents and evaluation.",
   "keywords": [
     "accelerate",
@@ -81,10 +81,10 @@
     "tag": "latest"
   },
   "dependencies": {
-    "@accelerate/messaging": "0.2.1",
-    "@accelerate/testing": "0.1.3",
+    "@accelerate/messaging": "0.2.2",
+    "@accelerate/testing": "0.1.4",
     "@accelerate/core": "0.1.0",
-    "@accelerate/data": "0.2.0"
+    "@accelerate/data": "0.3.0"
   },
   "devDependencies": {
     "@accelerate/agents-core": "0.1.0",

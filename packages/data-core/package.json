@@ -13,6 +13,14 @@
     "./provenance": {
       "types": "./dist/provenance.d.ts",
       "default": "./dist/provenance.js"
+    },
+    "./ledger": {
+      "types": "./dist/ledger.d.ts",
+      "default": "./dist/ledger.js"
+    },
+    "./ledger-memory": {
+      "types": "./dist/ledger-memory.d.ts",
+      "default": "./dist/ledger-memory.js"
     }
   },
   "files": [

@@ -13,6 +13,10 @@
     "./provenance": {
       "types": "./dist/provenance.d.ts",
       "default": "./dist/provenance.js"
+    },
+    "./ledger": {
+      "types": "./dist/ledger.d.ts",
+      "default": "./dist/ledger.js"
     }
   },
   "files": [
