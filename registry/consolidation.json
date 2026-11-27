@@ -15,22 +15,32 @@
     "@accelerate/identity": {
       "description": "Authentication, authorization, API keys and auditing.",
       "status": "stable",
-      "version": "0.5.5"
+      "version": "0.5.6"
     },
     "@accelerate/http": {
       "description": "HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
       "status": "stable",
-      "version": "0.3.5"
+      "version": "0.3.6"
     },
     "@accelerate/data": {
       "description": "Database adapters, transactions, caches, migrations and coordination.",
       "status": "stable",
-      "version": "0.5.0"
+      "version": "0.6.0",
+      "sourceExports": {
+        "./storage/s3": "storage-s3"
+      },
+      "sourcePeers": {
+        "@aws-sdk/client-s3": "^3.0.0",
+        "@aws-sdk/s3-request-presigner": "^3.0.0"
+      },
+      "sourceDevDependencies": {
+        "@types/node": "^22.0.0"
+      }
     },
     "@accelerate/messaging": {
       "description": "Events, jobs, workflows, scheduling and transactional outbox.",
       "status": "stable",
-      "version": "0.2.5"
+      "version": "0.2.6"
     },
     "@accelerate/observability": {
       "description": "Logging, metrics, tracing, diagnostics and health checks.",
@@ -47,22 +57,22 @@
     "@accelerate/react": {
       "description": "React bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.11"
+      "version": "0.1.12"
     },
     "@accelerate/angular": {
       "description": "Angular bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.11"
+      "version": "0.1.12"
     },
     "@accelerate/ai": {
       "description": "Model gateways, prompts, structured output, agents and evaluation.",
       "status": "stable",
-      "version": "0.4.5"
+      "version": "0.4.6"
     },
     "@accelerate/testing": {
       "description": "Fixtures, transport helpers, contract and architecture tests.",
       "status": "stable",
-      "version": "0.1.7"
+      "version": "0.1.8"
     },
     "@accelerate/tooling": {
       "description": "Scaffolding, agent operations, AST tools and developer presets.",
@@ -224,7 +234,9 @@
         "./ledger": "./ledger",
         "./ledger-memory": "./ledger/memory",
         "./time-series": "./time-series",
-        "./experiments": "./experiments"
+        "./experiments": "./experiments",
+        "./storage": "./storage",
+        "./storage-memory": "./storage/memory"
       }
     },
     "@accelerate/data-postgres": {

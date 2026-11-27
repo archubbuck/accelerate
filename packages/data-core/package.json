@@ -29,6 +29,14 @@
     "./experiments": {
       "types": "./dist/experiments.d.ts",
       "default": "./dist/experiments.js"
+    },
+    "./storage": {
+      "types": "./dist/storage.d.ts",
+      "default": "./dist/storage.js"
+    },
+    "./storage-memory": {
+      "types": "./dist/storage-memory.d.ts",
+      "default": "./dist/storage-memory.js"
     }
   },
   "files": [

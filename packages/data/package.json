@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/data",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Accelerate — Database adapters, transactions, caches, migrations and coordination.",
   "keywords": [
     "accelerate",
@@ -18,6 +18,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./storage/s3": {
+      "types": "./dist/features/storage-s3.d.ts",
+      "default": "./dist/features/storage-s3.js"
     },
     "./cache": {
       "types": "./dist/modules/cache-core/dist/index.d.ts",
@@ -54,6 +58,14 @@
     "./experiments": {
       "types": "./dist/modules/data-core/dist/experiments.d.ts",
       "default": "./dist/modules/data-core/dist/experiments.js"
+    },
+    "./storage": {
+      "types": "./dist/modules/data-core/dist/storage.d.ts",
+      "default": "./dist/modules/data-core/dist/storage.js"
+    },
+    "./storage/memory": {
+      "types": "./dist/modules/data-core/dist/storage-memory.d.ts",
+      "default": "./dist/modules/data-core/dist/storage-memory.js"
     },
     "./postgres": {
       "types": "./dist/modules/data-postgres/dist/index.d.ts",
@@ -125,7 +137,8 @@
   ],
   "scripts": {
     "build": "node ../../tools/registry/consolidation.mjs build data",
-    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts",
+    "test": "vitest run src"
   },
   "repository": {
     "type": "git",
@@ -146,6 +159,9 @@
     "@accelerate/core": "0.2.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/s3-request-presigner": "^3.0.0",
+    "@types/node": "^22.0.0",
     "@accelerate/cache-core": "0.1.0",
     "@accelerate/cache-memory": "0.1.0",
     "@accelerate/cache-redis": "0.1.0",
@@ -164,9 +180,17 @@
     "@accelerate/transactions": "0.1.1"
   },
   "peerDependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/s3-request-presigner": "^3.0.0",
     "pg": "^8.11.0"
   },
   "peerDependenciesMeta": {
+    "@aws-sdk/client-s3": {
+      "optional": true
+    },
+    "@aws-sdk/s3-request-presigner": {
+      "optional": true
+    },
     "pg": {
       "optional": true
     }

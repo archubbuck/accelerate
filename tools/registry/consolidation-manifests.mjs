@@ -86,9 +86,10 @@ export function familyManifest(name, description, catalog, readManifest) {
     };
     manifest.scripts.test = "vitest run src";
   }
+  const sourcePeers = catalog.families[name].sourcePeers ?? {};
   const dependencies = {},
-    devDependencies = {},
-    peerDependencies = {};
+    devDependencies = { ...sourcePeers, ...catalog.families[name].sourceDevDependencies },
+    peerDependencies = { ...sourcePeers };
   function addRange(set, dependency, range) {
     // A lower Angular floor and a narrower compatible range occur in legacy adapters.
     if (dependency === "@angular/core") range = ">=19 <21";
