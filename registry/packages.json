@@ -940,14 +940,16 @@
       "wave": 5,
       "path": "packages/scheduler-core",
       "dependencies": [
+        "idempotency-core",
         "jobs-core"
       ],
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.2.0",
       "workspaceDependencies": {
         "runtime": [
+          "@accelerate/idempotency-core",
           "@accelerate/jobs-core"
         ],
         "peer": [],
@@ -2343,6 +2345,34 @@
           "@accelerate/data-core",
           "@accelerate/migrations-core",
           "@accelerate/workflows-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "scheduler-postgres",
+      "name": "@accelerate/scheduler-postgres",
+      "category": "events",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 8,
+      "path": "packages/scheduler-postgres",
+      "dependencies": [
+        "data-core",
+        "migrations-core",
+        "scheduler-core"
+      ],
+      "description": "Transactional scheduling, run history and distributed ownership on PostgreSQL.",
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/migrations-core",
+          "@accelerate/scheduler-core"
         ],
         "peer": [],
         "optional": []
