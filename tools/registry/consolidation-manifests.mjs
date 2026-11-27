@@ -30,7 +30,7 @@ export function familyManifest(name, description, catalog, readManifest) {
   const id = packageId(name);
   const manifest = {
     name,
-    version,
+    version: catalog.families[name].version ?? version,
     description: "Accelerate — " + description,
     keywords: [
       "accelerate",
@@ -117,7 +117,7 @@ export function familyManifest(name, description, catalog, readManifest) {
     })) {
       const family = catalog.migrations[dependency]?.family;
       if (family) {
-        if (family !== name) dependencies[family] = version;
+        if (family !== name) dependencies[family] = catalog.families[family].version ?? version;
       } else if (Object.hasOwn(source.peerDependencies ?? {}, dependency)) {
         addRange(peerDependencies, dependency, range);
       } else {
