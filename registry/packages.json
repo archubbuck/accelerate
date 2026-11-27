@@ -751,16 +751,21 @@
       "priority": "P1",
       "wave": 2,
       "path": "packages/resilience-core",
-      "dependencies": [],
+      "dependencies": [
+        "time-core"
+      ],
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.2.0",
       "workspaceDependencies": {
-        "runtime": [],
+        "runtime": [
+          "@accelerate/time-core"
+        ],
         "peer": [],
         "optional": []
-      }
+      },
+      "description": "Composable retry safety, deadlines, circuit breakers and bulkheads."
     },
     {
       "id": "contracts-openapi",
