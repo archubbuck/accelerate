@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/http",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Accelerate — HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
   "keywords": [
     "accelerate",
@@ -31,6 +31,18 @@
     "./core": {
       "types": "./dist/modules/http-core/dist/index.d.ts",
       "default": "./dist/modules/http-core/dist/index.js"
+    },
+    "./streaming": {
+      "types": "./dist/modules/http-core/dist/streaming/index.d.ts",
+      "default": "./dist/modules/http-core/dist/streaming/index.js"
+    },
+    "./streaming/websocket": {
+      "types": "./dist/modules/http-core/dist/streaming/websocket.d.ts",
+      "default": "./dist/modules/http-core/dist/streaming/websocket.js"
+    },
+    "./streaming/memory": {
+      "types": "./dist/modules/http-core/dist/streaming/memory.d.ts",
+      "default": "./dist/modules/http-core/dist/streaming/memory.js"
     },
     "./node": {
       "types": "./dist/modules/http-node/dist/index.d.ts",
