@@ -106,3 +106,5 @@ Generated from registry/packages.json. Do not edit manually.
 | `@accelerate/typescript-config` | testing-dx | implemented | P0 | 1 |
 | `@accelerate/validation-core` | api | implemented | P0 | 1 |
 | `@accelerate/workflows-core` | events | implemented | P1 | 5 |
+| `@accelerate/workflows-memory` | events | implemented | P0 | 8 |
+| `@accelerate/workflows-postgres` | events | implemented | P0 | 8 |
