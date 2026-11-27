@@ -29,9 +29,20 @@ if (process.argv[2] === "--apply") {
     }
   }
   if (pending.size) throw Error("Stable npm release unavailable for " + [...pending.keys()].join(", "));
+  const failures = [];
   for (const [name, message] of messages) {
-    execFileSync("npm", ["deprecate", name, message, registry], { stdio: "inherit" });
-    console.log("Deprecated " + name);
+    try {
+      execFileSync("npm", ["deprecate", name, message, registry], { stdio: "inherit" });
+      console.log("Deprecated " + name);
+    } catch (error) {
+      if (error.code) throw error;
+      failures.push(name);
+    }
+  }
+  if (failures.length) {
+    console.error(`npm deprecation succeeded for ${messages.length - failures.length} of ${messages.length} packages.`);
+    console.error("npm deprecation failed for: " + failures.join(", "));
+    process.exitCode = 1;
   }
 } else {
   console.log(JSON.stringify(Object.fromEntries(messages), null, 2));
