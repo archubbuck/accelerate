@@ -9,6 +9,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./integrity": {
+      "types": "./dist/integrity.d.ts",
+      "default": "./dist/integrity.js"
     }
   },
   "files": [
@@ -32,5 +36,9 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@accelerate/data-postgres": "workspace:*",
+    "@types/pg": "^8.11.0"
   }
 }

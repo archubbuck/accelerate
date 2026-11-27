@@ -75,6 +75,10 @@ jobs:
         run: |
           pnpm --filter @accelerate/api-keys... build
           pnpm --filter @accelerate/api-keys test
+      - name: Verify concurrent audit writes and integrity checks
+        env:
+          WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
+        run: pnpm --filter @accelerate/audit-postgres test
       - name: Verify durable event subscriptions on PostgreSQL and Redis
         env:
           WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
