@@ -13,6 +13,10 @@
     "./admin": {
       "types": "./dist/admin.d.ts",
       "default": "./dist/admin.js"
+    },
+    "./scoped": {
+      "types": "./dist/scoped.d.ts",
+      "default": "./dist/scoped.js"
     }
   },
   "files": [

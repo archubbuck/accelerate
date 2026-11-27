@@ -68,3 +68,18 @@ describe("React authorization provider", () => {
     expect(screen.getByTestId("status").textContent).toBe("ready");
   });
 });
+
+it("hides old-scope permissions immediately and rejects a mis-scoped snapshot", async () => {
+  const second = deferred<AuthorizationSnapshot>();
+  const client = { load: vi.fn().mockResolvedValueOnce({ ...snapshot(["documents.read"]), scopeKey: "tenant-a" })
+    .mockImplementationOnce(() => second.promise) };
+  const view = (scopeKey: string) => createElement(AuthorizationProvider, { client, scopeKey, children: createElement(Controls) });
+  const mounted = render(view("tenant-a"));
+  await waitFor(() => expect(screen.getByText("Allowed")).toBeTruthy());
+  mounted.rerender(view("tenant-b"));
+  expect(screen.getByText("Denied")).toBeTruthy();
+  await act(async () => second.resolve({ ...snapshot(["documents.read"]), scopeKey: "tenant-a" }));
+  expect(screen.getByText("Denied")).toBeTruthy();
+  expect(screen.getByTestId("status").textContent).toBe("error");
+  expect(client.load).toHaveBeenLastCalledWith("tenant-b");
+});
