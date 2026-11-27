@@ -25,6 +25,10 @@
     "./time-series": {
       "types": "./dist/time-series.d.ts",
       "default": "./dist/time-series.js"
+    },
+    "./experiments": {
+      "types": "./dist/experiments.d.ts",
+      "default": "./dist/experiments.js"
     }
   },
   "files": [

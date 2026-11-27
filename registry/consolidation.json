@@ -15,22 +15,22 @@
     "@accelerate/identity": {
       "description": "Authentication, authorization, API keys and auditing.",
       "status": "stable",
-      "version": "0.5.4"
+      "version": "0.5.5"
     },
     "@accelerate/http": {
       "description": "HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
       "status": "stable",
-      "version": "0.3.4"
+      "version": "0.3.5"
     },
     "@accelerate/data": {
       "description": "Database adapters, transactions, caches, migrations and coordination.",
       "status": "stable",
-      "version": "0.4.0"
+      "version": "0.5.0"
     },
     "@accelerate/messaging": {
       "description": "Events, jobs, workflows, scheduling and transactional outbox.",
       "status": "stable",
-      "version": "0.2.4"
+      "version": "0.2.5"
     },
     "@accelerate/observability": {
       "description": "Logging, metrics, tracing, diagnostics and health checks.",
@@ -47,22 +47,22 @@
     "@accelerate/react": {
       "description": "React bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.10"
+      "version": "0.1.11"
     },
     "@accelerate/angular": {
       "description": "Angular bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.10"
+      "version": "0.1.11"
     },
     "@accelerate/ai": {
       "description": "Model gateways, prompts, structured output, agents and evaluation.",
       "status": "stable",
-      "version": "0.4.4"
+      "version": "0.4.5"
     },
     "@accelerate/testing": {
       "description": "Fixtures, transport helpers, contract and architecture tests.",
       "status": "stable",
-      "version": "0.1.6"
+      "version": "0.1.7"
     },
     "@accelerate/tooling": {
       "description": "Scaffolding, agent operations, AST tools and developer presets.",
@@ -223,7 +223,8 @@
         "./provenance": "./provenance",
         "./ledger": "./ledger",
         "./ledger-memory": "./ledger/memory",
-        "./time-series": "./time-series"
+        "./time-series": "./time-series",
+        "./experiments": "./experiments"
       }
     },
     "@accelerate/data-postgres": {
@@ -232,7 +233,8 @@
       "exports": {
         "./provenance": "./provenance/postgres",
         "./ledger": "./ledger/postgres",
-        "./time-series": "./time-series/postgres"
+        "./time-series": "./time-series/postgres",
+        "./experiments": "./experiments/postgres"
       }
     },
     "@accelerate/data-prisma": {
