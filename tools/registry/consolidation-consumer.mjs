@@ -123,11 +123,26 @@ import { createMemoryQuotaStore } from "@accelerate/http/rate-limit/memory";
 import { createPostgresQuotaStore } from "@accelerate/http/rate-limit/postgres";
 import { createRedisQuotaStore } from "@accelerate/http/rate-limit/redis";
 import { OpenApiBuilder } from "@accelerate/http/openapi";
+import { createStreamingConnection } from "@accelerate/http/streaming";
+import { createMemoryStreamingPair } from "@accelerate/http/streaming/memory";
+import { createWebSocketStreamingTransport } from "@accelerate/http/streaming/websocket";
 import { preview } from "./node_modules/@accelerate/http/dist/operations/rate-limit-core/preview.mjs";
 import { discoverPackageOperations, validatePackageOperations } from "@accelerate/tooling/registry";
 import { readFileSync } from "node:fs";
 
 assert.equal(HttpStatusError, client.HttpStatusError);
+const [streamClient, streamServer] = createMemoryStreamingPair();
+const feed = createStreamingConnection(async () => streamClient, {
+  subscriptions: [{ id: "demo", after: 0 }],
+  parse: value => value,
+});
+const pending = feed.messages.next();
+assert.equal(JSON.parse(await streamServer.receive(new AbortController().signal)).after, 0);
+streamServer.send(JSON.stringify({ type: "message", subscription: "demo", sequence: 1, data: "ready" }));
+assert.equal((await pending).value.data, "ready");
+feed.close();
+await feed.messages.return();
+assert.equal(typeof createWebSocketStreamingTransport, "function");
 assert.equal(Object.keys(catalog.families).length, 14);
 const discovery = await discoverPackageOperations(process.cwd(), Object.keys(catalog.families));
 assert.deepEqual(discovery.diagnostics, []);

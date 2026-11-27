@@ -594,13 +594,17 @@
       "priority": "P0",
       "wave": 2,
       "path": "packages/http-core",
-      "dependencies": [],
+      "dependencies": [
+        "time-core"
+      ],
       "publication": {
         "status": "unpublished"
       },
       "version": "0.1.0",
       "workspaceDependencies": {
-        "runtime": [],
+        "runtime": [
+          "@accelerate/time-core"
+        ],
         "peer": [],
         "optional": []
       }
@@ -2495,7 +2499,7 @@
       "priority": "P1",
       "wave": 9,
       "path": "packages/http",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "dependencies": [
         "core",
         "data"
@@ -2693,7 +2697,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.1",
+      "version": "0.1.2",
       "dependencies": [
         "config",
         "http",
@@ -2725,7 +2729,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.1",
+      "version": "0.1.2",
       "dependencies": [
         "config",
         "http",
@@ -2757,7 +2761,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.1",
+      "version": "0.1.2",
       "dependencies": [
         "core",
         "testing"
@@ -2783,7 +2787,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.1",
+      "version": "0.1.2",
       "dependencies": [
         "http"
       ],

@@ -9,6 +9,18 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./streaming": {
+      "types": "./dist/streaming/index.d.ts",
+      "default": "./dist/streaming/index.js"
+    },
+    "./streaming/websocket": {
+      "types": "./dist/streaming/websocket.d.ts",
+      "default": "./dist/streaming/websocket.js"
+    },
+    "./streaming/memory": {
+      "types": "./dist/streaming/memory.d.ts",
+      "default": "./dist/streaming/memory.js"
     }
   },
   "files": [
@@ -27,5 +39,8 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@accelerate/time-core": "0.1.0"
   }
 }

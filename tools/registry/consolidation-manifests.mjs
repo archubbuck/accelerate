@@ -19,7 +19,7 @@ export function moduleExports(legacy, manifest) {
 }
 
 export function destinationExport(target, subpath) {
-  return target.entry + (subpath === "." ? "" : subpath.slice(1));
+  return target.exports?.[subpath] ?? target.entry + (subpath === "." ? "" : subpath.slice(1));
 }
 
 export function modulePath(legacy, file) {

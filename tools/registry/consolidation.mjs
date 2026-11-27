@@ -51,6 +51,7 @@ export function loadConsolidation() {
     for (const subpath of Object.keys(
       moduleExports(name, readManifest(name)),
     )) {
+      if (Object.hasOwn(target.exports ?? {}, subpath)) continue;
       imports[name + subpath.slice(1)] =
         target.family + destinationExport(target, subpath).slice(1);
     }
