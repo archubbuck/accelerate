@@ -2486,6 +2486,338 @@
         "peer": [],
         "optional": []
       }
+    },
+    {
+      "id": "http",
+      "name": "@accelerate/http",
+      "category": "api",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "path": "packages/http",
+      "version": "0.1.0-next.0",
+      "dependencies": [
+        "core",
+        "data"
+      ],
+      "description": "Accelerate — HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/core",
+          "@accelerate/data"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "sdk",
+      "name": "@accelerate/sdk",
+      "category": "testing-dx",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "path": "packages/sdk",
+      "version": "0.1.0-next.0",
+      "dependencies": [],
+      "description": "Accelerate — Find Accelerate packages, install examples and migration guides.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "core",
+      "name": "@accelerate/core",
+      "path": "packages/core",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [],
+      "description": "Accelerate — Time, decimal arithmetic, validation and shared errors.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "identity",
+      "name": "@accelerate/identity",
+      "path": "packages/identity",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [
+        "data"
+      ],
+      "description": "Accelerate — Authentication, authorization, API keys and auditing.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "data",
+      "name": "@accelerate/data",
+      "path": "packages/data",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [
+        "core"
+      ],
+      "description": "Accelerate — Database adapters, transactions, caches, migrations and coordination.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "messaging",
+      "name": "@accelerate/messaging",
+      "path": "packages/messaging",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [
+        "data"
+      ],
+      "description": "Accelerate — Events, jobs, workflows, scheduling and transactional outbox.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "observability",
+      "name": "@accelerate/observability",
+      "path": "packages/observability",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [],
+      "description": "Accelerate — Logging, metrics, tracing, diagnostics and health checks.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "config",
+      "name": "@accelerate/config",
+      "path": "packages/config",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [],
+      "description": "Accelerate — Configuration, secrets and feature flags.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "ui",
+      "name": "@accelerate/ui",
+      "path": "packages/ui",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [],
+      "description": "Accelerate — Framework-neutral state, forms, notifications and tables.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "react",
+      "name": "@accelerate/react",
+      "path": "packages/react",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [
+        "config",
+        "http",
+        "identity",
+        "observability",
+        "ui"
+      ],
+      "description": "Accelerate — React bindings for Accelerate.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/config",
+          "@accelerate/http",
+          "@accelerate/identity",
+          "@accelerate/observability",
+          "@accelerate/ui"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "angular",
+      "name": "@accelerate/angular",
+      "path": "packages/angular",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [
+        "config",
+        "http",
+        "identity",
+        "observability",
+        "ui"
+      ],
+      "description": "Accelerate — Angular bindings for Accelerate.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/config",
+          "@accelerate/http",
+          "@accelerate/identity",
+          "@accelerate/observability",
+          "@accelerate/ui"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "ai",
+      "name": "@accelerate/ai",
+      "path": "packages/ai",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [
+        "core",
+        "testing"
+      ],
+      "description": "Accelerate — Model gateways, prompts, structured output, agents and evaluation.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/core",
+          "@accelerate/testing"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "testing",
+      "name": "@accelerate/testing",
+      "path": "packages/testing",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [
+        "http"
+      ],
+      "description": "Accelerate — Fixtures, transport helpers, contract and architecture tests.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/http"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "tooling",
+      "name": "@accelerate/tooling",
+      "path": "packages/tooling",
+      "category": "platform",
+      "lifecycle": "in-progress",
+      "priority": "P1",
+      "wave": 9,
+      "version": "0.1.0-next.0",
+      "dependencies": [],
+      "description": "Accelerate — Scaffolding, agent operations, AST tools and developer presets.",
+      "publication": {
+        "status": "unpublished"
+      },
+      "workspaceDependencies": {
+        "runtime": [],
+        "peer": [],
+        "optional": []
+      }
     }
   ]
 }

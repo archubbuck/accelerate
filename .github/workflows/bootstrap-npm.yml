@@ -2,6 +2,10 @@ name: Bootstrap npm packages (one-time token)
 on:
   workflow_dispatch:
     inputs:
+      preview:
+        description: 'Publish preview packages to npm next'
+        type: boolean
+        default: false
       confirm:
         description: 'Type BOOTSTRAP to publish missing @accelerate packages with NPM_TOKEN'
         required: true
@@ -48,9 +52,12 @@ jobs:
         run: pnpm registry:audit
       - name: Verify package archives
         run: node tools/registry/release.mjs pack
+      - name: Verify preview packages in a clean consumer
+        if: inputs.preview
+        run: node tools/registry/consolidation-consumer.mjs
       - name: Publish missing package versions
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           test -n "$NODE_AUTH_TOKEN" || { echo "NPM_TOKEN missing"; exit 1; }
-          node tools/registry/release.mjs publish
+          node tools/registry/release.mjs ${{ inputs.preview && 'publish-preview' || 'publish' }}

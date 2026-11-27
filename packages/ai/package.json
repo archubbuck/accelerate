@@ -1,0 +1,85 @@
+{
+  "name": "@accelerate/ai",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate — Model gateways, prompts, structured output, agents and evaluation.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "ai"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./agents": {
+      "types": "./dist/modules/agents-core/dist/index.d.ts",
+      "default": "./dist/modules/agents-core/dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/modules/ai-core/dist/index.d.ts",
+      "default": "./dist/modules/ai-core/dist/index.js"
+    },
+    "./evaluation": {
+      "types": "./dist/modules/ai-evaluation/dist/index.d.ts",
+      "default": "./dist/modules/ai-evaluation/dist/index.js"
+    },
+    "./gateway": {
+      "types": "./dist/modules/ai-gateway/dist/index.d.ts",
+      "default": "./dist/modules/ai-gateway/dist/index.js"
+    },
+    "./prompts": {
+      "types": "./dist/modules/ai-prompts/dist/index.d.ts",
+      "default": "./dist/modules/ai-prompts/dist/index.js"
+    },
+    "./structured": {
+      "types": "./dist/modules/ai-structured/dist/index.d.ts",
+      "default": "./dist/modules/ai-structured/dist/index.js"
+    },
+    "./tools": {
+      "types": "./dist/modules/ai-tools/dist/index.d.ts",
+      "default": "./dist/modules/ai-tools/dist/index.js"
+    },
+    "./usage": {
+      "types": "./dist/modules/ai-usage/dist/index.d.ts",
+      "default": "./dist/modules/ai-usage/dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build ai",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/ai"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/ai/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
+  "dependencies": {
+    "@accelerate/testing": "0.1.0-next.0",
+    "@accelerate/core": "0.1.0-next.0"
+  },
+  "devDependencies": {
+    "@accelerate/agents-core": "0.1.0",
+    "@accelerate/ai-core": "0.1.0",
+    "@accelerate/ai-evaluation": "0.1.0",
+    "@accelerate/ai-gateway": "0.1.0",
+    "@accelerate/ai-prompts": "0.1.0",
+    "@accelerate/ai-structured": "0.1.0",
+    "@accelerate/ai-tools": "0.1.0",
+    "@accelerate/ai-usage": "0.1.0"
+  }
+}

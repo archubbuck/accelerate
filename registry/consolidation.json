@@ -1,0 +1,498 @@
+{
+  "families": {
+    "@accelerate/sdk": {
+      "description": "Find Accelerate packages, install examples and migration guides.",
+      "status": "preview"
+    },
+    "@accelerate/core": {
+      "description": "Time, decimal arithmetic, validation and shared errors.",
+      "status": "preview"
+    },
+    "@accelerate/identity": {
+      "description": "Authentication, authorization, API keys and auditing.",
+      "status": "preview"
+    },
+    "@accelerate/http": {
+      "description": "HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
+      "status": "preview"
+    },
+    "@accelerate/data": {
+      "description": "Database adapters, transactions, caches, migrations and coordination.",
+      "status": "preview"
+    },
+    "@accelerate/messaging": {
+      "description": "Events, jobs, workflows, scheduling and transactional outbox.",
+      "status": "preview"
+    },
+    "@accelerate/observability": {
+      "description": "Logging, metrics, tracing, diagnostics and health checks.",
+      "status": "preview"
+    },
+    "@accelerate/config": {
+      "description": "Configuration, secrets and feature flags.",
+      "status": "preview"
+    },
+    "@accelerate/ui": {
+      "description": "Framework-neutral state, forms, notifications and tables.",
+      "status": "preview"
+    },
+    "@accelerate/react": {
+      "description": "React bindings for Accelerate.",
+      "status": "preview"
+    },
+    "@accelerate/angular": {
+      "description": "Angular bindings for Accelerate.",
+      "status": "preview"
+    },
+    "@accelerate/ai": {
+      "description": "Model gateways, prompts, structured output, agents and evaluation.",
+      "status": "preview"
+    },
+    "@accelerate/testing": {
+      "description": "Fixtures, transport helpers, contract and architecture tests.",
+      "status": "preview"
+    },
+    "@accelerate/tooling": {
+      "description": "Scaffolding, agent operations, AST tools and developer presets.",
+      "status": "preview"
+    }
+  },
+  "migrations": {
+    "@accelerate/agents-core": {
+      "family": "@accelerate/ai",
+      "entry": "./agents"
+    },
+    "@accelerate/ai-core": {
+      "family": "@accelerate/ai",
+      "entry": "./core"
+    },
+    "@accelerate/ai-evaluation": {
+      "family": "@accelerate/ai",
+      "entry": "./evaluation"
+    },
+    "@accelerate/ai-gateway": {
+      "family": "@accelerate/ai",
+      "entry": "./gateway"
+    },
+    "@accelerate/ai-prompts": {
+      "family": "@accelerate/ai",
+      "entry": "./prompts"
+    },
+    "@accelerate/ai-structured": {
+      "family": "@accelerate/ai",
+      "entry": "./structured"
+    },
+    "@accelerate/ai-tools": {
+      "family": "@accelerate/ai",
+      "entry": "./tools"
+    },
+    "@accelerate/ai-usage": {
+      "family": "@accelerate/ai",
+      "entry": "./usage"
+    },
+    "@accelerate/api-keys": {
+      "family": "@accelerate/identity",
+      "entry": "./api-keys"
+    },
+    "@accelerate/audit-core": {
+      "family": "@accelerate/identity",
+      "entry": "./audit"
+    },
+    "@accelerate/audit-postgres": {
+      "family": "@accelerate/identity",
+      "entry": "./audit/postgres"
+    },
+    "@accelerate/authentication-angular": {
+      "family": "@accelerate/angular",
+      "entry": "./authentication"
+    },
+    "@accelerate/authentication-core": {
+      "family": "@accelerate/identity",
+      "entry": "./authentication"
+    },
+    "@accelerate/authentication-node": {
+      "family": "@accelerate/identity",
+      "entry": "./authentication/node"
+    },
+    "@accelerate/authentication-postgres": {
+      "family": "@accelerate/identity",
+      "entry": "./authentication/postgres"
+    },
+    "@accelerate/authentication-react": {
+      "family": "@accelerate/react",
+      "entry": "./authentication"
+    },
+    "@accelerate/authorization-angular": {
+      "family": "@accelerate/angular",
+      "entry": "./authorization"
+    },
+    "@accelerate/authorization-core": {
+      "family": "@accelerate/identity",
+      "entry": "./authorization"
+    },
+    "@accelerate/authorization-postgres": {
+      "family": "@accelerate/identity",
+      "entry": "./authorization/postgres"
+    },
+    "@accelerate/authorization-react": {
+      "family": "@accelerate/react",
+      "entry": "./authorization"
+    },
+    "@accelerate/cache-core": {
+      "family": "@accelerate/data",
+      "entry": "./cache"
+    },
+    "@accelerate/cache-memory": {
+      "family": "@accelerate/data",
+      "entry": "./cache/memory"
+    },
+    "@accelerate/cache-redis": {
+      "family": "@accelerate/data",
+      "entry": "./cache/redis"
+    },
+    "@accelerate/config-angular": {
+      "family": "@accelerate/angular",
+      "entry": "./config"
+    },
+    "@accelerate/config-core": {
+      "family": "@accelerate/config",
+      "entry": "./config"
+    },
+    "@accelerate/config-node": {
+      "family": "@accelerate/config",
+      "entry": "./config/node"
+    },
+    "@accelerate/config-react": {
+      "family": "@accelerate/react",
+      "entry": "./config"
+    },
+    "@accelerate/contracts-openapi": {
+      "family": "@accelerate/http",
+      "entry": "./openapi"
+    },
+    "@accelerate/create-accelerate": {
+      "family": "@accelerate/tooling",
+      "entry": "./create"
+    },
+    "@accelerate/data-core": {
+      "family": "@accelerate/data",
+      "entry": "./core"
+    },
+    "@accelerate/data-postgres": {
+      "family": "@accelerate/data",
+      "entry": "./postgres"
+    },
+    "@accelerate/data-prisma": {
+      "family": "@accelerate/data",
+      "entry": "./prisma"
+    },
+    "@accelerate/data-sqlserver": {
+      "family": "@accelerate/data",
+      "entry": "./sqlserver"
+    },
+    "@accelerate/decimal-core": {
+      "family": "@accelerate/core",
+      "entry": "./decimal"
+    },
+    "@accelerate/diagnostics-core": {
+      "family": "@accelerate/observability",
+      "entry": "./diagnostics"
+    },
+    "@accelerate/errors-core": {
+      "family": "@accelerate/core",
+      "entry": "./errors"
+    },
+    "@accelerate/eslint-config": {
+      "family": "@accelerate/tooling",
+      "entry": "./eslint"
+    },
+    "@accelerate/events-core": {
+      "family": "@accelerate/messaging",
+      "entry": "./events"
+    },
+    "@accelerate/events-memory": {
+      "family": "@accelerate/messaging",
+      "entry": "./events/memory"
+    },
+    "@accelerate/events-postgres": {
+      "family": "@accelerate/messaging",
+      "entry": "./events/postgres"
+    },
+    "@accelerate/events-redis": {
+      "family": "@accelerate/messaging",
+      "entry": "./events/redis"
+    },
+    "@accelerate/feature-flags-core": {
+      "family": "@accelerate/config",
+      "entry": "./flags"
+    },
+    "@accelerate/feature-flags-memory": {
+      "family": "@accelerate/config",
+      "entry": "./flags/memory"
+    },
+    "@accelerate/feature-flags-postgres": {
+      "family": "@accelerate/config",
+      "entry": "./flags/postgres"
+    },
+    "@accelerate/forms-angular": {
+      "family": "@accelerate/angular",
+      "entry": "./forms"
+    },
+    "@accelerate/forms-core": {
+      "family": "@accelerate/ui",
+      "entry": "./forms"
+    },
+    "@accelerate/forms-react": {
+      "family": "@accelerate/react",
+      "entry": "./forms"
+    },
+    "@accelerate/health-core": {
+      "family": "@accelerate/observability",
+      "entry": "./health"
+    },
+    "@accelerate/health-node": {
+      "family": "@accelerate/observability",
+      "entry": "./health/node"
+    },
+    "@accelerate/http-angular": {
+      "family": "@accelerate/angular",
+      "entry": "./http"
+    },
+    "@accelerate/http-client": {
+      "family": "@accelerate/http",
+      "entry": "./client"
+    },
+    "@accelerate/http-core": {
+      "family": "@accelerate/http",
+      "entry": "./core"
+    },
+    "@accelerate/http-node": {
+      "family": "@accelerate/http",
+      "entry": "./node"
+    },
+    "@accelerate/http-react": {
+      "family": "@accelerate/react",
+      "entry": "./http"
+    },
+    "@accelerate/idempotency-core": {
+      "family": "@accelerate/data",
+      "entry": "./idempotency"
+    },
+    "@accelerate/idempotency-memory": {
+      "family": "@accelerate/data",
+      "entry": "./idempotency/memory"
+    },
+    "@accelerate/idempotency-postgres": {
+      "family": "@accelerate/data",
+      "entry": "./idempotency/postgres"
+    },
+    "@accelerate/jobs-core": {
+      "family": "@accelerate/messaging",
+      "entry": "./jobs"
+    },
+    "@accelerate/jobs-postgres": {
+      "family": "@accelerate/messaging",
+      "entry": "./jobs/postgres"
+    },
+    "@accelerate/locking-core": {
+      "family": "@accelerate/data",
+      "entry": "./locking"
+    },
+    "@accelerate/locking-memory": {
+      "family": "@accelerate/data",
+      "entry": "./locking/memory"
+    },
+    "@accelerate/locking-postgres": {
+      "family": "@accelerate/data",
+      "entry": "./locking/postgres"
+    },
+    "@accelerate/logging-angular": {
+      "family": "@accelerate/angular",
+      "entry": "./logging"
+    },
+    "@accelerate/logging-core": {
+      "family": "@accelerate/observability",
+      "entry": "./logging"
+    },
+    "@accelerate/logging-node": {
+      "family": "@accelerate/observability",
+      "entry": "./logging/node"
+    },
+    "@accelerate/logging-otel": {
+      "family": "@accelerate/observability",
+      "entry": "./logging/otel"
+    },
+    "@accelerate/logging-react": {
+      "family": "@accelerate/react",
+      "entry": "./logging"
+    },
+    "@accelerate/metrics-core": {
+      "family": "@accelerate/observability",
+      "entry": "./metrics"
+    },
+    "@accelerate/metrics-otel": {
+      "family": "@accelerate/observability",
+      "entry": "./metrics/otel"
+    },
+    "@accelerate/migrations-core": {
+      "family": "@accelerate/data",
+      "entry": "./migrations"
+    },
+    "@accelerate/migrations-postgres": {
+      "family": "@accelerate/data",
+      "entry": "./migrations/postgres"
+    },
+    "@accelerate/notifications-core": {
+      "family": "@accelerate/ui",
+      "entry": "./notifications"
+    },
+    "@accelerate/outbox-core": {
+      "family": "@accelerate/messaging",
+      "entry": "./outbox"
+    },
+    "@accelerate/outbox-postgres": {
+      "family": "@accelerate/messaging",
+      "entry": "./outbox/postgres"
+    },
+    "@accelerate/rate-limit-core": {
+      "family": "@accelerate/http",
+      "entry": "./rate-limit"
+    },
+    "@accelerate/rate-limit-memory": {
+      "family": "@accelerate/http",
+      "entry": "./rate-limit/memory"
+    },
+    "@accelerate/rate-limit-postgres": {
+      "family": "@accelerate/http",
+      "entry": "./rate-limit/postgres"
+    },
+    "@accelerate/rate-limit-redis": {
+      "family": "@accelerate/http",
+      "entry": "./rate-limit/redis"
+    },
+    "@accelerate/resilience-core": {
+      "family": "@accelerate/http",
+      "entry": "./resilience"
+    },
+    "@accelerate/scheduler-core": {
+      "family": "@accelerate/messaging",
+      "entry": "./scheduler"
+    },
+    "@accelerate/scheduler-postgres": {
+      "family": "@accelerate/messaging",
+      "entry": "./scheduler/postgres"
+    },
+    "@accelerate/secrets-core": {
+      "family": "@accelerate/config",
+      "entry": "./secrets"
+    },
+    "@accelerate/security-core": {
+      "family": "@accelerate/identity",
+      "entry": "./security"
+    },
+    "@accelerate/state-angular": {
+      "family": "@accelerate/angular",
+      "entry": "./state"
+    },
+    "@accelerate/state-core": {
+      "family": "@accelerate/ui",
+      "entry": "./state"
+    },
+    "@accelerate/state-react": {
+      "family": "@accelerate/react",
+      "entry": "./state"
+    },
+    "@accelerate/tables-angular": {
+      "family": "@accelerate/angular",
+      "entry": "./tables"
+    },
+    "@accelerate/tables-core": {
+      "family": "@accelerate/ui",
+      "entry": "./tables"
+    },
+    "@accelerate/tables-react": {
+      "family": "@accelerate/react",
+      "entry": "./tables"
+    },
+    "@accelerate/testing-architecture": {
+      "family": "@accelerate/testing",
+      "entry": "./architecture"
+    },
+    "@accelerate/testing-contracts": {
+      "family": "@accelerate/testing",
+      "entry": "./contracts"
+    },
+    "@accelerate/testing-core": {
+      "family": "@accelerate/testing",
+      "entry": "./core"
+    },
+    "@accelerate/testing-fixtures": {
+      "family": "@accelerate/testing",
+      "entry": "./fixtures"
+    },
+    "@accelerate/testing-http": {
+      "family": "@accelerate/testing",
+      "entry": "./http"
+    },
+    "@accelerate/testing-postgres": {
+      "family": "@accelerate/testing",
+      "entry": "./postgres"
+    },
+    "@accelerate/time-core": {
+      "family": "@accelerate/core",
+      "entry": "./time"
+    },
+    "@accelerate/tooling-ast": {
+      "family": "@accelerate/tooling",
+      "entry": "./ast"
+    },
+    "@accelerate/tooling-core": {
+      "family": "@accelerate/tooling",
+      "entry": "./core"
+    },
+    "@accelerate/tooling-patches": {
+      "family": "@accelerate/tooling",
+      "entry": "./patches"
+    },
+    "@accelerate/tooling-project": {
+      "family": "@accelerate/tooling",
+      "entry": "./project"
+    },
+    "@accelerate/tooling-registry": {
+      "family": "@accelerate/tooling",
+      "entry": "./registry"
+    },
+    "@accelerate/tracing-core": {
+      "family": "@accelerate/observability",
+      "entry": "./tracing"
+    },
+    "@accelerate/tracing-otel": {
+      "family": "@accelerate/observability",
+      "entry": "./tracing/otel"
+    },
+    "@accelerate/transactions": {
+      "family": "@accelerate/data",
+      "entry": "./transactions"
+    },
+    "@accelerate/typescript-config": {
+      "family": "@accelerate/tooling",
+      "entry": "./tsconfig"
+    },
+    "@accelerate/validation-core": {
+      "family": "@accelerate/core",
+      "entry": "./validation"
+    },
+    "@accelerate/workflows-core": {
+      "family": "@accelerate/messaging",
+      "entry": "./workflows"
+    },
+    "@accelerate/workflows-memory": {
+      "family": "@accelerate/messaging",
+      "entry": "./workflows/memory"
+    },
+    "@accelerate/workflows-postgres": {
+      "family": "@accelerate/messaging",
+      "entry": "./workflows/postgres"
+    }
+  }
+}

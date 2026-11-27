@@ -1,0 +1,42 @@
+{
+  "name": "@accelerate/sdk",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate — Find Accelerate packages, install examples and migration guides.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "sdk",
+    "package-catalog",
+    "migration"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./catalog.json": "./dist/catalog.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build sdk",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/sdk/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  }
+}

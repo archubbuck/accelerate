@@ -1,0 +1,106 @@
+{
+  "name": "@accelerate/observability",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate — Logging, metrics, tracing, diagnostics and health checks.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "observability",
+    "logging",
+    "tracing",
+    "metrics"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./diagnostics": {
+      "types": "./dist/modules/diagnostics-core/dist/index.d.ts",
+      "default": "./dist/modules/diagnostics-core/dist/index.js"
+    },
+    "./health": {
+      "types": "./dist/modules/health-core/dist/index.d.ts",
+      "default": "./dist/modules/health-core/dist/index.js"
+    },
+    "./health/node": {
+      "types": "./dist/modules/health-node/dist/index.d.ts",
+      "default": "./dist/modules/health-node/dist/index.js"
+    },
+    "./logging": {
+      "types": "./dist/modules/logging-core/dist/index.d.ts",
+      "default": "./dist/modules/logging-core/dist/index.js"
+    },
+    "./logging/node": {
+      "types": "./dist/modules/logging-node/dist/index.d.ts",
+      "default": "./dist/modules/logging-node/dist/index.js"
+    },
+    "./logging/otel": {
+      "types": "./dist/modules/logging-otel/dist/index.d.ts",
+      "default": "./dist/modules/logging-otel/dist/index.js"
+    },
+    "./metrics": {
+      "types": "./dist/modules/metrics-core/dist/index.d.ts",
+      "default": "./dist/modules/metrics-core/dist/index.js"
+    },
+    "./metrics/otel": {
+      "types": "./dist/modules/metrics-otel/dist/index.d.ts",
+      "default": "./dist/modules/metrics-otel/dist/index.js"
+    },
+    "./tracing": {
+      "types": "./dist/modules/tracing-core/dist/index.d.ts",
+      "default": "./dist/modules/tracing-core/dist/index.js"
+    },
+    "./tracing/otel": {
+      "types": "./dist/modules/tracing-otel/dist/index.d.ts",
+      "default": "./dist/modules/tracing-otel/dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build observability",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/observability"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/observability/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
+  "devDependencies": {
+    "@accelerate/diagnostics-core": "0.1.0",
+    "@accelerate/health-core": "0.1.0",
+    "@accelerate/health-node": "0.1.0",
+    "@accelerate/logging-core": "0.1.1",
+    "@accelerate/logging-node": "0.1.1",
+    "@accelerate/logging-otel": "0.1.1",
+    "@accelerate/metrics-core": "0.1.0",
+    "@accelerate/metrics-otel": "0.1.0",
+    "@accelerate/tracing-core": "0.1.0",
+    "@accelerate/tracing-otel": "0.1.0"
+  },
+  "peerDependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/api-logs": "^0.200.0"
+  },
+  "peerDependenciesMeta": {
+    "@opentelemetry/api": {
+      "optional": true
+    },
+    "@opentelemetry/api-logs": {
+      "optional": true
+    }
+  }
+}

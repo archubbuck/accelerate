@@ -1,0 +1,64 @@
+{
+  "name": "@accelerate/ui",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate — Framework-neutral state, forms, notifications and tables.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "ui",
+    "forms",
+    "state",
+    "tables"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./forms": {
+      "types": "./dist/modules/forms-core/dist/index.d.ts",
+      "default": "./dist/modules/forms-core/dist/index.js"
+    },
+    "./notifications": {
+      "types": "./dist/modules/notifications-core/dist/index.d.ts",
+      "default": "./dist/modules/notifications-core/dist/index.js"
+    },
+    "./state": {
+      "types": "./dist/modules/state-core/dist/index.d.ts",
+      "default": "./dist/modules/state-core/dist/index.js"
+    },
+    "./tables": {
+      "types": "./dist/modules/tables-core/dist/index.d.ts",
+      "default": "./dist/modules/tables-core/dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build ui",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/ui/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
+  "devDependencies": {
+    "@accelerate/forms-core": "0.1.0",
+    "@accelerate/notifications-core": "0.1.0",
+    "@accelerate/state-core": "0.1.0",
+    "@accelerate/tables-core": "0.1.0"
+  }
+}

@@ -1,0 +1,16 @@
+# Accelerate Core
+
+Time, decimal arithmetic, validation and shared errors.
+
+Once published, install with `npm install @accelerate/core@next`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
+
+## Import migration
+
+Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
+
+| Existing import | Preview import |
+| --- | --- |
+| `@accelerate/decimal-core` | `@accelerate/core/decimal` |
+| `@accelerate/errors-core` | `@accelerate/core/errors` |
+| `@accelerate/time-core` | `@accelerate/core/time` |
+| `@accelerate/validation-core` | `@accelerate/core/validation` |

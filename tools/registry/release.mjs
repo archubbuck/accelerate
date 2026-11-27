@@ -17,7 +17,7 @@ export function releasePlan(root,catalog){
   const publishDir=existsSync(generated)?join(dir,'dist'):dir;
   const manifest=JSON.parse(readFileSync(join(publishDir,'package.json'),'utf8'));
   if(manifest.name!==pkg.name||manifest.version!==pkg.version||manifest.private===true||manifest.publishConfig?.access!=='public'&&pkg.publishConfig?.access!=='public')throw Error('Invalid publish manifest: '+id);
-  order.push({id,name:pkg.name,version:pkg.version,dir:publishDir});
+  order.push({id,name:pkg.name,version:pkg.version,dir:publishDir,tag:manifest.publishConfig?.tag ?? pkg.publishConfig?.tag ?? "latest"});
  }
  for(const p of [...entries.values()].sort((a,b)=>a.id.localeCompare(b.id))){
   if(!p.path)continue;
@@ -34,15 +34,19 @@ export function classifyLookup(status,stdout,stderr){
 }
 function npm(args,dir){const r=spawnSync('npm',args,{cwd:dir,encoding:'utf8'});if(r.error)throw r.error;return r;}
 function checked(args,dir){const r=npm(args,dir);process.stdout.write(r.stdout??'');process.stderr.write(r.stderr??'');if(r.status!==0)throw Error('npm '+args[0]+' failed');}
+export function publicationTargets(plan, mode) {
+ const tag = mode === 'publish-preview' ? 'next' : 'latest';
+ return plan.filter(entry => entry.tag === tag);
+}
 export function main(mode,root=resolve(import.meta.dirname,'../..')){
- if(!['plan','pack','publish'].includes(mode))throw Error('Expected plan, pack or publish');
+ if(!['plan','pack','publish','publish-preview'].includes(mode))throw Error('Expected plan, pack, publish or publish-preview');
  const plan=releasePlan(root,JSON.parse(readFileSync(join(root,'registry/packages.json'),'utf8')));
  if(mode==='plan'){console.log(JSON.stringify(plan,null,2));return;}
- for(const p of plan){
+ for(const p of mode==='pack'?plan:publicationTargets(plan,mode)){
   if(mode==='pack'){console.log('Packing '+p.name+'@'+p.version);checked(['pack','--dry-run'],p.dir);continue;}
   const r=npm(['view',p.name+'@'+p.version,'version','--json','--registry=https://registry.npmjs.org'],p.dir);
   if(classifyLookup(r.status,r.stdout??'',r.stderr??'')==='published'){console.log('Already published: '+p.name+'@'+p.version);continue;}
-  console.log('Publishing: '+p.name+'@'+p.version);checked(['publish','--access','public','--registry=https://registry.npmjs.org'],p.dir);
+  console.log('Publishing: '+p.name+'@'+p.version);checked(['publish','--access','public','--tag',p.tag,'--registry=https://registry.npmjs.org'],p.dir);
  }
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){try{main(process.argv[2]);}catch(error){console.error(error.message);process.exitCode=1;}}
