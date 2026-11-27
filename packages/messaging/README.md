@@ -4,6 +4,8 @@ Events, jobs, workflows, scheduling and transactional outbox.
 
 Install with `npm install @accelerate/messaging`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
+See [durable notification delivery](https://github.com/archubbuck/accelerate/blob/main/docs/notification-delivery.md) for email, signed webhooks and PostgreSQL job state.
+
 ## Import migration
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.

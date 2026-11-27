@@ -40,7 +40,13 @@
     "@accelerate/messaging": {
       "description": "Events, jobs, workflows, scheduling and transactional outbox.",
       "status": "stable",
-      "version": "0.2.8"
+      "version": "0.3.0",
+      "sourceExports": {
+        "./notifications": "notifications",
+        "./notifications/email": "notifications-email",
+        "./notifications/webhook": "notifications-webhook",
+        "./notifications/postgres": "notifications-postgres"
+      }
     },
     "@accelerate/observability": {
       "description": "Logging, metrics, tracing, diagnostics and health checks.",
@@ -67,7 +73,7 @@
     "@accelerate/ai": {
       "description": "Model gateways, prompts, structured output, agents and evaluation.",
       "status": "stable",
-      "version": "0.4.8"
+      "version": "0.4.9"
     },
     "@accelerate/testing": {
       "description": "Fixtures, transport helpers, contract and architecture tests.",
