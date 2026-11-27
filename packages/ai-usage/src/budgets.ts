@@ -54,6 +54,7 @@ export function createBudgetedModelProvider(
 ): ModelProvider {
   const now = options.now ?? (() => new Date());
   return {
+    supportsStructuredOutput: provider.supportsStructuredOutput?.bind(provider),
     async generate(request) {
       request.signal?.throwIfAborted();
       const plan = await options.plan(request);
