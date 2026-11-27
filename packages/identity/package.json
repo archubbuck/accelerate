@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/identity",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Accelerate — Authentication, authorization, API keys and auditing.",
   "keywords": [
     "accelerate",
@@ -35,6 +35,14 @@
       "types": "./dist/modules/authentication-core/dist/index.d.ts",
       "default": "./dist/modules/authentication-core/dist/index.js"
     },
+    "./authentication/oauth": {
+      "types": "./dist/modules/authentication-core/dist/external/oauth.d.ts",
+      "default": "./dist/modules/authentication-core/dist/external/oauth.js"
+    },
+    "./authentication/oidc": {
+      "types": "./dist/modules/authentication-core/dist/external/oidc.d.ts",
+      "default": "./dist/modules/authentication-core/dist/external/oidc.js"
+    },
     "./authentication/node": {
       "types": "./dist/modules/authentication-node/dist/index.d.ts",
       "default": "./dist/modules/authentication-node/dist/index.js"
@@ -42,6 +50,10 @@
     "./authentication/postgres": {
       "types": "./dist/modules/authentication-postgres/dist/index.d.ts",
       "default": "./dist/modules/authentication-postgres/dist/index.js"
+    },
+    "./authentication/postgres/external": {
+      "types": "./dist/modules/authentication-postgres/dist/external.d.ts",
+      "default": "./dist/modules/authentication-postgres/dist/external.js"
     },
     "./authorization": {
       "types": "./dist/modules/authorization-core/dist/index.d.ts",
@@ -94,9 +106,13 @@
     "@accelerate/security-core": "0.1.0"
   },
   "peerDependencies": {
+    "openid-client": "^6.9.1",
     "pg": "^8.11.0"
   },
   "peerDependenciesMeta": {
+    "openid-client": {
+      "optional": true
+    },
     "pg": {
       "optional": true
     }
