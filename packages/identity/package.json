@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/identity",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Accelerate — Authentication, authorization, API keys and auditing.",
   "keywords": [
     "accelerate",
@@ -116,7 +116,7 @@
     "tag": "latest"
   },
   "dependencies": {
-    "@accelerate/data": "0.1.0"
+    "@accelerate/data": "0.2.0"
   },
   "devDependencies": {
     "@accelerate/api-keys": "0.1.0",
