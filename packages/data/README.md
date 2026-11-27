@@ -2,7 +2,7 @@
 
 Database adapters, transactions, caches, migrations and coordination.
 
-Once published, install with `npm install @accelerate/data@next`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
+Install with `npm install @accelerate/data`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
 The database adapters accept caller-supplied drivers. Install pg and its types if you use the PostgreSQL adapter.
 
@@ -10,7 +10,7 @@ The database adapters accept caller-supplied drivers. Install pg and its types i
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
 
-| Existing import | Preview import |
+| Existing import | Replacement import |
 | --- | --- |
 | `@accelerate/cache-core` | `@accelerate/data/cache` |
 | `@accelerate/cache-memory` | `@accelerate/data/cache/memory` |

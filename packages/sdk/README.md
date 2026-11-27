@@ -2,7 +2,7 @@
 
 Find Accelerate packages, install examples and migration guides.
 
-Once published, install a preview by appending `@next` to the npm package name. For example, run `npm install @accelerate/http@next`.
+Choose the package you need. For the HTTP family, run `npm install @accelerate/http`.
 
 | Package | Capability |
 | --- | --- |
@@ -25,7 +25,7 @@ Once published, install a preview by appending `@next` to the npm package name. 
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
 
-| Existing import | Preview import |
+| Existing import | Replacement import |
 | --- | --- |
 | `@accelerate/agents-core` | `@accelerate/ai/agents` |
 | `@accelerate/ai-core` | `@accelerate/ai/core` |

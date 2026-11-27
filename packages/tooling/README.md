@@ -2,15 +2,15 @@
 
 Scaffolding, agent operations, AST tools and developer presets.
 
-Once published, install with `npm install @accelerate/tooling@next`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
+Install with `npm install @accelerate/tooling`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
-Run `npx --package @accelerate/tooling@next create-accelerate --help` to use the existing scaffolding CLI. The CLI still accepts existing catalog IDs.
+Run `npx --package @accelerate/tooling create-accelerate --help` to use the existing scaffolding CLI. The CLI still accepts existing catalog IDs.
 
 ## Import migration
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
 
-| Existing import | Preview import |
+| Existing import | Replacement import |
 | --- | --- |
 | `@accelerate/create-accelerate` | `@accelerate/tooling/create` |
 | `@accelerate/eslint-config` | `@accelerate/tooling/eslint` |

@@ -2,7 +2,7 @@
 
 Angular bindings for Accelerate.
 
-Once published, install with `npm install @accelerate/angular@next`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
+Install with `npm install @accelerate/angular`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
 Use Angular 19 or 20 with matching core and common versions, plus RxJS 7.4 or newer within version 7. Authorization and logging retain their compiled Angular entry points.
 
@@ -10,7 +10,7 @@ Use Angular 19 or 20 with matching core and common versions, plus RxJS 7.4 or ne
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
 
-| Existing import | Preview import |
+| Existing import | Replacement import |
 | --- | --- |
 | `@accelerate/authentication-angular` | `@accelerate/angular/authentication` |
 | `@accelerate/authorization-angular` | `@accelerate/angular/authorization` |

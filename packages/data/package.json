@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/data",
-  "version": "0.1.0-next.0",
+  "version": "0.1.0",
   "description": "Accelerate — Database adapters, transactions, caches, migrations and coordination.",
   "keywords": [
     "accelerate",
@@ -101,13 +101,13 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",
-    "tag": "next"
+    "tag": "latest"
   },
   "accelerate": {
     "operations": "./dist/operations/package-manifest.json"
   },
   "dependencies": {
-    "@accelerate/core": "0.1.0-next.0"
+    "@accelerate/core": "0.1.0"
   },
   "devDependencies": {
     "@accelerate/cache-core": "0.1.0",

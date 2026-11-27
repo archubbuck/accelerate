@@ -2495,7 +2495,7 @@
       "priority": "P1",
       "wave": 9,
       "path": "packages/http",
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [
         "core",
         "data"
@@ -2521,7 +2521,7 @@
       "priority": "P1",
       "wave": 9,
       "path": "packages/sdk",
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [],
       "description": "Accelerate — Find Accelerate packages, install examples and migration guides.",
       "publication": {
@@ -2541,7 +2541,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [],
       "description": "Accelerate — Time, decimal arithmetic, validation and shared errors.",
       "publication": {
@@ -2561,7 +2561,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [
         "data"
       ],
@@ -2585,7 +2585,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [
         "core"
       ],
@@ -2609,7 +2609,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [
         "data"
       ],
@@ -2633,7 +2633,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [],
       "description": "Accelerate — Logging, metrics, tracing, diagnostics and health checks.",
       "publication": {
@@ -2653,7 +2653,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [],
       "description": "Accelerate — Configuration, secrets and feature flags.",
       "publication": {
@@ -2673,7 +2673,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [],
       "description": "Accelerate — Framework-neutral state, forms, notifications and tables.",
       "publication": {
@@ -2693,7 +2693,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [
         "config",
         "http",
@@ -2725,7 +2725,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [
         "config",
         "http",
@@ -2757,7 +2757,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [
         "core",
         "testing"
@@ -2783,7 +2783,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [
         "http"
       ],
@@ -2807,7 +2807,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.0-next.0",
+      "version": "0.1.0",
       "dependencies": [],
       "description": "Accelerate — Scaffolding, agent operations, AST tools and developer presets.",
       "publication": {

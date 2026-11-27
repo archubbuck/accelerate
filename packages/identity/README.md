@@ -2,7 +2,7 @@
 
 Authentication, authorization, API keys and auditing.
 
-Once published, install with `npm install @accelerate/identity@next`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
+Install with `npm install @accelerate/identity`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
 Enforce authorization in your server. Install pg and its types for the pool-based PostgreSQL adapter.
 
@@ -10,7 +10,7 @@ Enforce authorization in your server. Install pg and its types for the pool-base
 
 Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
 
-| Existing import | Preview import |
+| Existing import | Replacement import |
 | --- | --- |
 | `@accelerate/api-keys` | `@accelerate/identity/api-keys` |
 | `@accelerate/audit-core` | `@accelerate/identity/audit` |

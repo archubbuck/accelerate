@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/angular",
-  "version": "0.1.0-next.0",
+  "version": "0.1.0",
   "description": "Accelerate — Angular bindings for Accelerate.",
   "keywords": [
     "accelerate",
@@ -66,15 +66,15 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",
-    "tag": "next"
+    "tag": "latest"
   },
   "dependencies": {
-    "@accelerate/identity": "0.1.0-next.0",
+    "@accelerate/identity": "0.1.0",
     "tslib": "^2.6.2",
-    "@accelerate/config": "0.1.0-next.0",
-    "@accelerate/ui": "0.1.0-next.0",
-    "@accelerate/http": "0.1.0-next.0",
-    "@accelerate/observability": "0.1.0-next.0"
+    "@accelerate/config": "0.1.0",
+    "@accelerate/ui": "0.1.0",
+    "@accelerate/http": "0.1.0",
+    "@accelerate/observability": "0.1.0"
   },
   "devDependencies": {
     "@accelerate/authentication-angular": "0.1.0",
