@@ -151,6 +151,11 @@ const machine = createStateMachine({
 await machine.start("ticket", {});
 assert.equal((await machine.send("ticket", { type: "close" })).snapshot.state, "closed");
 assert.equal(Object.keys(catalog.families).length, 14);
+for (const [name, entry] of Object.entries(catalog.entrypoints)) {
+  const manifest = JSON.parse(readFileSync(new URL("./node_modules/" + name + "/package.json", import.meta.url), "utf8"));
+  assert.equal(entry.version, manifest.version);
+  assert.deepEqual(entry.imports, Object.keys(manifest.exports).map(path => name + path.slice(1)).sort());
+}
 const discovery = await discoverPackageOperations(process.cwd(), Object.keys(catalog.families));
 assert.deepEqual(discovery.diagnostics, []);
 assert.equal(discovery.packages.filter(item => item.status === "declared").length, 3);

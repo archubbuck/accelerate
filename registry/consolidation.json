@@ -2,7 +2,8 @@
   "families": {
     "@accelerate/sdk": {
       "description": "Find Accelerate packages, install examples and migration guides.",
-      "status": "stable"
+      "status": "stable",
+      "version": "0.2.0"
     },
     "@accelerate/core": {
       "description": "Time, decimal arithmetic, validation and shared errors.",
