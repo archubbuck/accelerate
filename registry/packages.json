@@ -793,7 +793,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [],
         "peer": [],
@@ -816,7 +816,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "testsComplete": false,
       "documentationComplete": false,
       "workspaceDependencies": {
@@ -841,7 +841,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/events-core"
@@ -861,19 +861,21 @@
       "dependencies": [
         "data-core",
         "data-postgres",
-        "events-core"
+        "events-core",
+        "migrations-core"
       ],
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.1",
+      "version": "0.1.2",
       "testsComplete": false,
       "documentationComplete": false,
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/data-core",
           "@accelerate/data-postgres",
-          "@accelerate/events-core"
+          "@accelerate/events-core",
+          "@accelerate/migrations-core"
         ],
         "peer": [],
         "optional": []
@@ -967,7 +969,7 @@
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/events-core",
@@ -2255,7 +2257,7 @@
       "publication": {
         "status": "unknown"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/events-core"
@@ -2281,7 +2283,7 @@
       "publication": {
         "status": "unknown"
       },
-      "version": "0.1.0",
+      "version": "0.1.1",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/data-core",

@@ -28,6 +28,8 @@ jobs:
   postgres-integration:
     runs-on: ubuntu-latest
     services:
+      redis:
+        image: redis:7-alpine
       postgres:
         image: postgres:16
         env:
@@ -61,3 +63,10 @@ jobs:
         env:
           WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
         run: pnpm --filter @accelerate/data-postgres --filter @accelerate/decimal-core --filter @accelerate/migrations-postgres --filter @accelerate/locking-postgres --filter @accelerate/idempotency-postgres --filter @accelerate/outbox-postgres test
+      - name: Verify durable event subscriptions on PostgreSQL and Redis
+        env:
+          WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
+          EVENT_JOURNAL_REDIS_CONTAINER: ${{ job.services.redis.id }}
+        run: |
+          pnpm --filter @accelerate/events-postgres... --filter @accelerate/events-redis... build
+          pnpm --filter @accelerate/events-postgres --filter @accelerate/events-redis test
