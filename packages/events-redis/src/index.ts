@@ -6,3 +6,4 @@ export class RedisEventBus implements EventBus {
  async publish<T>(event:DomainEvent<T>):Promise<void>{await this.bridge.publish(this.channel(event.type),JSON.stringify(event));}
  subscribe<T>(type:string,handler:EventHandler<T>):()=>void{return this.bridge.subscribe(this.channel(type),message=>{void Promise.resolve().then(()=>{const event=JSON.parse(message) as DomainEvent<T>;if(!event||event.type!==type||typeof event.id!=="string"||typeof event.occurredAt!=="string")throw new Error("Invalid event");return handler(event);}).catch(this.onError);});}
 }
+export * from "./journal.js";

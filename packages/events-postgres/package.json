@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/events-postgres",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
@@ -20,9 +20,10 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@accelerate/events-core": "0.1.0",
+    "@accelerate/events-core": "^0.1.1",
     "@accelerate/data-postgres": "^0.1.1",
-    "@accelerate/data-core": "^0.1.1"
+    "@accelerate/data-core": "^0.1.1",
+    "@accelerate/migrations-core": "0.1.0"
   },
   "repository": {
     "type": "git",

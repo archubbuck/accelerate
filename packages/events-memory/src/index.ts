@@ -1,2 +1,3 @@
 import type { DomainEvent, EventBus, EventHandler } from "@accelerate/events-core";
 export function createMemoryEventBus(): EventBus { const handlers = new Map<string, Set<EventHandler<unknown>>>(); return { async publish<T>(event: DomainEvent<T>) { for (const handler of [...(handlers.get(event.type) ?? [])]) await handler(event); }, subscribe<T>(type: string, handler: EventHandler<T>) { let set=handlers.get(type); if (!set) { set=new Set(); handlers.set(type,set); } const h=handler as EventHandler<unknown>; set.add(h); return () => { set?.delete(h); if (!set?.size) handlers.delete(type); }; } }; }
+export * from "./journal.js";
