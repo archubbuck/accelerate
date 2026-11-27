@@ -69,6 +69,12 @@ jobs:
         env:
           WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
         run: pnpm --filter @accelerate/authentication-postgres test
+      - name: Verify service principal credentials on PostgreSQL
+        env:
+          WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
+        run: |
+          pnpm --filter @accelerate/api-keys... build
+          pnpm --filter @accelerate/api-keys test
       - name: Verify durable event subscriptions on PostgreSQL and Redis
         env:
           WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}

@@ -4,7 +4,7 @@ Authentication, authorization, API keys and auditing.
 
 Install with `npm install @accelerate/identity`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
-Enforce authorization in your server. Install pg and its types for the pool-based PostgreSQL adapter. See the [OAuth and OpenID Connect guide](https://github.com/archubbuck/accelerate/blob/main/docs/oidc.md) for provider sign-in and session integration. See [tenant and resource authorization](https://github.com/archubbuck/accelerate/blob/main/docs/scoped-authorization.md) for scoped grants and UI snapshots.
+Enforce authorization in your server. Install pg and its types for the pool-based PostgreSQL adapter. See the [OAuth and OpenID Connect guide](https://github.com/archubbuck/accelerate/blob/main/docs/oidc.md) for provider sign-in and session integration. See [tenant and resource authorization](https://github.com/archubbuck/accelerate/blob/main/docs/scoped-authorization.md) for scoped grants and UI snapshots. See [service principals and API keys](https://github.com/archubbuck/accelerate/blob/main/docs/service-principals.md) for machine authentication.
 
 ## Import migration
 

@@ -9,7 +9,7 @@ export function issueApiKey(subjectId: string, now = new Date(), expiresAt?: Dat
   const id = randomBytes(16).toString("hex"); const prefix = "ak_" + randomBytes(8).toString("hex"); const token = prefix + "_" + randomBytes(32).toString("base64url");
   return { token, record: { id, prefix, hash: hashApiKey(token), subjectId, createdAt: now, ...(expiresAt ? { expiresAt } : {}) } };
 }
-export async function verifyApiKey(token: string, store: ApiKeyStore, now = new Date()): Promise<ApiKeyRecord | undefined> {
+export async function verifyApiKey<T extends ApiKeyRecord>(token: string, store: { getByPrefix(prefix: string): Promise<readonly T[]> }, now = new Date()): Promise<T | undefined> {
   const match = /^(ak_[0-9a-f]{16})_[A-Za-z0-9_-]{43}$/.exec(token); if (!match) return undefined;
   const digest = Buffer.from(hashApiKey(token), "hex");
   const records = await store.getByPrefix(match[1]);
