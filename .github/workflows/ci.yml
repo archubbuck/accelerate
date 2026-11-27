@@ -65,6 +65,10 @@ jobs:
         env:
           WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
         run: pnpm --filter @accelerate/data-postgres --filter @accelerate/decimal-core --filter @accelerate/migrations-postgres --filter @accelerate/locking-postgres --filter @accelerate/idempotency-postgres --filter @accelerate/outbox-postgres test
+      - name: Verify OAuth transaction and identity link contention
+        env:
+          WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
+        run: pnpm --filter @accelerate/authentication-postgres test
       - name: Verify durable event subscriptions on PostgreSQL and Redis
         env:
           WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}

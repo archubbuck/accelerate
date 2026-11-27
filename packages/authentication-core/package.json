@@ -9,6 +9,14 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./external/oauth": {
+      "types": "./dist/external/oauth.d.ts",
+      "default": "./dist/external/oauth.js"
+    },
+    "./external/oidc": {
+      "types": "./dist/external/oidc.d.ts",
+      "default": "./dist/external/oidc.js"
     }
   },
   "files": [
@@ -27,5 +35,8 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "openid-client": "^6.9.1"
   }
 }
