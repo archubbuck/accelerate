@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/testing",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Accelerate — Fixtures, transport helpers, contract and architecture tests.",
   "keywords": [
     "accelerate",
@@ -61,7 +61,7 @@
     "tag": "latest"
   },
   "dependencies": {
-    "@accelerate/http": "0.3.6"
+    "@accelerate/http": "0.3.7"
   },
   "devDependencies": {
     "@accelerate/testing-architecture": "0.1.0",

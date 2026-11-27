@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/data",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Accelerate — Database adapters, transactions, caches, migrations and coordination.",
   "keywords": [
     "accelerate",
@@ -67,6 +67,10 @@
       "types": "./dist/modules/data-core/dist/storage-memory.d.ts",
       "default": "./dist/modules/data-core/dist/storage-memory.js"
     },
+    "./document-ingestion": {
+      "types": "./dist/modules/data-core/dist/document-ingestion.d.ts",
+      "default": "./dist/modules/data-core/dist/document-ingestion.js"
+    },
     "./postgres": {
       "types": "./dist/modules/data-postgres/dist/index.d.ts",
       "default": "./dist/modules/data-postgres/dist/index.js"
@@ -86,6 +90,10 @@
     "./experiments/postgres": {
       "types": "./dist/modules/data-postgres/dist/experiments.d.ts",
       "default": "./dist/modules/data-postgres/dist/experiments.js"
+    },
+    "./document-ingestion/postgres": {
+      "types": "./dist/modules/data-postgres/dist/document-ingestion.d.ts",
+      "default": "./dist/modules/data-postgres/dist/document-ingestion.js"
     },
     "./prisma": {
       "types": "./dist/modules/data-prisma/dist/index.d.ts",
