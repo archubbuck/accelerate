@@ -70,3 +70,9 @@ jobs:
         run: |
           pnpm --filter @accelerate/events-postgres... --filter @accelerate/events-redis... build
           pnpm --filter @accelerate/events-postgres --filter @accelerate/events-redis test
+      - name: Verify durable workflow recovery on PostgreSQL
+        env:
+          WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
+        run: |
+          pnpm --filter @accelerate/workflows-postgres... build
+          pnpm --filter @accelerate/workflows-postgres test

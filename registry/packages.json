@@ -964,15 +964,17 @@
       "path": "packages/workflows-core",
       "dependencies": [
         "events-core",
+        "idempotency-core",
         "jobs-core"
       ],
       "publication": {
         "status": "unpublished"
       },
-      "version": "0.1.1",
+      "version": "0.1.2",
       "workspaceDependencies": {
         "runtime": [
           "@accelerate/events-core",
+          "@accelerate/idempotency-core",
           "@accelerate/jobs-core"
         ],
         "peer": [],
@@ -2289,6 +2291,58 @@
           "@accelerate/data-core",
           "@accelerate/migrations-core",
           "@accelerate/outbox-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "workflows-memory",
+      "name": "@accelerate/workflows-memory",
+      "category": "events",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 8,
+      "path": "packages/workflows-memory",
+      "dependencies": [
+        "workflows-core"
+      ],
+      "description": "Deterministic memory store for durable workflow tests.",
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/workflows-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "workflows-postgres",
+      "name": "@accelerate/workflows-postgres",
+      "category": "events",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 8,
+      "path": "packages/workflows-postgres",
+      "dependencies": [
+        "data-core",
+        "migrations-core",
+        "workflows-core"
+      ],
+      "description": "PostgreSQL persistence for workflow instances, leases and execution history.",
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/migrations-core",
+          "@accelerate/workflows-core"
         ],
         "peer": [],
         "optional": []
