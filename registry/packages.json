@@ -2377,6 +2377,110 @@
         "peer": [],
         "optional": []
       }
+    },
+    {
+      "id": "rate-limit-core",
+      "name": "@accelerate/rate-limit-core",
+      "category": "platform",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 9,
+      "path": "packages/rate-limit-core",
+      "dependencies": [
+        "http-core",
+        "time-core"
+      ],
+      "description": "Atomic weighted quotas, expiring concurrency permits and HTTP middleware.",
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/http-core",
+          "@accelerate/time-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "rate-limit-memory",
+      "name": "@accelerate/rate-limit-memory",
+      "category": "platform",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 9,
+      "path": "packages/rate-limit-memory",
+      "dependencies": [
+        "rate-limit-core",
+        "time-core"
+      ],
+      "description": "In-process quota storage with an injectable clock.",
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/rate-limit-core",
+          "@accelerate/time-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "rate-limit-postgres",
+      "name": "@accelerate/rate-limit-postgres",
+      "category": "platform",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 9,
+      "path": "packages/rate-limit-postgres",
+      "dependencies": [
+        "data-core",
+        "migrations-core",
+        "rate-limit-core"
+      ],
+      "description": "Row-locked quota storage on PostgreSQL.",
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/data-core",
+          "@accelerate/migrations-core",
+          "@accelerate/rate-limit-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
+    },
+    {
+      "id": "rate-limit-redis",
+      "name": "@accelerate/rate-limit-redis",
+      "category": "platform",
+      "lifecycle": "implemented",
+      "priority": "P0",
+      "wave": 9,
+      "path": "packages/rate-limit-redis",
+      "dependencies": [
+        "rate-limit-core"
+      ],
+      "description": "Atomic quota storage on Redis.",
+      "publication": {
+        "status": "unknown"
+      },
+      "version": "0.1.0",
+      "workspaceDependencies": {
+        "runtime": [
+          "@accelerate/rate-limit-core"
+        ],
+        "peer": [],
+        "optional": []
+      }
     }
   ]
 }
