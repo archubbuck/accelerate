@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import {
   mkdirSync,
   readFileSync,
@@ -60,6 +61,7 @@ export function loadConsolidation() {
 }
 
 const guidance = {
+  core: "See [typed state machines](https://github.com/archubbuck/accelerate/blob/main/docs/state-machine.md) for guarded transitions and optimistic revisions.",
   ai: "See [persistent AI usage and budget enforcement](https://github.com/archubbuck/accelerate/blob/main/docs/ai-budgets.md) for guarded gateway and agent calls. See [structured generation and recovery](https://github.com/archubbuck/accelerate/blob/main/docs/structured-output.md) for schema-constrained output. See [durable agent execution](https://github.com/archubbuck/accelerate/blob/main/docs/durable-agents.md) for checkpointed model and tool activities.",
   angular:
     "Use Angular 19 or 20 with matching core and common versions, plus RxJS 7.4 or newer within version 7. Authorization and logging retain their compiled Angular entry points.",
@@ -240,6 +242,12 @@ function copyModule(catalog, manifest, legacy, operations) {
 
 function buildFamily(catalog, name, dist) {
   const manifest = readManifest(name);
+  if (Object.keys(catalog.families[name].sourceExports ?? {}).length) {
+    execFileSync(process.execPath, [
+      join(root, "node_modules/typescript/bin/tsc"),
+      "-p", join(dirname(dist), "tsconfig.features.json"),
+    ], { stdio: "inherit" });
+  }
   const operations = [];
   for (const [legacy, target] of Object.entries(catalog.migrations)) {
     if (target.family === name)

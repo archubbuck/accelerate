@@ -77,6 +77,15 @@ export function familyManifest(name, description, catalog, readManifest) {
       tag: "latest",
     },
   };
+  for (const [subpath, source] of Object.entries(catalog.families[name].sourceExports ?? {})) {
+    assert.match(subpath, /^\.\/[a-z0-9][a-z0-9/-]*$/);
+    assert.match(source, /^[a-z0-9][a-z0-9/-]*$/);
+    manifest.exports[subpath] = {
+      types: "./dist/features/" + source + ".d.ts",
+      default: "./dist/features/" + source + ".js",
+    };
+    manifest.scripts.test = "vitest run src";
+  }
   const dependencies = {},
     devDependencies = {},
     peerDependencies = {};

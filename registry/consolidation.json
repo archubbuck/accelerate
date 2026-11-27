@@ -6,27 +6,31 @@
     },
     "@accelerate/core": {
       "description": "Time, decimal arithmetic, validation and shared errors.",
-      "status": "stable"
+      "status": "stable",
+      "version": "0.2.0",
+      "sourceExports": {
+        "./state-machine": "state-machine"
+      }
     },
     "@accelerate/identity": {
       "description": "Authentication, authorization, API keys and auditing.",
       "status": "stable",
-      "version": "0.5.2"
+      "version": "0.5.3"
     },
     "@accelerate/http": {
       "description": "HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
       "status": "stable",
-      "version": "0.3.2"
+      "version": "0.3.3"
     },
     "@accelerate/data": {
       "description": "Database adapters, transactions, caches, migrations and coordination.",
       "status": "stable",
-      "version": "0.3.0"
+      "version": "0.3.1"
     },
     "@accelerate/messaging": {
       "description": "Events, jobs, workflows, scheduling and transactional outbox.",
       "status": "stable",
-      "version": "0.2.2"
+      "version": "0.2.3"
     },
     "@accelerate/observability": {
       "description": "Logging, metrics, tracing, diagnostics and health checks.",
@@ -43,22 +47,22 @@
     "@accelerate/react": {
       "description": "React bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.8"
+      "version": "0.1.9"
     },
     "@accelerate/angular": {
       "description": "Angular bindings for Accelerate.",
       "status": "stable",
-      "version": "0.1.8"
+      "version": "0.1.9"
     },
     "@accelerate/ai": {
       "description": "Model gateways, prompts, structured output, agents and evaluation.",
       "status": "stable",
-      "version": "0.4.2"
+      "version": "0.4.3"
     },
     "@accelerate/testing": {
       "description": "Fixtures, transport helpers, contract and architecture tests.",
       "status": "stable",
-      "version": "0.1.4"
+      "version": "0.1.5"
     },
     "@accelerate/tooling": {
       "description": "Scaffolding, agent operations, AST tools and developer presets.",
