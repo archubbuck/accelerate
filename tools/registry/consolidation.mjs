@@ -61,6 +61,7 @@ export function loadConsolidation() {
 }
 
 const guidance = {
+  messaging: "See [durable notification delivery](https://github.com/archubbuck/accelerate/blob/main/docs/notification-delivery.md) for email, signed webhooks and PostgreSQL job state.",
   core: "See [typed state machines](https://github.com/archubbuck/accelerate/blob/main/docs/state-machine.md) for guarded transitions and optimistic revisions.",
   ai: "See [persistent AI usage and budget enforcement](https://github.com/archubbuck/accelerate/blob/main/docs/ai-budgets.md) for guarded gateway and agent calls. See [structured generation and recovery](https://github.com/archubbuck/accelerate/blob/main/docs/structured-output.md) for schema-constrained output. See [durable agent execution](https://github.com/archubbuck/accelerate/blob/main/docs/durable-agents.md) for checkpointed model and tool activities.",
   angular:

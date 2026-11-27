@@ -91,6 +91,12 @@ jobs:
         run: |
           pnpm --filter @accelerate/agents-core... build
           pnpm --filter @accelerate/agents-core test
+      - name: Verify durable notification jobs and delivery state
+        env:
+          WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
+        run: |
+          pnpm --filter @accelerate/messaging... build
+          pnpm --filter @accelerate/messaging test
       - name: Verify durable event subscriptions on PostgreSQL and Redis
         env:
           WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}

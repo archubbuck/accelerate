@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/messaging",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "description": "Accelerate — Events, jobs, workflows, scheduling and transactional outbox.",
   "keywords": [
     "accelerate",
@@ -18,6 +18,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./notifications": {
+      "types": "./dist/features/notifications.d.ts",
+      "default": "./dist/features/notifications.js"
+    },
+    "./notifications/email": {
+      "types": "./dist/features/notifications-email.d.ts",
+      "default": "./dist/features/notifications-email.js"
+    },
+    "./notifications/webhook": {
+      "types": "./dist/features/notifications-webhook.d.ts",
+      "default": "./dist/features/notifications-webhook.js"
+    },
+    "./notifications/postgres": {
+      "types": "./dist/features/notifications-postgres.d.ts",
+      "default": "./dist/features/notifications-postgres.js"
     },
     "./events": {
       "types": "./dist/modules/events-core/dist/index.d.ts",
@@ -81,7 +97,8 @@
   ],
   "scripts": {
     "build": "node ../../tools/registry/consolidation.mjs build messaging",
-    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts",
+    "test": "vitest run src"
   },
   "repository": {
     "type": "git",
