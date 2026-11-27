@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/angular",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Accelerate — Angular bindings for Accelerate.",
   "keywords": [
     "accelerate",
@@ -69,7 +69,7 @@
     "tag": "latest"
   },
   "dependencies": {
-    "@accelerate/identity": "0.3.0",
+    "@accelerate/identity": "0.4.0",
     "tslib": "^2.6.2",
     "@accelerate/config": "0.1.0",
     "@accelerate/ui": "0.1.0",

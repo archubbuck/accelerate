@@ -346,6 +346,8 @@
       "wave": 3,
       "path": "packages/api-keys",
       "dependencies": [
+        "audit-postgres",
+        "data-core",
         "security-core"
       ],
       "publication": {
@@ -354,6 +356,8 @@
       "version": "0.1.0",
       "workspaceDependencies": {
         "runtime": [
+          "@accelerate/audit-postgres",
+          "@accelerate/data-core",
           "@accelerate/security-core"
         ],
         "peer": [],
@@ -2565,7 +2569,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.3.0",
+      "version": "0.4.0",
       "dependencies": [
         "data"
       ],
@@ -2697,7 +2701,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.4",
+      "version": "0.1.5",
       "dependencies": [
         "config",
         "http",
@@ -2729,7 +2733,7 @@
       "lifecycle": "in-progress",
       "priority": "P1",
       "wave": 9,
-      "version": "0.1.4",
+      "version": "0.1.5",
       "dependencies": [
         "config",
         "http",

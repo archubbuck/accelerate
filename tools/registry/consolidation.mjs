@@ -66,7 +66,7 @@ const guidance = {
     "Use React 18 or newer and matching React declarations for TypeScript projects.",
   data: "The database adapters accept caller-supplied drivers. Install pg and its types if you use the PostgreSQL adapter.",
   identity:
-    "Enforce authorization in your server. Install pg and its types for the pool-based PostgreSQL adapter. See the [OAuth and OpenID Connect guide](https://github.com/archubbuck/accelerate/blob/main/docs/oidc.md) for provider sign-in and session integration. See [tenant and resource authorization](https://github.com/archubbuck/accelerate/blob/main/docs/scoped-authorization.md) for scoped grants and UI snapshots.",
+    "Enforce authorization in your server. Install pg and its types for the pool-based PostgreSQL adapter. See the [OAuth and OpenID Connect guide](https://github.com/archubbuck/accelerate/blob/main/docs/oidc.md) for provider sign-in and session integration. See [tenant and resource authorization](https://github.com/archubbuck/accelerate/blob/main/docs/scoped-authorization.md) for scoped grants and UI snapshots. See [service principals and API keys](https://github.com/archubbuck/accelerate/blob/main/docs/service-principals.md) for machine authentication.",
   observability:
     "Install the OpenTelemetry API and API Logs peers for the corresponding adapters.",
   tooling:

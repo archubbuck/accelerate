@@ -9,6 +9,14 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./service": {
+      "types": "./dist/service.d.ts",
+      "default": "./dist/service.js"
+    },
+    "./postgres": {
+      "types": "./dist/postgres.d.ts",
+      "default": "./dist/postgres.js"
     }
   },
   "files": [
@@ -20,7 +28,9 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@accelerate/security-core": "workspace:*"
+    "@accelerate/security-core": "workspace:*",
+    "@accelerate/audit-postgres": "workspace:*",
+    "@accelerate/data-core": "workspace:*"
   },
   "repository": {
     "type": "git",
@@ -32,6 +42,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "@accelerate/data-postgres": "workspace:*",
+    "@types/pg": "^8.11.0"
   }
 }
