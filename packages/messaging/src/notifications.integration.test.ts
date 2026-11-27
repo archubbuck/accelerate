@@ -13,7 +13,7 @@ it.skipIf(!connectionString)("schedules one job and fences a late worker without
   try {
     await admin.query(`CREATE SCHEMA "${schema}"`);
     const db = createPostgresDatabase(pool);
-    await db.query(JOBS_SCHEMA);
+    await pool.query(JOBS_SCHEMA);
     for (const statement of notificationSchema) await db.query(statement);
     const store = createPostgresNotificationStore(db);
     const delivery = { id: "delivery", recipientId: "private-recipient", channel: "email" as const, templateId: "status", content: { subject: "Notice", text: "Private" } };
