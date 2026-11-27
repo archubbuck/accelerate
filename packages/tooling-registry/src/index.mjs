@@ -4,12 +4,13 @@ import path from 'node:path';
 import {validateManifest,OperationRegistry,executeOperation,validateSchema,normalizeRequest} from '@accelerate/tooling-core';
 const record=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
 const version=/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
+const npmVersion=/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(?:\+[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/;
 const owner=/^@accelerate\/[a-z0-9-]+$/;
 export function validatePackageOperations(document,identity){
  const errors=[];
  if(!record(document)||!record(identity))return ['Invalid document or identity'];
  if(document.schemaVersion!=='1.0')errors.push('Unsupported manifest schema');
- if(!owner.test(identity.name??'')||!version.test(identity.version??'')||document.package!==identity.name||document.packageVersion!==identity.version)errors.push('Package identity mismatch');
+ if(!owner.test(identity.name??'')||!npmVersion.test(identity.version??'')||document.package!==identity.name||document.packageVersion!==identity.version)errors.push('Package identity mismatch');
  if(!Array.isArray(document.operations)||!document.operations.length||document.operations.length>1000)return [...errors,'Invalid operations array'];
  const seen=new Set();
  for(const entry of document.operations){
@@ -40,7 +41,7 @@ export async function discoverPackageOperations(root,names){
   try{
    const packageRoot=await realpath(path.join(base,'node_modules',name));
    const metadata=await readLocalJson(packageRoot,'package.json');
-   if(metadata.name!==name||typeof metadata.version!=='string'||!version.test(metadata.version))throw Error('PACKAGE_IDENTITY_MISMATCH');
+   if(metadata.name!==name||typeof metadata.version!=='string'||!npmVersion.test(metadata.version))throw Error('PACKAGE_IDENTITY_MISMATCH');
    const declaration=metadata.accelerate?.operations;
    if(declaration===undefined){packages.push({name,version:metadata.version,status:'not-declared',operations:[]});continue;}
    if(typeof declaration!=='string'||!declaration.startsWith('./'))throw Error('INVALID_DECLARATION');
@@ -75,7 +76,7 @@ export function searchOperations(index,{query='',packageName,mode}={}){
 
 /** Resolve exact operation and installed package versions; never silently select another version. */
 export function resolveOperation(index,{id,operationVersion,packageName,packageVersion}){
- if(typeof id!=='string'||typeof operationVersion!=='string'||!version.test(operationVersion)||typeof packageName!=='string'||!owner.test(packageName)||typeof packageVersion!=='string'||!version.test(packageVersion))throw Error('INVALID_RESOLUTION_REQUEST');
+ if(typeof id!=='string'||typeof operationVersion!=='string'||!version.test(operationVersion)||typeof packageName!=='string'||!owner.test(packageName)||typeof packageVersion!=='string'||!npmVersion.test(packageVersion))throw Error('INVALID_RESOLUTION_REQUEST');
  const key=id+'@'+operationVersion;
  if(index.conflicts.includes(key))return {status:'conflict'};
  const entry=index.operations.find(e=>e.manifest.id===id&&e.manifest.version===operationVersion);

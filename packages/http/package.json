@@ -1,7 +1,7 @@
 {
   "name": "@accelerate/http",
   "version": "0.1.0-next.0",
-  "description": "Accelerate \u2014 HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
+  "description": "Accelerate — HTTP clients, Node adapters, resilience, rate limiting and OpenAPI.",
   "keywords": [
     "accelerate",
     "typescript",
@@ -20,41 +20,41 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./core": {
-      "types": "./dist/modules/http-core/index.d.ts",
-      "default": "./dist/modules/http-core/index.js"
+    "./openapi": {
+      "types": "./dist/modules/contracts-openapi/dist/index.d.ts",
+      "default": "./dist/modules/contracts-openapi/dist/index.js"
     },
     "./client": {
-      "types": "./dist/modules/http-client/index.d.ts",
-      "default": "./dist/modules/http-client/index.js"
+      "types": "./dist/modules/http-client/dist/index.d.ts",
+      "default": "./dist/modules/http-client/dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/modules/http-core/dist/index.d.ts",
+      "default": "./dist/modules/http-core/dist/index.js"
     },
     "./node": {
-      "types": "./dist/modules/http-node/index.d.ts",
-      "default": "./dist/modules/http-node/index.js"
-    },
-    "./resilience": {
-      "types": "./dist/modules/resilience-core/index.d.ts",
-      "default": "./dist/modules/resilience-core/index.js"
-    },
-    "./openapi": {
-      "types": "./dist/modules/contracts-openapi/index.d.ts",
-      "default": "./dist/modules/contracts-openapi/index.js"
+      "types": "./dist/modules/http-node/dist/index.d.ts",
+      "default": "./dist/modules/http-node/dist/index.js"
     },
     "./rate-limit": {
-      "types": "./dist/modules/rate-limit-core/index.d.ts",
-      "default": "./dist/modules/rate-limit-core/index.js"
+      "types": "./dist/modules/rate-limit-core/dist/index.d.ts",
+      "default": "./dist/modules/rate-limit-core/dist/index.js"
     },
     "./rate-limit/memory": {
-      "types": "./dist/modules/rate-limit-memory/index.d.ts",
-      "default": "./dist/modules/rate-limit-memory/index.js"
+      "types": "./dist/modules/rate-limit-memory/dist/index.d.ts",
+      "default": "./dist/modules/rate-limit-memory/dist/index.js"
     },
     "./rate-limit/postgres": {
-      "types": "./dist/modules/rate-limit-postgres/index.d.ts",
-      "default": "./dist/modules/rate-limit-postgres/index.js"
+      "types": "./dist/modules/rate-limit-postgres/dist/index.d.ts",
+      "default": "./dist/modules/rate-limit-postgres/dist/index.js"
     },
     "./rate-limit/redis": {
-      "types": "./dist/modules/rate-limit-redis/index.d.ts",
-      "default": "./dist/modules/rate-limit-redis/index.js"
+      "types": "./dist/modules/rate-limit-redis/dist/index.d.ts",
+      "default": "./dist/modules/rate-limit-redis/dist/index.js"
+    },
+    "./resilience": {
+      "types": "./dist/modules/resilience-core/dist/index.d.ts",
+      "default": "./dist/modules/resilience-core/dist/index.js"
     }
   },
   "files": [
@@ -76,23 +76,22 @@
     "registry": "https://registry.npmjs.org/",
     "tag": "next"
   },
+  "accelerate": {
+    "operations": "./dist/operations/package-manifest.json"
+  },
   "dependencies": {
-    "@accelerate/time-core": "0.1.0",
-    "@accelerate/data-core": "0.1.1",
-    "@accelerate/migrations-core": "0.1.0"
+    "@accelerate/core": "0.1.0-next.0",
+    "@accelerate/data": "0.1.0-next.0"
   },
   "devDependencies": {
-    "@accelerate/http-core": "0.1.0",
-    "@accelerate/http-client": "0.1.0",
-    "@accelerate/http-node": "0.1.0",
-    "@accelerate/resilience-core": "0.2.0",
     "@accelerate/contracts-openapi": "0.1.0",
+    "@accelerate/http-client": "0.1.0",
+    "@accelerate/http-core": "0.1.0",
+    "@accelerate/http-node": "0.1.0",
     "@accelerate/rate-limit-core": "0.1.0",
     "@accelerate/rate-limit-memory": "0.1.0",
     "@accelerate/rate-limit-postgres": "0.1.0",
-    "@accelerate/rate-limit-redis": "0.1.0"
-  },
-  "accelerate": {
-    "operations": "./dist/operations/package-manifest.json"
+    "@accelerate/rate-limit-redis": "0.1.0",
+    "@accelerate/resilience-core": "0.2.0"
   }
 }

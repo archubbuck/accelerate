@@ -1,0 +1,64 @@
+{
+  "name": "@accelerate/core",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate — Time, decimal arithmetic, validation and shared errors.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "core"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./decimal": {
+      "types": "./dist/modules/decimal-core/dist/index.d.ts",
+      "default": "./dist/modules/decimal-core/dist/index.js"
+    },
+    "./errors": {
+      "types": "./dist/modules/errors-core/dist/index.d.ts",
+      "default": "./dist/modules/errors-core/dist/index.js"
+    },
+    "./time": {
+      "types": "./dist/modules/time-core/dist/index.d.ts",
+      "default": "./dist/modules/time-core/dist/index.js"
+    },
+    "./validation": {
+      "types": "./dist/modules/validation-core/dist/index.d.ts",
+      "default": "./dist/modules/validation-core/dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build core",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/core/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
+  "dependencies": {
+    "big.js": "^7.0.1"
+  },
+  "devDependencies": {
+    "@accelerate/decimal-core": "0.1.0",
+    "@accelerate/errors-core": "0.1.0",
+    "@accelerate/time-core": "0.1.0",
+    "@accelerate/validation-core": "0.1.0"
+  }
+}

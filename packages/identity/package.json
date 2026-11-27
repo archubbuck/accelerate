@@ -1,0 +1,104 @@
+{
+  "name": "@accelerate/identity",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate — Authentication, authorization, API keys and auditing.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "identity",
+    "authentication",
+    "authorization",
+    "audit"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./api-keys": {
+      "types": "./dist/modules/api-keys/dist/index.d.ts",
+      "default": "./dist/modules/api-keys/dist/index.js"
+    },
+    "./audit": {
+      "types": "./dist/modules/audit-core/dist/index.d.ts",
+      "default": "./dist/modules/audit-core/dist/index.js"
+    },
+    "./audit/postgres": {
+      "types": "./dist/modules/audit-postgres/dist/index.d.ts",
+      "default": "./dist/modules/audit-postgres/dist/index.js"
+    },
+    "./authentication": {
+      "types": "./dist/modules/authentication-core/dist/index.d.ts",
+      "default": "./dist/modules/authentication-core/dist/index.js"
+    },
+    "./authentication/node": {
+      "types": "./dist/modules/authentication-node/dist/index.d.ts",
+      "default": "./dist/modules/authentication-node/dist/index.js"
+    },
+    "./authentication/postgres": {
+      "types": "./dist/modules/authentication-postgres/dist/index.d.ts",
+      "default": "./dist/modules/authentication-postgres/dist/index.js"
+    },
+    "./authorization": {
+      "types": "./dist/modules/authorization-core/dist/index.d.ts",
+      "default": "./dist/modules/authorization-core/dist/index.js"
+    },
+    "./authorization/postgres": {
+      "types": "./dist/modules/authorization-postgres/dist/index.d.ts",
+      "default": "./dist/modules/authorization-postgres/dist/index.js"
+    },
+    "./authorization/postgres/admin": {
+      "types": "./dist/modules/authorization-postgres/dist/admin.d.ts",
+      "default": "./dist/modules/authorization-postgres/dist/admin.js"
+    },
+    "./security": {
+      "types": "./dist/modules/security-core/dist/index.d.ts",
+      "default": "./dist/modules/security-core/dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build identity",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/identity"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/identity/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
+  "dependencies": {
+    "@accelerate/data": "0.1.0-next.0"
+  },
+  "devDependencies": {
+    "@accelerate/api-keys": "0.1.0",
+    "@accelerate/audit-core": "0.1.0",
+    "@accelerate/audit-postgres": "0.1.0",
+    "@accelerate/authentication-core": "0.1.0",
+    "@accelerate/authentication-node": "0.1.0",
+    "@accelerate/authentication-postgres": "0.1.0",
+    "@accelerate/authorization-core": "0.1.3",
+    "@accelerate/authorization-postgres": "0.1.3",
+    "@accelerate/security-core": "0.1.0"
+  },
+  "peerDependencies": {
+    "pg": "^8.11.0"
+  },
+  "peerDependenciesMeta": {
+    "pg": {
+      "optional": true
+    }
+  }
+}

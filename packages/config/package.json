@@ -1,0 +1,76 @@
+{
+  "name": "@accelerate/config",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate — Configuration, secrets and feature flags.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "config",
+    "configuration",
+    "feature-flags"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/modules/config-core/dist/index.d.ts",
+      "default": "./dist/modules/config-core/dist/index.js"
+    },
+    "./config/node": {
+      "types": "./dist/modules/config-node/dist/index.d.ts",
+      "default": "./dist/modules/config-node/dist/index.js"
+    },
+    "./flags": {
+      "types": "./dist/modules/feature-flags-core/dist/index.d.ts",
+      "default": "./dist/modules/feature-flags-core/dist/index.js"
+    },
+    "./flags/memory": {
+      "types": "./dist/modules/feature-flags-memory/dist/index.d.ts",
+      "default": "./dist/modules/feature-flags-memory/dist/index.js"
+    },
+    "./flags/postgres": {
+      "types": "./dist/modules/feature-flags-postgres/dist/index.d.ts",
+      "default": "./dist/modules/feature-flags-postgres/dist/index.js"
+    },
+    "./secrets": {
+      "types": "./dist/modules/secrets-core/dist/index.d.ts",
+      "default": "./dist/modules/secrets-core/dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build config",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/config"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/config/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
+  "accelerate": {
+    "operations": "./dist/operations/package-manifest.json"
+  },
+  "devDependencies": {
+    "@accelerate/config-core": "0.1.0",
+    "@accelerate/config-node": "0.1.0",
+    "@accelerate/feature-flags-core": "0.1.0",
+    "@accelerate/feature-flags-memory": "0.1.0",
+    "@accelerate/feature-flags-postgres": "0.1.0",
+    "@accelerate/secrets-core": "0.1.0"
+  }
+}

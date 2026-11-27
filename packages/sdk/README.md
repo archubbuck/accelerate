@@ -1,138 +1,141 @@
 # Accelerate SDK
 
-Choose a package by capability. The SDK catalog has no runtime dependencies.
+Find Accelerate packages, install examples and migration guides.
 
-| Package | Capability | Availability |
-| --- | --- | --- |
-| [@accelerate/sdk](https://www.npmjs.com/package/@accelerate/sdk) | Find Accelerate packages, install examples and migration guides. | Preview candidate |
-| `@accelerate/core` | Time, decimal arithmetic, validation and shared errors. | Planned |
-| `@accelerate/identity` | Authentication, authorization, API keys and auditing. | Planned |
-| [@accelerate/http](https://www.npmjs.com/package/@accelerate/http) | HTTP clients, Node adapters, resilience, rate limiting and OpenAPI. | Preview candidate |
-| `@accelerate/data` | Database adapters, transactions, caches, migrations and coordination. | Planned |
-| `@accelerate/messaging` | Events, jobs, workflows, scheduling and transactional outbox. | Planned |
-| `@accelerate/observability` | Logging, metrics, tracing, diagnostics and health checks. | Planned |
-| `@accelerate/config` | Configuration, secrets and feature flags. | Planned |
-| `@accelerate/ui` | Framework-neutral state, forms, notifications and tables. | Planned |
-| `@accelerate/react` | React bindings for Accelerate. | Planned |
-| `@accelerate/angular` | Angular bindings for Accelerate. | Planned |
-| `@accelerate/ai` | Model gateways, prompts, structured output, agents and evaluation. | Planned |
-| `@accelerate/testing` | Fixtures, transport helpers, contract and architecture tests. | Planned |
-| `@accelerate/tooling` | Scaffolding, agent operations, AST tools and developer presets. | Planned |
+Once published, install a preview by appending `@next` to the npm package name. For example, run `npm install @accelerate/http@next`.
 
-Once published, install the HTTP preview with `npm install @accelerate/http@next`.
+| Package | Capability |
+| --- | --- |
+| [@accelerate/sdk](https://www.npmjs.com/package/@accelerate/sdk) | Find Accelerate packages, install examples and migration guides. |
+| [@accelerate/core](https://www.npmjs.com/package/@accelerate/core) | Time, decimal arithmetic, validation and shared errors. |
+| [@accelerate/identity](https://www.npmjs.com/package/@accelerate/identity) | Authentication, authorization, API keys and auditing. |
+| [@accelerate/http](https://www.npmjs.com/package/@accelerate/http) | HTTP clients, Node adapters, resilience, rate limiting and OpenAPI. |
+| [@accelerate/data](https://www.npmjs.com/package/@accelerate/data) | Database adapters, transactions, caches, migrations and coordination. |
+| [@accelerate/messaging](https://www.npmjs.com/package/@accelerate/messaging) | Events, jobs, workflows, scheduling and transactional outbox. |
+| [@accelerate/observability](https://www.npmjs.com/package/@accelerate/observability) | Logging, metrics, tracing, diagnostics and health checks. |
+| [@accelerate/config](https://www.npmjs.com/package/@accelerate/config) | Configuration, secrets and feature flags. |
+| [@accelerate/ui](https://www.npmjs.com/package/@accelerate/ui) | Framework-neutral state, forms, notifications and tables. |
+| [@accelerate/react](https://www.npmjs.com/package/@accelerate/react) | React bindings for Accelerate. |
+| [@accelerate/angular](https://www.npmjs.com/package/@accelerate/angular) | Angular bindings for Accelerate. |
+| [@accelerate/ai](https://www.npmjs.com/package/@accelerate/ai) | Model gateways, prompts, structured output, agents and evaluation. |
+| [@accelerate/testing](https://www.npmjs.com/package/@accelerate/testing) | Fixtures, transport helpers, contract and architecture tests. |
+| [@accelerate/tooling](https://www.npmjs.com/package/@accelerate/tooling) | Scaffolding, agent operations, AST tools and developer presets. |
 
 ## Import migration
 
-Change the package specifier for mapped imports. For other packages, the table gives the planned family. Existing package versions remain available.
+Use the subpaths below. Update related imports together wherever your app shares class or provider identity.
 
-| Existing package | Planned family | Preview import |
-| --- | --- | --- |
-| `@accelerate/agents-core` | `@accelerate/ai` | Pending |
-| `@accelerate/ai-core` | `@accelerate/ai` | Pending |
-| `@accelerate/ai-evaluation` | `@accelerate/ai` | Pending |
-| `@accelerate/ai-gateway` | `@accelerate/ai` | Pending |
-| `@accelerate/ai-prompts` | `@accelerate/ai` | Pending |
-| `@accelerate/ai-structured` | `@accelerate/ai` | Pending |
-| `@accelerate/ai-tools` | `@accelerate/ai` | Pending |
-| `@accelerate/ai-usage` | `@accelerate/ai` | Pending |
-| `@accelerate/api-keys` | `@accelerate/identity` | Pending |
-| `@accelerate/audit-core` | `@accelerate/identity` | Pending |
-| `@accelerate/audit-postgres` | `@accelerate/identity` | Pending |
-| `@accelerate/authentication-angular` | `@accelerate/angular` | Pending |
-| `@accelerate/authentication-core` | `@accelerate/identity` | Pending |
-| `@accelerate/authentication-node` | `@accelerate/identity` | Pending |
-| `@accelerate/authentication-postgres` | `@accelerate/identity` | Pending |
-| `@accelerate/authentication-react` | `@accelerate/react` | Pending |
-| `@accelerate/authorization-angular` | `@accelerate/angular` | Pending |
-| `@accelerate/authorization-core` | `@accelerate/identity` | Pending |
-| `@accelerate/authorization-postgres` | `@accelerate/identity` | Pending |
-| `@accelerate/authorization-react` | `@accelerate/react` | Pending |
-| `@accelerate/cache-core` | `@accelerate/data` | Pending |
-| `@accelerate/cache-memory` | `@accelerate/data` | Pending |
-| `@accelerate/cache-redis` | `@accelerate/data` | Pending |
-| `@accelerate/config-angular` | `@accelerate/angular` | Pending |
-| `@accelerate/config-core` | `@accelerate/config` | Pending |
-| `@accelerate/config-node` | `@accelerate/config` | Pending |
-| `@accelerate/config-react` | `@accelerate/react` | Pending |
-| `@accelerate/contracts-openapi` | `@accelerate/http` | `@accelerate/http/openapi` |
-| `@accelerate/create-accelerate` | `@accelerate/tooling` | Pending |
-| `@accelerate/data-core` | `@accelerate/data` | Pending |
-| `@accelerate/data-postgres` | `@accelerate/data` | Pending |
-| `@accelerate/data-prisma` | `@accelerate/data` | Pending |
-| `@accelerate/data-sqlserver` | `@accelerate/data` | Pending |
-| `@accelerate/decimal-core` | `@accelerate/core` | Pending |
-| `@accelerate/diagnostics-core` | `@accelerate/observability` | Pending |
-| `@accelerate/errors-core` | `@accelerate/core` | Pending |
-| `@accelerate/eslint-config` | `@accelerate/tooling` | Pending |
-| `@accelerate/events-core` | `@accelerate/messaging` | Pending |
-| `@accelerate/events-memory` | `@accelerate/messaging` | Pending |
-| `@accelerate/events-postgres` | `@accelerate/messaging` | Pending |
-| `@accelerate/events-redis` | `@accelerate/messaging` | Pending |
-| `@accelerate/feature-flags-core` | `@accelerate/config` | Pending |
-| `@accelerate/feature-flags-memory` | `@accelerate/config` | Pending |
-| `@accelerate/feature-flags-postgres` | `@accelerate/config` | Pending |
-| `@accelerate/forms-angular` | `@accelerate/angular` | Pending |
-| `@accelerate/forms-core` | `@accelerate/ui` | Pending |
-| `@accelerate/forms-react` | `@accelerate/react` | Pending |
-| `@accelerate/health-core` | `@accelerate/observability` | Pending |
-| `@accelerate/health-node` | `@accelerate/observability` | Pending |
-| `@accelerate/http-angular` | `@accelerate/angular` | Pending |
-| `@accelerate/http-client` | `@accelerate/http` | `@accelerate/http/client` |
-| `@accelerate/http-core` | `@accelerate/http` | `@accelerate/http/core` |
-| `@accelerate/http-node` | `@accelerate/http` | `@accelerate/http/node` |
-| `@accelerate/http-react` | `@accelerate/react` | Pending |
-| `@accelerate/idempotency-core` | `@accelerate/data` | Pending |
-| `@accelerate/idempotency-memory` | `@accelerate/data` | Pending |
-| `@accelerate/idempotency-postgres` | `@accelerate/data` | Pending |
-| `@accelerate/jobs-core` | `@accelerate/messaging` | Pending |
-| `@accelerate/jobs-postgres` | `@accelerate/messaging` | Pending |
-| `@accelerate/locking-core` | `@accelerate/data` | Pending |
-| `@accelerate/locking-memory` | `@accelerate/data` | Pending |
-| `@accelerate/locking-postgres` | `@accelerate/data` | Pending |
-| `@accelerate/logging-angular` | `@accelerate/angular` | Pending |
-| `@accelerate/logging-core` | `@accelerate/observability` | Pending |
-| `@accelerate/logging-node` | `@accelerate/observability` | Pending |
-| `@accelerate/logging-otel` | `@accelerate/observability` | Pending |
-| `@accelerate/logging-react` | `@accelerate/react` | Pending |
-| `@accelerate/metrics-core` | `@accelerate/observability` | Pending |
-| `@accelerate/metrics-otel` | `@accelerate/observability` | Pending |
-| `@accelerate/migrations-core` | `@accelerate/data` | Pending |
-| `@accelerate/migrations-postgres` | `@accelerate/data` | Pending |
-| `@accelerate/notifications-core` | `@accelerate/ui` | Pending |
-| `@accelerate/outbox-core` | `@accelerate/messaging` | Pending |
-| `@accelerate/outbox-postgres` | `@accelerate/messaging` | Pending |
-| `@accelerate/rate-limit-core` | `@accelerate/http` | `@accelerate/http/rate-limit` |
-| `@accelerate/rate-limit-memory` | `@accelerate/http` | `@accelerate/http/rate-limit/memory` |
-| `@accelerate/rate-limit-postgres` | `@accelerate/http` | `@accelerate/http/rate-limit/postgres` |
-| `@accelerate/rate-limit-redis` | `@accelerate/http` | `@accelerate/http/rate-limit/redis` |
-| `@accelerate/resilience-core` | `@accelerate/http` | `@accelerate/http/resilience` |
-| `@accelerate/scheduler-core` | `@accelerate/messaging` | Pending |
-| `@accelerate/scheduler-postgres` | `@accelerate/messaging` | Pending |
-| `@accelerate/secrets-core` | `@accelerate/config` | Pending |
-| `@accelerate/security-core` | `@accelerate/identity` | Pending |
-| `@accelerate/state-angular` | `@accelerate/angular` | Pending |
-| `@accelerate/state-core` | `@accelerate/ui` | Pending |
-| `@accelerate/state-react` | `@accelerate/react` | Pending |
-| `@accelerate/tables-angular` | `@accelerate/angular` | Pending |
-| `@accelerate/tables-core` | `@accelerate/ui` | Pending |
-| `@accelerate/tables-react` | `@accelerate/react` | Pending |
-| `@accelerate/testing-architecture` | `@accelerate/testing` | Pending |
-| `@accelerate/testing-contracts` | `@accelerate/testing` | Pending |
-| `@accelerate/testing-core` | `@accelerate/testing` | Pending |
-| `@accelerate/testing-fixtures` | `@accelerate/testing` | Pending |
-| `@accelerate/testing-http` | `@accelerate/testing` | Pending |
-| `@accelerate/testing-postgres` | `@accelerate/testing` | Pending |
-| `@accelerate/time-core` | `@accelerate/core` | Pending |
-| `@accelerate/tooling-ast` | `@accelerate/tooling` | Pending |
-| `@accelerate/tooling-core` | `@accelerate/tooling` | Pending |
-| `@accelerate/tooling-patches` | `@accelerate/tooling` | Pending |
-| `@accelerate/tooling-project` | `@accelerate/tooling` | Pending |
-| `@accelerate/tooling-registry` | `@accelerate/tooling` | Pending |
-| `@accelerate/tracing-core` | `@accelerate/observability` | Pending |
-| `@accelerate/tracing-otel` | `@accelerate/observability` | Pending |
-| `@accelerate/transactions` | `@accelerate/data` | Pending |
-| `@accelerate/typescript-config` | `@accelerate/tooling` | Pending |
-| `@accelerate/validation-core` | `@accelerate/core` | Pending |
-| `@accelerate/workflows-core` | `@accelerate/messaging` | Pending |
-| `@accelerate/workflows-memory` | `@accelerate/messaging` | Pending |
-| `@accelerate/workflows-postgres` | `@accelerate/messaging` | Pending |
+| Existing import | Preview import |
+| --- | --- |
+| `@accelerate/agents-core` | `@accelerate/ai/agents` |
+| `@accelerate/ai-core` | `@accelerate/ai/core` |
+| `@accelerate/ai-evaluation` | `@accelerate/ai/evaluation` |
+| `@accelerate/ai-gateway` | `@accelerate/ai/gateway` |
+| `@accelerate/ai-prompts` | `@accelerate/ai/prompts` |
+| `@accelerate/ai-structured` | `@accelerate/ai/structured` |
+| `@accelerate/ai-tools` | `@accelerate/ai/tools` |
+| `@accelerate/ai-usage` | `@accelerate/ai/usage` |
+| `@accelerate/api-keys` | `@accelerate/identity/api-keys` |
+| `@accelerate/audit-core` | `@accelerate/identity/audit` |
+| `@accelerate/audit-postgres` | `@accelerate/identity/audit/postgres` |
+| `@accelerate/authentication-angular` | `@accelerate/angular/authentication` |
+| `@accelerate/authentication-core` | `@accelerate/identity/authentication` |
+| `@accelerate/authentication-node` | `@accelerate/identity/authentication/node` |
+| `@accelerate/authentication-postgres` | `@accelerate/identity/authentication/postgres` |
+| `@accelerate/authentication-react` | `@accelerate/react/authentication` |
+| `@accelerate/authorization-angular` | `@accelerate/angular/authorization` |
+| `@accelerate/authorization-core` | `@accelerate/identity/authorization` |
+| `@accelerate/authorization-postgres` | `@accelerate/identity/authorization/postgres` |
+| `@accelerate/authorization-postgres/admin` | `@accelerate/identity/authorization/postgres/admin` |
+| `@accelerate/authorization-react` | `@accelerate/react/authorization` |
+| `@accelerate/cache-core` | `@accelerate/data/cache` |
+| `@accelerate/cache-memory` | `@accelerate/data/cache/memory` |
+| `@accelerate/cache-redis` | `@accelerate/data/cache/redis` |
+| `@accelerate/config-angular` | `@accelerate/angular/config` |
+| `@accelerate/config-core` | `@accelerate/config/config` |
+| `@accelerate/config-node` | `@accelerate/config/config/node` |
+| `@accelerate/config-react` | `@accelerate/react/config` |
+| `@accelerate/contracts-openapi` | `@accelerate/http/openapi` |
+| `@accelerate/create-accelerate` | `@accelerate/tooling/create` |
+| `@accelerate/data-core` | `@accelerate/data/core` |
+| `@accelerate/data-postgres` | `@accelerate/data/postgres` |
+| `@accelerate/data-prisma` | `@accelerate/data/prisma` |
+| `@accelerate/data-sqlserver` | `@accelerate/data/sqlserver` |
+| `@accelerate/decimal-core` | `@accelerate/core/decimal` |
+| `@accelerate/diagnostics-core` | `@accelerate/observability/diagnostics` |
+| `@accelerate/errors-core` | `@accelerate/core/errors` |
+| `@accelerate/eslint-config` | `@accelerate/tooling/eslint` |
+| `@accelerate/events-core` | `@accelerate/messaging/events` |
+| `@accelerate/events-memory` | `@accelerate/messaging/events/memory` |
+| `@accelerate/events-postgres` | `@accelerate/messaging/events/postgres` |
+| `@accelerate/events-redis` | `@accelerate/messaging/events/redis` |
+| `@accelerate/feature-flags-core` | `@accelerate/config/flags` |
+| `@accelerate/feature-flags-memory` | `@accelerate/config/flags/memory` |
+| `@accelerate/feature-flags-postgres` | `@accelerate/config/flags/postgres` |
+| `@accelerate/forms-angular` | `@accelerate/angular/forms` |
+| `@accelerate/forms-core` | `@accelerate/ui/forms` |
+| `@accelerate/forms-react` | `@accelerate/react/forms` |
+| `@accelerate/health-core` | `@accelerate/observability/health` |
+| `@accelerate/health-node` | `@accelerate/observability/health/node` |
+| `@accelerate/http-angular` | `@accelerate/angular/http` |
+| `@accelerate/http-client` | `@accelerate/http/client` |
+| `@accelerate/http-core` | `@accelerate/http/core` |
+| `@accelerate/http-node` | `@accelerate/http/node` |
+| `@accelerate/http-react` | `@accelerate/react/http` |
+| `@accelerate/idempotency-core` | `@accelerate/data/idempotency` |
+| `@accelerate/idempotency-memory` | `@accelerate/data/idempotency/memory` |
+| `@accelerate/idempotency-postgres` | `@accelerate/data/idempotency/postgres` |
+| `@accelerate/jobs-core` | `@accelerate/messaging/jobs` |
+| `@accelerate/jobs-postgres` | `@accelerate/messaging/jobs/postgres` |
+| `@accelerate/jobs-postgres/testing` | `@accelerate/messaging/jobs/postgres/testing` |
+| `@accelerate/locking-core` | `@accelerate/data/locking` |
+| `@accelerate/locking-memory` | `@accelerate/data/locking/memory` |
+| `@accelerate/locking-postgres` | `@accelerate/data/locking/postgres` |
+| `@accelerate/logging-angular` | `@accelerate/angular/logging` |
+| `@accelerate/logging-core` | `@accelerate/observability/logging` |
+| `@accelerate/logging-node` | `@accelerate/observability/logging/node` |
+| `@accelerate/logging-otel` | `@accelerate/observability/logging/otel` |
+| `@accelerate/logging-react` | `@accelerate/react/logging` |
+| `@accelerate/metrics-core` | `@accelerate/observability/metrics` |
+| `@accelerate/metrics-otel` | `@accelerate/observability/metrics/otel` |
+| `@accelerate/migrations-core` | `@accelerate/data/migrations` |
+| `@accelerate/migrations-postgres` | `@accelerate/data/migrations/postgres` |
+| `@accelerate/notifications-core` | `@accelerate/ui/notifications` |
+| `@accelerate/outbox-core` | `@accelerate/messaging/outbox` |
+| `@accelerate/outbox-postgres` | `@accelerate/messaging/outbox/postgres` |
+| `@accelerate/rate-limit-core` | `@accelerate/http/rate-limit` |
+| `@accelerate/rate-limit-memory` | `@accelerate/http/rate-limit/memory` |
+| `@accelerate/rate-limit-postgres` | `@accelerate/http/rate-limit/postgres` |
+| `@accelerate/rate-limit-redis` | `@accelerate/http/rate-limit/redis` |
+| `@accelerate/resilience-core` | `@accelerate/http/resilience` |
+| `@accelerate/scheduler-core` | `@accelerate/messaging/scheduler` |
+| `@accelerate/scheduler-postgres` | `@accelerate/messaging/scheduler/postgres` |
+| `@accelerate/secrets-core` | `@accelerate/config/secrets` |
+| `@accelerate/security-core` | `@accelerate/identity/security` |
+| `@accelerate/state-angular` | `@accelerate/angular/state` |
+| `@accelerate/state-core` | `@accelerate/ui/state` |
+| `@accelerate/state-react` | `@accelerate/react/state` |
+| `@accelerate/tables-angular` | `@accelerate/angular/tables` |
+| `@accelerate/tables-core` | `@accelerate/ui/tables` |
+| `@accelerate/tables-react` | `@accelerate/react/tables` |
+| `@accelerate/testing-architecture` | `@accelerate/testing/architecture` |
+| `@accelerate/testing-contracts` | `@accelerate/testing/contracts` |
+| `@accelerate/testing-core` | `@accelerate/testing/core` |
+| `@accelerate/testing-fixtures` | `@accelerate/testing/fixtures` |
+| `@accelerate/testing-http` | `@accelerate/testing/http` |
+| `@accelerate/testing-postgres` | `@accelerate/testing/postgres` |
+| `@accelerate/time-core` | `@accelerate/core/time` |
+| `@accelerate/tooling-ast` | `@accelerate/tooling/ast` |
+| `@accelerate/tooling-core` | `@accelerate/tooling/core` |
+| `@accelerate/tooling-patches` | `@accelerate/tooling/patches` |
+| `@accelerate/tooling-project` | `@accelerate/tooling/project` |
+| `@accelerate/tooling-registry` | `@accelerate/tooling/registry` |
+| `@accelerate/tracing-core` | `@accelerate/observability/tracing` |
+| `@accelerate/tracing-otel` | `@accelerate/observability/tracing/otel` |
+| `@accelerate/transactions` | `@accelerate/data/transactions` |
+| `@accelerate/typescript-config/base.json` | `@accelerate/tooling/tsconfig/base.json` |
+| `@accelerate/typescript-config/library.json` | `@accelerate/tooling/tsconfig/library.json` |
+| `@accelerate/validation-core` | `@accelerate/core/validation` |
+| `@accelerate/workflows-core` | `@accelerate/messaging/workflows` |
+| `@accelerate/workflows-memory` | `@accelerate/messaging/workflows/memory` |
+| `@accelerate/workflows-postgres` | `@accelerate/messaging/workflows/postgres` |

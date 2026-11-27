@@ -1,0 +1,138 @@
+{
+  "name": "@accelerate/data",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate — Database adapters, transactions, caches, migrations and coordination.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "data",
+    "postgresql",
+    "migrations",
+    "cache"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./cache": {
+      "types": "./dist/modules/cache-core/dist/index.d.ts",
+      "default": "./dist/modules/cache-core/dist/index.js"
+    },
+    "./cache/memory": {
+      "types": "./dist/modules/cache-memory/dist/index.d.ts",
+      "default": "./dist/modules/cache-memory/dist/index.js"
+    },
+    "./cache/redis": {
+      "types": "./dist/modules/cache-redis/dist/index.d.ts",
+      "default": "./dist/modules/cache-redis/dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/modules/data-core/dist/index.d.ts",
+      "default": "./dist/modules/data-core/dist/index.js"
+    },
+    "./postgres": {
+      "types": "./dist/modules/data-postgres/dist/index.d.ts",
+      "default": "./dist/modules/data-postgres/dist/index.js"
+    },
+    "./prisma": {
+      "types": "./dist/modules/data-prisma/dist/index.d.ts",
+      "default": "./dist/modules/data-prisma/dist/index.js"
+    },
+    "./sqlserver": {
+      "types": "./dist/modules/data-sqlserver/dist/index.d.ts",
+      "default": "./dist/modules/data-sqlserver/dist/index.js"
+    },
+    "./idempotency": {
+      "types": "./dist/modules/idempotency-core/dist/index.d.ts",
+      "default": "./dist/modules/idempotency-core/dist/index.js"
+    },
+    "./idempotency/memory": {
+      "types": "./dist/modules/idempotency-memory/dist/index.d.ts",
+      "default": "./dist/modules/idempotency-memory/dist/index.js"
+    },
+    "./idempotency/postgres": {
+      "types": "./dist/modules/idempotency-postgres/dist/index.d.ts",
+      "default": "./dist/modules/idempotency-postgres/dist/index.js"
+    },
+    "./locking": {
+      "types": "./dist/modules/locking-core/dist/index.d.ts",
+      "default": "./dist/modules/locking-core/dist/index.js"
+    },
+    "./locking/memory": {
+      "types": "./dist/modules/locking-memory/dist/index.d.ts",
+      "default": "./dist/modules/locking-memory/dist/index.js"
+    },
+    "./locking/postgres": {
+      "types": "./dist/modules/locking-postgres/dist/index.d.ts",
+      "default": "./dist/modules/locking-postgres/dist/index.js"
+    },
+    "./migrations": {
+      "types": "./dist/modules/migrations-core/dist/index.d.ts",
+      "default": "./dist/modules/migrations-core/dist/index.js"
+    },
+    "./migrations/postgres": {
+      "types": "./dist/modules/migrations-postgres/dist/index.d.ts",
+      "default": "./dist/modules/migrations-postgres/dist/index.js"
+    },
+    "./transactions": {
+      "types": "./dist/modules/transactions/dist/index.d.ts",
+      "default": "./dist/modules/transactions/dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build data",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/data"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/data/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
+  "accelerate": {
+    "operations": "./dist/operations/package-manifest.json"
+  },
+  "dependencies": {
+    "@accelerate/core": "0.1.0-next.0"
+  },
+  "devDependencies": {
+    "@accelerate/cache-core": "0.1.0",
+    "@accelerate/cache-memory": "0.1.0",
+    "@accelerate/cache-redis": "0.1.0",
+    "@accelerate/data-core": "0.1.1",
+    "@accelerate/data-postgres": "0.1.2",
+    "@accelerate/data-prisma": "0.1.1",
+    "@accelerate/data-sqlserver": "0.1.1",
+    "@accelerate/idempotency-core": "0.1.0",
+    "@accelerate/idempotency-memory": "0.1.0",
+    "@accelerate/idempotency-postgres": "0.1.1",
+    "@accelerate/locking-core": "0.1.0",
+    "@accelerate/locking-memory": "0.1.0",
+    "@accelerate/locking-postgres": "0.1.1",
+    "@accelerate/migrations-core": "0.1.0",
+    "@accelerate/migrations-postgres": "0.1.1",
+    "@accelerate/transactions": "0.1.1"
+  },
+  "peerDependencies": {
+    "pg": "^8.11.0"
+  },
+  "peerDependenciesMeta": {
+    "pg": {
+      "optional": true
+    }
+  }
+}

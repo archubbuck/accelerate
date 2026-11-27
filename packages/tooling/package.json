@@ -1,0 +1,85 @@
+{
+  "name": "@accelerate/tooling",
+  "version": "0.1.0-next.0",
+  "description": "Accelerate — Scaffolding, agent operations, AST tools and developer presets.",
+  "keywords": [
+    "accelerate",
+    "typescript",
+    "tooling",
+    "cli",
+    "eslint",
+    "ast"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./create": {
+      "types": "./dist/modules/create-accelerate/dist/index.d.ts",
+      "default": "./dist/modules/create-accelerate/dist/index.js"
+    },
+    "./eslint": "./dist/modules/eslint-config/index.js",
+    "./ast": {
+      "types": "./dist/modules/tooling-ast/dist/index.d.mts",
+      "default": "./dist/modules/tooling-ast/dist/index.mjs"
+    },
+    "./core": {
+      "types": "./dist/modules/tooling-core/dist/index.d.mts",
+      "default": "./dist/modules/tooling-core/dist/index.mjs"
+    },
+    "./patches": {
+      "types": "./dist/modules/tooling-patches/dist/index.d.mts",
+      "default": "./dist/modules/tooling-patches/dist/index.mjs"
+    },
+    "./project": {
+      "types": "./dist/modules/tooling-project/dist/index.d.mts",
+      "default": "./dist/modules/tooling-project/dist/index.mjs"
+    },
+    "./registry": {
+      "types": "./dist/modules/tooling-registry/dist/index.d.mts",
+      "default": "./dist/modules/tooling-registry/dist/index.mjs"
+    },
+    "./tsconfig/base.json": "./dist/modules/typescript-config/base.json",
+    "./tsconfig/library.json": "./dist/modules/typescript-config/library.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/registry/consolidation.mjs build tooling",
+    "typecheck": "tsc --noEmit --skipLibCheck --module NodeNext --moduleResolution NodeNext dist/index.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archubbuck/accelerate.git",
+    "directory": "packages/tooling"
+  },
+  "homepage": "https://github.com/archubbuck/accelerate/blob/main/packages/tooling/README.md",
+  "bugs": "https://github.com/archubbuck/accelerate/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
+  "bin": {
+    "create-accelerate": "./dist/modules/create-accelerate/dist/cli.mjs"
+  },
+  "dependencies": {
+    "typescript": "~5.8.3"
+  },
+  "devDependencies": {
+    "@accelerate/create-accelerate": "0.1.0",
+    "@accelerate/eslint-config": "0.1.0",
+    "@accelerate/tooling-ast": "0.1.0",
+    "@accelerate/tooling-core": "0.1.0",
+    "@accelerate/tooling-patches": "0.1.0",
+    "@accelerate/tooling-project": "0.1.0",
+    "@accelerate/tooling-registry": "0.1.0",
+    "@accelerate/typescript-config": "0.1.0"
+  }
+}
