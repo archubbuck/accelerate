@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/scheduler-core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
@@ -29,6 +29,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@accelerate/jobs-core": "0.1.0"
-  }
+    "@accelerate/jobs-core": "0.1.0",
+    "cronosjs": "1.7.1",
+    "@accelerate/idempotency-core": "0.1.0",
+    "@js-temporal/polyfill": "^0.5.1"
+  },
+  "description": "Interval, one-time and zoned cron scheduling with deterministic run IDs and missed-run policies."
 }

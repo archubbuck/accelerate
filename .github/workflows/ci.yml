@@ -76,3 +76,9 @@ jobs:
         run: |
           pnpm --filter @accelerate/workflows-postgres... build
           pnpm --filter @accelerate/workflows-postgres test
+      - name: Verify distributed scheduling on PostgreSQL
+        env:
+          WAVE7_TEST_DATABASE_URL: ${{ env.AUTHORIZATION_TEST_DATABASE_URL }}
+        run: |
+          pnpm --filter @accelerate/scheduler-postgres... build
+          pnpm --filter @accelerate/scheduler-postgres test

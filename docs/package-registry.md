@@ -80,6 +80,7 @@ Generated from registry/packages.json. Do not edit manually.
 | `@accelerate/outbox-postgres` | events | implemented | P0 | 8 |
 | `@accelerate/resilience-core` | api | implemented | P1 | 2 |
 | `@accelerate/scheduler-core` | events | implemented | P1 | 5 |
+| `@accelerate/scheduler-postgres` | events | implemented | P0 | 8 |
 | `@accelerate/secrets-core` | configuration | implemented | P1 | 5 |
 | `@accelerate/security-core` | identity-security | implemented | P1 | 5 |
 | `@accelerate/state-angular` | frontend | implemented | P1 | 5 |
