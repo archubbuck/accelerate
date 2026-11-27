@@ -67,7 +67,7 @@ const guidance = {
     "Use Angular 19 or 20 with matching core and common versions, plus RxJS 7.4 or newer within version 7. Authorization and logging retain their compiled Angular entry points.",
   react:
     "Use React 18 or newer and matching React declarations for TypeScript projects.",
-  data: "The database adapters accept caller-supplied drivers. Install pg and its types if you use the PostgreSQL adapter. See [data and AI output provenance](https://github.com/archubbuck/accelerate/blob/main/docs/provenance.md) for versioned artifact lineage. See the [double-entry ledger](https://github.com/archubbuck/accelerate/blob/main/docs/ledger.md) for transaction-bound posting and reconciliation. See [time-series observations](https://github.com/archubbuck/accelerate/blob/main/docs/time-series.md) for batches, resampling and retention. See [reproducible experiments](https://github.com/archubbuck/accelerate/blob/main/docs/experiments.md) for pinned datasets, treatment assignments and metrics.",
+  data: "The database adapters accept caller-supplied drivers. Install pg and its types if you use the PostgreSQL adapter. See [data and AI output provenance](https://github.com/archubbuck/accelerate/blob/main/docs/provenance.md) for versioned artifact lineage. See the [double-entry ledger](https://github.com/archubbuck/accelerate/blob/main/docs/ledger.md) for transaction-bound posting and reconciliation. See [time-series observations](https://github.com/archubbuck/accelerate/blob/main/docs/time-series.md) for batches, resampling and retention. See [reproducible experiments](https://github.com/archubbuck/accelerate/blob/main/docs/experiments.md) for pinned datasets, treatment assignments and metrics. See [object storage](https://github.com/archubbuck/accelerate/blob/main/docs/object-storage.md) for streaming S3 and memory adapters.",
   identity:
     "Enforce authorization in your server. Install pg and its types for the pool-based PostgreSQL adapter. See the [OAuth and OpenID Connect guide](https://github.com/archubbuck/accelerate/blob/main/docs/oidc.md) for provider sign-in and session integration. See [tenant and resource authorization](https://github.com/archubbuck/accelerate/blob/main/docs/scoped-authorization.md) for scoped grants and UI snapshots. See [service principals and API keys](https://github.com/archubbuck/accelerate/blob/main/docs/service-principals.md) for machine authentication. See [audit integrity verification](https://github.com/archubbuck/accelerate/blob/main/docs/audit-integrity.md) for transaction-bound hash chains.",
   observability:
@@ -242,16 +242,16 @@ function copyModule(catalog, manifest, legacy, operations) {
 
 function buildFamily(catalog, name, dist) {
   const manifest = readManifest(name);
+  const operations = [];
+  for (const [legacy, target] of Object.entries(catalog.migrations)) {
+    if (target.family === name)
+      copyModule(catalog, manifest, legacy, operations);
+  }
   if (Object.keys(catalog.families[name].sourceExports ?? {}).length) {
     execFileSync(process.execPath, [
       join(root, "node_modules/typescript/bin/tsc"),
       "-p", join(dirname(dist), "tsconfig.features.json"),
     ], { stdio: "inherit" });
-  }
-  const operations = [];
-  for (const [legacy, target] of Object.entries(catalog.migrations)) {
-    if (target.family === name)
-      copyModule(catalog, manifest, legacy, operations);
   }
   if (operations.length) {
     write(
