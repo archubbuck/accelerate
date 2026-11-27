@@ -4,7 +4,7 @@ Database adapters, transactions, caches, migrations and coordination.
 
 Install with `npm install @accelerate/data`. See the [Accelerate SDK catalog](https://www.npmjs.com/package/@accelerate/sdk) for the other packages.
 
-The database adapters accept caller-supplied drivers. Install pg and its types if you use the PostgreSQL adapter.
+The database adapters accept caller-supplied drivers. Install pg and its types if you use the PostgreSQL adapter. See [data and AI output provenance](https://github.com/archubbuck/accelerate/blob/main/docs/provenance.md) for versioned artifact lineage.
 
 ## Import migration
 
