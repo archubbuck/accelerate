@@ -126,6 +126,7 @@ import { OpenApiBuilder } from "@accelerate/http/openapi";
 import { createStreamingConnection } from "@accelerate/http/streaming";
 import { createMemoryStreamingPair } from "@accelerate/http/streaming/memory";
 import { createWebSocketStreamingTransport } from "@accelerate/http/streaming/websocket";
+import { createStateMachine, createMemoryStateMachineStore } from "@accelerate/core/state-machine";
 import { preview } from "./node_modules/@accelerate/http/dist/operations/rate-limit-core/preview.mjs";
 import { discoverPackageOperations, validatePackageOperations } from "@accelerate/tooling/registry";
 import { readFileSync } from "node:fs";
@@ -143,6 +144,12 @@ assert.equal((await pending).value.data, "ready");
 feed.close();
 await feed.messages.return();
 assert.equal(typeof createWebSocketStreamingTransport, "function");
+const machine = createStateMachine({
+  initial: "open",
+  states: { open: { transitions: [{ on: "close", to: "closed" }] }, closed: { terminal: true } },
+}, createMemoryStateMachineStore());
+await machine.start("ticket", {});
+assert.equal((await machine.send("ticket", { type: "close" })).snapshot.state, "closed");
 assert.equal(Object.keys(catalog.families).length, 14);
 const discovery = await discoverPackageOperations(process.cwd(), Object.keys(catalog.families));
 assert.deepEqual(discovery.diagnostics, []);

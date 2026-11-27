@@ -1,6 +1,6 @@
 {
   "name": "@accelerate/data",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Accelerate — Database adapters, transactions, caches, migrations and coordination.",
   "keywords": [
     "accelerate",
@@ -127,7 +127,7 @@
     "operations": "./dist/operations/package-manifest.json"
   },
   "dependencies": {
-    "@accelerate/core": "0.1.0"
+    "@accelerate/core": "0.2.0"
   },
   "devDependencies": {
     "@accelerate/cache-core": "0.1.0",
