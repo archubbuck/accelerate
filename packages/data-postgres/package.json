@@ -17,6 +17,10 @@
     "./ledger": {
       "types": "./dist/ledger.d.ts",
       "default": "./dist/ledger.js"
+    },
+    "./time-series": {
+      "types": "./dist/time-series.d.ts",
+      "default": "./dist/time-series.js"
     }
   },
   "files": [

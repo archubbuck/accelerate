@@ -21,6 +21,10 @@
     "./ledger-memory": {
       "types": "./dist/ledger-memory.d.ts",
       "default": "./dist/ledger-memory.js"
+    },
+    "./time-series": {
+      "types": "./dist/time-series.d.ts",
+      "default": "./dist/time-series.js"
     }
   },
   "files": [
